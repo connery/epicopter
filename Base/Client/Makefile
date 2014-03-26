@@ -21,6 +21,7 @@ clientCopter: $(OBJ)
 
 clean:
 	$(RM) -f $(OBJ) core *~
+	$(RM) clientCopter
 	for i in $(SUBDIRS); do (cd $$i; $(MAKE) clean); done
 
 depend:
