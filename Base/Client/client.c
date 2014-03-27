@@ -8,21 +8,33 @@
 // Fonction de creation de paquet
 // Param : les datas que l'on veut envoyer
 
-Packet      *createPacket(char * buffer) {
+Packet      *createPacket(char * buffer, OPcode op, const char *name) {
   Packet    *p;
   
   p = malloc(sizeof(Packet));
 		      
-  p->header.is_data = 1;
-  p->header.fragment = 0;
-  p->header.last = 0;
-  p->header.datalen = strlen(buffer) + sizeof(Packet);
+  p->header.opcode = op;
+  p->header.ID = 1;
+  p->header.datalen = strlen(buffer);
   strncpy(p->data, buffer, strlen(buffer));
+  strncpy(p->header.name, name, strlen(name));
   return p;
 }
 
+static void initializeConnection(Packet *pa, SOCKET sock, const char* name) {
+  printf("--- Asking for connection ---\n");
+  pa->header.opcode = CON;
+  pa->header.ID = 1;
+  pa->header.datalen = strlen(name);
+  strncpy(pa->data, name, strlen(name));
+  strncpy(pa->header.name, name, strlen(name));
+  write_server(sock, pa);
+}
+
+
 // Fonction principale du client avec la boucle d'ecoute
 // Params : addresse IP du serveur, nom du client
+
 
 static void app(const char *address, const char *name)
 {
@@ -34,10 +46,7 @@ static void app(const char *address, const char *name)
 
   pa = malloc(PACKET_SIZE);
 
-  strncpy(pa->data, name, strlen(name));
-
-  // Envoi d'un premier paquet de connexion au serveur avec le nom du client en data
-  write_server(sock, pa);
+  initializeConnection(pa, sock, name);
 
   while(1)
     {
@@ -65,15 +74,22 @@ static void app(const char *address, const char *name)
 	      buffer[BUF_SIZE - 1] = 0;
 	  }
 
-	  pa = createPacket(buffer);
-
-	  printf("data = %s/n", pa->data);
-	      
-	  write_server(sock, pa);
 	}
       else if(FD_ISSET(sock, &rdfs))
 	{
 	  int n = read_server(sock, pa);
+	  if (pa->header.opcode == CON) {
+	    printf("--- Connection accepted ---\n");
+	    pa = createPacket("", DEC, name);
+	    printf("--- Asking for deconnection ---\n");
+	    write_server(sock, pa);
+	  }
+	  else if (pa->header.opcode == DEC) {
+	    printf("--- Disconnection accepted ---\n");
+	    end_connection(sock);
+	    printf("--- Quitting ---\n");
+	    exit(EXIT_SUCCESS);
+	  }
 
 	  if(n == 0)
 	    {
@@ -141,7 +157,7 @@ static int read_server(SOCKET sock, Packet *p)
       exit(errno);
     }
 
-  printf("rcv %s\n", p->data);
+
   return n;
 }
 
@@ -150,6 +166,7 @@ static int read_server(SOCKET sock, Packet *p)
 
 static void write_server(SOCKET sock, const Packet *p)
 {
+  
   if(send(sock, p, PACKET_SIZE, 0) < 0)
     {
       perror("send()");

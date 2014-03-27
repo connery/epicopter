@@ -1,10 +1,11 @@
 CC=gcc
-CFLAGS= -W -Wall -Werror
+CFLAGS= 
 RM=/bin/rm
 MAKE=/usr/bin/make
 MAKEDEPEND=/usr/X11R6/bin/makedepend
 
-SRC= 	client.c
+SRC= 	server.c
+
 OBJ=$(subst .c,.o,$(SRC))
 
 SUBDIR= .
@@ -14,9 +15,9 @@ SUBDIR= .
 	$(CC) -c $(CFLAGS) $<
 all:
 	for i in $(SUBDIRS); do (cd $$i; $(MAKE) all); done
-	$(MAKE) clientCopter
+	$(MAKE) serverCopter
 
-clientCopter: $(OBJ)
+serverCopter: $(OBJ)
 	$(CC) -o $@ $(LDFLAGS) $^
 
 clean:
