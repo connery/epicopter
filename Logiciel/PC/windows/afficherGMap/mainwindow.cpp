@@ -99,5 +99,5 @@ void MainWindow::on_Btnvalidation_clicked()
 
 void MainWindow::on_btnLogin_clicked()
 {
-   Login *log = new Login();
+  // Login *log = new Login();
 }

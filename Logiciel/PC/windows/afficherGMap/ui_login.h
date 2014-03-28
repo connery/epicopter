@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'login.ui'
 **
-** Created: Wed 12. Feb 09:04:52 2014
+** Created: Fri 28. Mar 15:29:41 2014
 **      by: Qt User Interface Compiler version 4.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -42,7 +42,7 @@ public:
     {
         if (Login->objectName().isEmpty())
             Login->setObjectName(QString::fromUtf8("Login"));
-        Login->resize(235, 105);
+        Login->resize(176, 127);
         verticalLayout = new QVBoxLayout(Login);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         horizontalLayout = new QHBoxLayout();

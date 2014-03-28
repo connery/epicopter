@@ -1,5 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
+
 #include <QMessageBox>
 
 Login::Login(QWidget *parent) :
@@ -7,12 +8,41 @@ Login::Login(QWidget *parent) :
     m2_ui(new Ui::Login)
 {
     m2_ui->setupUi(this);
+
     this->show();
+
+    QPalette p;
+    p = palette();
+    p.setBrush(QPalette::Window, QBrush(QPixmap("C:/Users/washco/Documents/afficherGMap/2015_logo_epicopter2.png")));
+    setPalette(p);
+    QString blah = QString(QCryptographicHash::hash(("myPassword"),QCryptographicHash::Md5).toHex());
+/*    int i = 46, y = -1, z=0;
+
+    while (i < 127)
+    {
+    y++;
+    if (y != 0 && (y % 9 == 0))
+    {
+        qDebug() <<"++;";
+        y =0;
+        z++;
+    }
+    Table[y][z]=i;
+    qDebug() <<Table[y][z];
+    qDebug() <<y<<" et "<<z;
+    i++;
+    }
+*/
 }
 
 Login::~Login()
 {
     delete m2_ui;
+}
+
+QString Login::chiffrement(QString pass)
+{
+   return( QString(QCryptographicHash::hash(("pass"),QCryptographicHash::Md5).toHex()));
 }
 
 void Login::changeEvent(QEvent *e)
@@ -50,6 +80,9 @@ void Login::on_BtnLogin_clicked()
     //QDesktopServices::openUrl(QUrl("C:/Users/washco/Documents/afficherGMap/login.html"));
 
     /*sqlite*/
+    QString pass = chiffrement(m2_ui->lblPassword->text());
+    qDebug() <<pass;
+    qDebug() <<m2_ui->lblPassword->text();
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName("localhost");
     db.setDatabaseName("database.db");
@@ -58,11 +91,11 @@ void Login::on_BtnLogin_clicked()
 
     if (!db.open())
     {
-        QMessageBox::critical(0, "Titre de la fenêtre", "Impossible de se connecter à la base de donnée");
+        QMessageBox::critical(0, "fenêtre connexion", "Impossible de se connecter à la base de donnée");
     }
     else
     {
-        QMessageBox::information(0, "Titre de la fenêtre", "cool");
+        QMessageBox::information(0, "fenêtre connexion", "cool");
         QSqlQuery q("select " + m2_ui->lblLogin->text() + " from users where lower(users.name) = 'epicop'");
         QSqlRecord rec = q.record();
         qDebug() << "Number of columns: " << rec.count();
@@ -70,5 +103,13 @@ void Login::on_BtnLogin_clicked()
         while (q.next())
         qDebug() << q.value(nameCol).toString(); // output all names
     }
-
+    if(m2_ui->lblPassword->text() == "toto")
+    {
+       // Login l;
+       // l.hide();
+         // qDebug() << "if... " ;
+        this->hide();
+        MainWindow *mw = new MainWindow();
+        mw->show();
+    }
 }

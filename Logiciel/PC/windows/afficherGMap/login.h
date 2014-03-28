@@ -8,6 +8,9 @@
 #include <QGraphicsView>
 #include <QtCore>
 #include <QtGui/QtGui>
+#include <QDebug>
+#include <QCryptographicHash>
+#include "mainwindow.h"
 
 namespace Ui {
     class Login;
@@ -19,12 +22,15 @@ class Login : public QWidget {
 public:
     explicit Login(QWidget *parent = 0);
     virtual ~Login();
-
+    QString chiffrement(QString);
+    QString dechiffrement(QString);
 protected:
     virtual void changeEvent(QEvent *e);
 
 private:
     Ui::Login *m2_ui;
+   // QString masterKey[10][10];
+   // QString Table[10][10];
 
 private slots:
     void on_BtnLogin_clicked();
