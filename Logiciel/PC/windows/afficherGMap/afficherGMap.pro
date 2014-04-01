@@ -11,10 +11,12 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     form.cpp \
-    login.cpp
+    login.cpp \
+    protoclient.cpp
 HEADERS += mainwindow.h \
     form.h \
-    login.h
+    login.h \
+    protoclient.h
 FORMS += mainwindow.ui \
     form.ui \
     login.ui

@@ -1,6 +1,7 @@
 #include "login.h"
 #include "ui_login.h"
 
+
 #include <QMessageBox>
 
 Login::Login(QWidget *parent) :
@@ -112,4 +113,15 @@ void Login::on_BtnLogin_clicked()
         MainWindow *mw = new MainWindow();
         mw->show();
     }
+
+
+    /*
+      test de socket
+      */
+
+    ProtoClient l1;
+    l1.writeData();
+
+
+
 }

@@ -10,6 +10,7 @@
 #include <QtGui/QtGui>
 #include <QDebug>
 #include <QCryptographicHash>
+#include "protoclient.h"
 #include "mainwindow.h"
 
 namespace Ui {
