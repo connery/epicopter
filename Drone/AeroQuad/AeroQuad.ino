@@ -492,39 +492,39 @@
   }
 #endif
 
-#ifdef AeroQuadMega_v21
+#ifdef AeroQuadMega_v21 // Version utilise par Epicopter
   #define LED_Green 13
   #define LED_Red 4
   #define LED_Yellow 31
 
-  #include <Device_I2C.h>
+#include <Device_I2C.h> // protocole de communication microprosesseur, norme I2C (Phillips)
 
-  // Gyroscope declaration
-  #define ITG3200_ADDRESS_ALTERNATE
-  #include <Gyroscope_ITG3200_9DOF.h>
+// Gyroscope declaration
+#define ITG3200_ADDRESS_ALTERNATE
+#include <Gyroscope_ITG3200_9DOF.h>
 
-  // Accelerometer declaration
-  #include <Accelerometer_ADXL345_9DOF.h>
+// Accelerometer declaration
+#include <Accelerometer_ADXL345_9DOF.h>
 
-  // Receiver Declaration
-  #define RECEIVER_MEGA
+// Receiver Declaration
+#define RECEIVER_MEGA
 
-  // Motor declaration
-  #define MOTOR_PWM_Timer
+// Motor declaration
+#define MOTOR_PWM_Timer
 
-  // heading mag hold declaration
-  #ifdef HeadingMagHold
-    #include <Compass.h>
-    #define SPARKFUN_9DOF_5883L
-  #endif
+// heading mag hold declaration
+#ifdef HeadingMagHold
+#include <Compass.h> // declaration de la sur-couche fonctionelle magnetometre
+#define SPARKFUN_9DOF_5883L
+#endif
 
-  // Altitude declaration
-  #ifdef AltitudeHoldBaro
-    #define BMP085
-  #endif
-  #ifdef AltitudeHoldRangeFinder
-    #define XLMAXSONAR 
-  #endif
+// Altitude declaration
+#ifdef AltitudeHoldBaro
+#define BMP085
+#endif
+#ifdef AltitudeHoldRangeFinder
+#define XLMAXSONAR 
+#endif
 
 
   // Battery Monitor declaration
@@ -1093,7 +1093,7 @@
   #include <Receiver_SBUS.h>
 #elif defined(RECEIVER_328P)
   #include <Receiver_328p.h>
-#elif defined(RECEIVER_MEGA)
+#elif defined(RECEIVER_MEGA) // Version utilise par Epicopter __AVR_ATmega2560__
   #include <Receiver_MEGA.h>
 #elif defined(RECEIVER_APM)
   #include <Receiver_APM.h>
@@ -1125,7 +1125,7 @@
   #endif
 #elif defined(MOTOR_PWM)
   #include <Motors_PWM.h>
-#elif defined(MOTOR_PWM_Timer)
+#elif defined(MOTOR_PWM_Timer) // Version utilise par Epicopter
   #include <Motors_PWM_Timer.h>
 #elif defined(MOTOR_APM)
   #include <Motors_APM.h>
@@ -1141,7 +1141,7 @@
 #if defined(HMC5843)
   #include <HeadingFusionProcessorMARG.h>
   #include <Magnetometer_HMC5843.h>
-#elif defined(SPARKFUN_9DOF_5883L) || defined(SPARKFUN_5883L_BOB) || defined(HMC5883L)
+#elif defined(SPARKFUN_9DOF_5883L) || defined(SPARKFUN_5883L_BOB) || defined(HMC5883L) // Version utilise par Epicopter
   #include <HeadingFusionProcessorMARG.h>
   #include <Magnetometer_HMC5883L.h>
 #elif defined(COMPASS_CHR6DM)
@@ -1150,7 +1150,7 @@
 //********************************************************
 //******* ALTITUDE HOLD BAROMETER DECLARATION ************
 //********************************************************
-#if defined(BMP085)
+#if defined(BMP085) // Version utilise par Epicopter
   #include <BarometricSensor_BMP085.h>
 #elif defined(MS5611)
  #include <BarometricSensor_MS5611.h>
@@ -1187,7 +1187,7 @@
 //********************************************************
 #if defined(quadXConfig)
   #include "FlightControlQuadX.h"
-#elif defined(quadPlusConfig)
+#elif defined(quadPlusConfig) // Version utilise par epicopter
   #include "FlightControlQuadPlus.h"
 #elif defined(hexPlusConfig)
   #include "FlightControlHexPlus.h"
@@ -1568,7 +1568,9 @@ void loop () {
   currentTime = micros();
   deltaTime = currentTime - previousTime;
 
-  measureCriticalSensors();
+  // remplie le tableau gyroSample[3] et accelSample[3] de l'addition des nouvelles valeurs du gyroscope et de l'accelerometre en x, y, z aux precendentes
+  // VERIFIER LES VALEURS A L'INITIALISATION
+  measureCriticalSensors(); // (Aeroquad32/platform_aeroquad32.h)
 
   // ================================================================
   // 100Hz task loop

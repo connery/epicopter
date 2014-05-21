@@ -84,9 +84,11 @@ void measureGyroSum() {
   sendByteI2C(ITG3200_ADDRESS, ITG3200_MEMORY_ADDRESS);
   Wire.requestFrom(ITG3200_ADDRESS, ITG3200_BUFFER_SIZE);
   
-  measureSpecificGyroSum();
+  // remplie le tableau gyroSample[3] de l'addition des nouvelles valeurs du gyro en x, y, z aux precendentes
+  measureSpecificGyroSum(); // (Libraries/AQ_Gyroscope/Gyroscope_ITG3200_9DOF.h)
   
-  gyroSampleCount++;
+  // incremente le nbr de passage dans la fonction measureSpecificGyroSum();
+  gyroSampleCount++; // variable globale : (Libraries/AQ_Gyroscope/Gyroscope.h)
 }
 
 void evaluateGyroRate() {

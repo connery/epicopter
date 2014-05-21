@@ -54,11 +54,11 @@ typedef struct {
 #define I2C_READ  1
 
 #if (F_CPU == 168000000)
-	#define I2C_DELAY_SCL delay_ns100(6) 
-	#define I2C_DELAY_SDA delay_ns100(2)
+        #define I2C_DELAY_SCL delay_ns100(6) 
+        #define I2C_DELAY_SDA delay_ns100(2)
 #else
-	#define I2C_DELAY_SCL
-	#define I2C_DELAY_SDA
+        #define I2C_DELAY_SCL
+        #define I2C_DELAY_SDA
 #endif
 
 class TwoWire {
