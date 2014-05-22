@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <iostream>
 #include <QObject>
+#include <QApplication>
 
 class QUdpSocket;
 class QImage;

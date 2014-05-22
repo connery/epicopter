@@ -13,6 +13,8 @@ Sender::Sender()
   if( _pSocket->waitForConnected() ) {
     qDebug() << "zeeazazae";
     _pSocket->write( data,data.size() );
+    QApplication::processEvents();
+    _pSocket->waitForBytesWritten();
     //_pSocket->writeData(data,data.size());
   }
 }
