@@ -25,7 +25,7 @@ public:
    // void geoCode(QString local);
     void load();
     void SetAd(QString ad);
-
+    QString getCurrentDir();
 public slots:
     void goLeft() {
         moveDxDy(-10, 0);

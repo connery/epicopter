@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->label->setPixmap(QPixmap("C:/Users/washco/Documents/afficherGMap/2015_logo_epicopter.png"));
+    ui->label->setPixmap(QPixmap(getCurrentDir()+"/data/2015_logo_epicopter.png"));
     //QGridLayout *layout = new QGridLayout( this );
 
     //
@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget( btnUp, 2, 2 );
     layout->addWidget( btnDown, 4, 2 );
     layout->addWidget( btnHome, 3, 2 );
-*/
+    */
 
 
     //
@@ -85,9 +85,15 @@ void MainWindow::load()
 */
 }
 
+QString MainWindow::getCurrentDir(){
+    QString CurrentDir = QDir::currentPath();
+    return CurrentDir;
+}
+
 void MainWindow::on_btnMap_clicked()
 {
-   QDesktopServices::openUrl(QUrl("C:/Users/washco/Documents/afficherGMap/map.html", QUrl::TolerantMode));
+    qDebug() <<  getCurrentDir();
+   QDesktopServices::openUrl(QUrl(getCurrentDir()+"/data/map.html", QUrl::TolerantMode));
    //QDesktopServices::openUrl(QUrl(adresse, QUrl::TolerantMode));
  //   load();
 }

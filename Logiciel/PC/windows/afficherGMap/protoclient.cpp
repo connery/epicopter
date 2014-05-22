@@ -6,21 +6,41 @@ ProtoClient::ProtoClient(QObject *parent) :
     //je crée ma socket
     socket = new QUdpSocket(this);
     //j'ouvre la communication
-    socket->bind(QHostAddress::LocalHost, 1234);
+     QHostAddress ipclient;
+     ipclient.setAddress(IP_CLIENT);
+    socket->bind(ipclient, PORT_CLIENT);
     //je lance mon slot de lecture
     qDebug() << "connect";
-    connect(socket, SIGNAL(myReadData()), this, SLOT(myReadData()));
+    //this->myReadData();
+    QObject::connect(socket, SIGNAL(ReadData()), this, SLOT(ReadData()));
     qDebug() << "fin connect";
+    msg = "";
 }
 
-void ProtoClient::writeData()
+void ProtoClient::writeData(QString str)
 {
     //je crée ma donnée
     QByteArray Data;
     //je la rempli
-    Data.append("Hello from UDP");
+    Data.append(str);
     //j'ecris sur la socket
-    socket->writeDatagram(Data, QHostAddress::LocalHost, 1234);
+    QHostAddress ipclient;
+    // ipclient.setAddress("117.198.115.194");
+          ipclient.setAddress(IP_CLIENT);
+
+    //socket->writeDatagram(Data,  QHostAddress::LocalHost, 4242);
+     socket->writeDatagram(Data,  ipclient, PORT_CLIENT);
+}
+
+void ProtoClient::writeStruct( Packet *pa)
+{
+     QByteArray Data;
+     QHostAddress ipclient;
+     ipclient.setAddress(IP_CLIENT);
+    //je la rempli
+    Data.append((char*)pa);
+    //j'ecris sur la socket
+    socket->writeDatagram(Data, ipclient, PORT_CLIENT);
 }
 
 void ProtoClient::myReadData()
@@ -29,6 +49,7 @@ void ProtoClient::myReadData()
 
     QByteArray buffer;
     buffer.resize(socket->pendingDatagramSize());
+
 
     QHostAddress sender;
     quint16 senderPort;
@@ -40,5 +61,11 @@ void ProtoClient::myReadData()
     qDebug() << "Message from: " << sender.toString();
     qDebug() << "Message port: " << senderPort;
     qDebug() << "Message: " << buffer;
+    msg = buffer.data();
 
+}
+
+QString ProtoClient::getmsg()
+{
+    return msg;
 }

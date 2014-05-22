@@ -12,11 +12,17 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     form.cpp \
     login.cpp \
-    protoclient.cpp
+    protoclient.cpp \
+    tcpclientproto.cpp \
+    sender.cpp
 HEADERS += mainwindow.h \
     form.h \
     login.h \
-    protoclient.h
+    protoclient.h \
+    packet.h \
+    tcpclientproto.h \
+    sender.h \
+    User.h
 FORMS += mainwindow.ui \
     form.ui \
     login.ui

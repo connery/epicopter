@@ -64,7 +64,7 @@ void Form::on_Btnload_clicked()
     while(! flux.atEnd())
     {
         ligne = flux.readLine();
-        ligne2 += ligne + "\t\t";
+        ligne2 += ligne + "\t";
 
 
         if (j == 1)

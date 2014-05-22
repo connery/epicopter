@@ -11,7 +11,10 @@
 #include <QDebug>
 #include <QCryptographicHash>
 #include "protoclient.h"
+#include "tcpclientproto.h"
 #include "mainwindow.h"
+#include "sender.h"
+
 
 namespace Ui {
     class Login;
@@ -25,13 +28,16 @@ public:
     virtual ~Login();
     QString chiffrement(QString);
     QString dechiffrement(QString);
+    QString getCurrentDir();
 protected:
     virtual void changeEvent(QEvent *e);
 
 private:
     Ui::Login *m2_ui;
+     QString blah;
    // QString masterKey[10][10];
    // QString Table[10][10];
+
 
 private slots:
     void on_BtnLogin_clicked();

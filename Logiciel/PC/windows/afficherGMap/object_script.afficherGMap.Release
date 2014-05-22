@@ -1,0 +1,13 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\form.o
+./release\login.o
+./release\protoclient.o
+./release\tcpclientproto.o
+./release\sender.o
+./release\moc_mainwindow.o
+./release\moc_form.o
+./release\moc_login.o
+./release\moc_sender.o
+);

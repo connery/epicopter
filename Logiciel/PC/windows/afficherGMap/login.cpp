@@ -1,6 +1,10 @@
 #include "login.h"
+#include "packet.h"
 #include "ui_login.h"
-
+#include <QThread>
+#include <unistd.h>
+#include <windows.h>
+#include <QTime>
 
 #include <QMessageBox>
 
@@ -14,9 +18,10 @@ Login::Login(QWidget *parent) :
 
     QPalette p;
     p = palette();
-    p.setBrush(QPalette::Window, QBrush(QPixmap("C:/Users/washco/Documents/afficherGMap/2015_logo_epicopter2.png")));
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/2015_logo_epicopter2.png")));
     setPalette(p);
-    QString blah = QString(QCryptographicHash::hash(("myPassword"),QCryptographicHash::Md5).toHex());
+    blah = QString(QCryptographicHash::hash(("myPassword"),QCryptographicHash::Md5).toHex());
+    m2_ui->lblPassword->setEchoMode(QLineEdit::Password);
 /*    int i = 46, y = -1, z=0;
 
     while (i < 127)
@@ -44,6 +49,11 @@ Login::~Login()
 QString Login::chiffrement(QString pass)
 {
    return( QString(QCryptographicHash::hash(("pass"),QCryptographicHash::Md5).toHex()));
+}
+
+QString Login::getCurrentDir(){
+    QString CurrentDir = QDir::currentPath();
+    return CurrentDir;
 }
 
 void Login::changeEvent(QEvent *e)
@@ -84,7 +94,9 @@ void Login::on_BtnLogin_clicked()
     QString pass = chiffrement(m2_ui->lblPassword->text());
     qDebug() <<pass;
     qDebug() <<m2_ui->lblPassword->text();
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+
+    //base de donnée sqlite
+    /*    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName("localhost");
     db.setDatabaseName("database.db");
     db.setUserName("root");
@@ -104,6 +116,8 @@ void Login::on_BtnLogin_clicked()
         while (q.next())
         qDebug() << q.value(nameCol).toString(); // output all names
     }
+
+    */
     if(m2_ui->lblPassword->text() == "toto")
     {
        // Login l;
@@ -113,15 +127,46 @@ void Login::on_BtnLogin_clicked()
         MainWindow *mw = new MainWindow();
         mw->show();
     }
-
-
     /*
       test de socket
       */
 
-    ProtoClient l1;
-    l1.writeData();
+    //const char message[25] = "mar";
+    //Packet *pa;
+   // pa->data = message ;
+   // pa->header = 1;
+    //udp
 
 
+    /*ProtoClient l1;
+    int i = 0;
+    while(i < 6)
+    {
+        blah = QString(QCryptographicHash::hash(((const char*)m2_ui->lblPassword->text().data_ptr()),QCryptographicHash::Md5).toHex());
+        l1.writeData("CON "+m2_ui->lblLogin->text()+" "+blah);
+        l1.myReadData();
+        //QThread::msleep(1000);
+        Sleep(5000);
+       if( l1.getmsg() == "ok")
+           break;
+       i++;
+    }*/
+///tcp test
+/*
+    TcpClientProto l1;
+//l1.requestNewtcp();
+    while(1)
+    {
+            qDebug()<<"write";
+            l1.writeData("oui totor est vieux");
+            l1.readtcp();
+            Sleep(5000);
+    }
+    */
+    Sender s;
+    s.readTcpData();
+    qDebug()<<"read";
+
+    qDebug()<<"fin";
 
 }
