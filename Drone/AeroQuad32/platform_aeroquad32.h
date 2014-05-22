@@ -140,14 +140,16 @@ void initializePlatformSpecificAccelCalibration() {
 
 }
 
-unsigned long previousMeasureCriticalSensorsTime = 0;
-void measureCriticalSensors() {
+ unsigned long previousMeasureCriticalSensorsTime = 0;
+ void measureCriticalSensors()
+ {
   // read sensors not faster than every 1 ms
-  if (currentTime - previousMeasureCriticalSensorsTime >= 1000) {
-    measureGyroSum();
-    measureAccelSum();
-    previousMeasureCriticalSensorsTime = currentTime;
+  if (currentTime - previousMeasureCriticalSensorsTime >= 1000)
+    {
+      measureGyroSum(); // (Libraries/AQ_Gyroscope/Gyroscope_ITG3200Common.h)
+      measureAccelSum(); // (Libraries/AQ_Accelerometer/Accelerometer_ADXL345_9DOF.h)
+      previousMeasureCriticalSensorsTime = currentTime;
+    }
   }
-}
 
 #endif

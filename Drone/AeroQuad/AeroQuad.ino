@@ -1408,13 +1408,13 @@ void setup() {
 /*******************************************************************
  * 100Hz task
  ******************************************************************/
-void process100HzTask() {
-  
+void process100HzTask()
+{  
   G_Dt = (currentTime - hundredHZpreviousTime) / 1000000.0;
   hundredHZpreviousTime = currentTime;
   
-  evaluateGyroRate();
-  evaluateMetersPerSec();
+  evaluateGyroRate(); // Gyroscope_ITG3200Common.h Gyroscope_ITG3200_9D0F.h
+  evaluateMetersPerSec(); 
 
   for (int axis = XAXIS; axis <= ZAXIS; axis++) {
     filteredAccel[axis] = computeFourthOrder(meterPerSecSec[axis], &fourthOrder[axis]);
@@ -1424,29 +1424,34 @@ void process100HzTask() {
   
   #if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
     zVelocity = (filteredAccel[ZAXIS] * (1 - accelOneG * invSqrt(isq(filteredAccel[XAXIS]) + isq(filteredAccel[YAXIS]) + isq(filteredAccel[ZAXIS])))) - runTimeAccelBias[ZAXIS] - runtimeZBias;
-    if (!runtimaZBiasInitialized) {
-      runtimeZBias = (filteredAccel[ZAXIS] * (1 - accelOneG * invSqrt(isq(filteredAccel[XAXIS]) + isq(filteredAccel[YAXIS]) + isq(filteredAccel[ZAXIS])))) - runTimeAccelBias[ZAXIS];
-      runtimaZBiasInitialized = true;
-    }
+    
+if (!runtimaZBiasInitialized)
+  {
+    runtimeZBias = (filteredAccel[ZAXIS] * (1 - accelOneG * invSqrt(isq(filteredAccel[XAXIS]) + isq(filteredAccel[YAXIS]) + isq(filteredAccel[ZAXIS])))) - runTimeAccelBias[ZAXIS];
+    runtimaZBiasInitialized = true;
+  }
     estimatedZVelocity += zVelocity;
     estimatedZVelocity = (velocityCompFilter1 * zVelocity) + (velocityCompFilter2 * estimatedZVelocity);
   #endif    
 
   #if defined(AltitudeHoldBaro)
     measureBaroSum(); 
-    if (frameCounter % THROTTLE_ADJUST_TASK_SPEED == 0) {  //  50 Hz tasks
-      evaluateBaroAltitude();
-    }
+
+    if (frameCounter % THROTTLE_ADJUST_TASK_SPEED == 0)
+      {  //  50 Hz tasks
+	evaluateBaroAltitude();
+      }
   #endif
         
   processFlightControl();
   
   
   #if defined(BinaryWrite)
-    if (fastTransfer == ON) {
-      // write out fastTelemetry to Configurator or openLog
-      fastTelemetry();
-    }
+    if (fastTransfer == ON)
+      {
+	// write out fastTelemetry to Configurator or openLog
+	fastTelemetry();
+      }
   #endif      
   
   #ifdef SlowTelemetry
