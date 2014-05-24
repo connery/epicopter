@@ -10,6 +10,7 @@
 #include <iostream>
 #include <QObject>
 #include <QApplication>
+#include "User.h"
 
 class QUdpSocket;
 class QImage;
@@ -20,6 +21,8 @@ class Sender: public QObject
 
   public:
   Sender();
+  void ecrit(QString str);
+  QString getMsg();
 
   public slots:
     void readTcpData();
@@ -30,6 +33,7 @@ class Sender: public QObject
     QImage *image;
     quint16 blockSize;
     QString currenttcp;
+
 };
 
 #endif // SENDER_H
