@@ -27,10 +27,10 @@ typedef struct in_addr IN_ADDR;
 
 #endif
 
-#define PORT 4242
+#define PORT 48888
 #define MAX_CLIENTS 100
 
-#define BUF_SIZE 1024
+#define BUF_SIZE 128
 
 #include "client.h"
 #include "packet.h"
@@ -40,8 +40,8 @@ static void end(void);
 static void app(void);
 static int init_connection(void);
 static void end_connection(int sock);
-static int read_client(SOCKET sock, Packet *p);
-static void write_client(SOCKET sock, const Packet *p);
+static int read_client(SOCKET sock, char *buffer);
+static void write_client(SOCKET sock, const char *buffer);
 static void send_message_to_all_clients(Client *clients, Client client, int actual, const char *buffer, char from_server);
 static void remove_client(Client *clients, int to_remove, int *actual);
 static void clear_clients(Client *clients, int actual);

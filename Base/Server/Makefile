@@ -4,7 +4,8 @@ RM=/bin/rm
 MAKE=/usr/bin/make
 MAKEDEPEND=/usr/X11R6/bin/makedepend
 
-SRC= 	server.c
+SRC= 	server.c \
+	network.c
 
 OBJ=$(subst .c,.o,$(SRC))
 
@@ -23,6 +24,7 @@ serverCopter: $(OBJ)
 clean:
 	$(RM) -f $(OBJ) core *~
 	for i in $(SUBDIRS); do (cd $$i; $(MAKE) clean); done
+	$(RM) serverCopter
 
 depend:
 	$(MAKEDEPEND) -- $(CFLAGS) -- $(SRC)
