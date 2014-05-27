@@ -14,7 +14,9 @@ SOURCES += main.cpp \
     login.cpp \
     protoclient.cpp \
     tcpclientproto.cpp \
-    sender.cpp
+    sender.cpp \
+    frm.cpp \
+    xmlread.cpp
 HEADERS += mainwindow.h \
     form.h \
     login.h \
@@ -22,10 +24,14 @@ HEADERS += mainwindow.h \
     packet.h \
     tcpclientproto.h \
     sender.h \
-    User.h
+    User.h \
+    frm.h \
+    xmlread.h
 FORMS += mainwindow.ui \
     form.ui \
-    login.ui
+    login.ui \
+    frm.ui \
+    xmlread.ui
 OTHER_FILES += map.html \
     my_php.php \
     posi.txt \
