@@ -31,7 +31,8 @@ byte countToInitHome = 0;
 
 unsigned long previousFixTime = 0;
 
-boolean haveNewGpsPosition() {
+boolean haveNewGpsPosition() //
+{
   return (haveAGpsLock() && (previousFixTime != getGpsFixTime()));
 }
 
@@ -322,15 +323,18 @@ void initHomeBase() {
   /**
    * Process position hold
    */
-  void processPositionHold() {
+  void processPositionHold()
+  {
     
-    if (haveNewGpsPosition()) {
-      computeNewPosition();
-      clearNewGpsPosition();
-    }
-    else {
-      computeEstimatedPosition();
-    }    
+    if (haveNewGpsPosition())
+      {
+	computeNewPosition();
+	clearNewGpsPosition();
+      }
+    else
+      {
+	computeEstimatedPosition();
+      }    
     
     computeCurrentSpeed();
     
@@ -348,20 +352,24 @@ void initHomeBase() {
     /** 
    * Process navigation
    */
-  void processNavigation() {
+  void processNavigation()
+  {
     
-    if (distanceToDestination < MIN_DISTANCE_TO_REACHED) {
-      processPositionHold();
-      evaluateMissionPositionToReach();
-      return;
-    }
-    else if (haveNewGpsPosition()) {
-      computeNewPosition();
-      clearNewGpsPosition();
-    }
-    else {
-      return;
-    }
+    if (distanceToDestination < MIN_DISTANCE_TO_REACHED)
+      {
+	processPositionHold();
+	evaluateMissionPositionToReach();
+	return;
+      }
+    else if (haveNewGpsPosition())
+      {
+	computeNewPosition();
+	clearNewGpsPosition();
+      }
+    else
+      {
+	return;
+      }
     
     computeCurrentSpeed();
     

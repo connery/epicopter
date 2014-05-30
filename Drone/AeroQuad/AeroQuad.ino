@@ -1296,6 +1296,8 @@ void setup() {
   pinMode(LED_Green, OUTPUT);
   digitalWrite(LED_Green, LOW);
 
+  Serial.print("test");
+
   initCommunication();
   
   readEEPROM(); // defined in DataStorage.h

@@ -49,29 +49,30 @@ void processAltitudeHold()
   // Thanks to Sherbakov for his work in Z Axis dampening
   // http://aeroquad.com/showthread.php?359-Stable-flight-logic...&p=10325&viewfull=1#post10325
 
-  if (altitudeHoldState == ON)
+  if (altitudeHoldState == ON) // AeroQuad.h (defined) -- AltitudeControlProcessor.h -- FlightCommandProcessor.h
     {
       int altitudeHoldThrottleCorrection = INVALID_THROTTLE_CORRECTION;
       // computer altitude error!
-#if defined AltitudeHoldRangeFinder
-      if (isOnRangerRange(rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX]))
+#if defined AltitudeHoldRangeFinder // UserConfiguration.h // Si la correction automatique de l'altitude est activee 
+      if (isOnRangerRange(rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX])) // AQ_RangerFinder/RangeFinder.h // fonction qui retourne 1 si au dessus du plancher et en dessou du plafond
 	{
-	  if (sonarAltitudeToHoldTarget == INVALID_RANGE)
+	  if (sonarAltitudeToHoldTarget == INVALID_RANGE) // AeroQuad.h (defined) // Si l'objectif d'altitude est invalide on reinitialise l'objectif
 	    {
 	      sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX];
 	    }
-	  altitudeHoldThrottleCorrection = updatePID(sonarAltitudeToHoldTarget, rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX], &PID[SONAR_ALTITUDE_HOLD_PID_IDX]);
-	  altitudeHoldThrottleCorrection = constrain(altitudeHoldThrottleCorrection, minThrottleAdjust, maxThrottleAdjust);
+
+	  altitudeHoldThrottleCorrection = updatePID(sonarAltitudeToHoldTarget, rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX], &PID[SONAR_ALTITUDE_HOLD_PID_IDX]); // PID.h // function(target, position actuelle, struct)
+	  altitudeHoldThrottleCorrection = constrain(altitudeHoldThrottleCorrection, minThrottleAdjust, maxThrottleAdjust); // fonction system arduino
 	}
 #endif
-#if defined AltitudeHoldBaro
-      if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION)
+#if defined AltitudeHoldBaro // UserConfiguration.h // Si le barometre est actif
+      if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION) // Si la correction automatique de l'altitude n'est pas activee ou altitude hors plancher/plafond 
 	{
-	  altitudeHoldThrottleCorrection = updatePID(baroAltitudeToHoldTarget, getBaroAltitude(), &PID[BARO_ALTITUDE_HOLD_PID_IDX]);
+	  altitudeHoldThrottleCorrection = updatePID(baroAltitudeToHoldTarget, getBaroAltitude(), &PID[BARO_ALTITUDE_HOLD_PID_IDX]); // target definie par baroAltitudeToHoldTarget
 	  altitudeHoldThrottleCorrection = constrain(altitudeHoldThrottleCorrection, minThrottleAdjust, maxThrottleAdjust);
 	}
 #endif        
-      if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION)
+      if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION) // Si pas d'instruments pas de correction
 	{
 	  throttle = receiverCommand[THROTTLE];
 	  return;
@@ -79,7 +80,7 @@ void processAltitudeHold()
       
       // ZDAMPENING COMPUTATIONS
 #if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
-      float zDampeningThrottleCorrection = -updatePID(0.0, estimatedZVelocity, &PID[ZDAMPENING_PID_IDX]);
+      float zDampeningThrottleCorrection = -updatePID(0.0, estimatedZVelocity, &PID[ZDAMPENING_PID_IDX]); // estimatedZVelocity defined in AeroQuad.h // valeur 0.0 ... 
       zDampeningThrottleCorrection = constrain(zDampeningThrottleCorrection, minThrottleAdjust, maxThrottleAdjust);
 #endif
       

@@ -194,27 +194,30 @@ void processCalibrateESC()
  * 
  * Special thank to Ziojo for this.
  */
-void processThrottleCorrection() {
+void processThrottleCorrection()
+{
  
   int throttleAdjust = 0;
-  #if defined UseGPSNavigator
-    if (navigationState == ON || positionHoldState == ON) {
+#if defined UseGPSNavigator
+  if (navigationState == ON || positionHoldState == ON)
+    {
       throttleAdjust = throttle / (cos (kinematicsAngle[XAXIS]*0.55) * cos (kinematicsAngle[YAXIS]*0.55));
       throttleAdjust = constrain ((throttleAdjust - throttle), 0, 50); //compensate max  +/- 25 deg XAXIS or YAXIS or  +/- 18 ( 18(XAXIS) + 18(YAXIS))
     }
-  #endif
-  #if defined BattMonitorAutoDescent
-    throttleAdjust += batteyMonitorThrottleCorrection;
-  #endif
-  #if defined (AutoLanding)
-    #if defined BattMonitorAutoDescent
-      if (batteyMonitorThrottleCorrection != 0) { // don't auto land in the same time that the battery monitor do auto descent, or Override the auto descent to land, TBD
-        throttleAdjust += autoLandingThrottleCorrection;
-      }
-    #else
+#endif
+#if defined BattMonitorAutoDescent
+  throttleAdjust += batteyMonitorThrottleCorrection;
+#endif
+#if defined (AutoLanding)
+#if defined BattMonitorAutoDescent
+  if (batteyMonitorThrottleCorrection != 0)
+    { // don't auto land in the same time that the battery monitor do auto descent, or Override the auto descent to land, TBD
       throttleAdjust += autoLandingThrottleCorrection;
-    #endif
-  #endif
+    }
+#else
+  throttleAdjust += autoLandingThrottleCorrection;
+#endif
+#endif
   
   throttle = constrain((throttle + throttleAdjust),MINCOMMAND,MAXCOMMAND-150);  // limmit throttle to leave some space for motor correction in max throttle manuever
 }
@@ -277,7 +280,7 @@ void processMinMaxCommand()
 void processFlightControl() {
   
   // ********************** Calculate Flight Error ***************************
-  calculateFlightError();
+  calculateFlightError(); // FlightControlProcessor
   
   // ********************** Update Yaw ***************************************
   processHeading();
@@ -309,7 +312,7 @@ void processFlightControl() {
     #endif
     
     // ********************** Process throttle correction ********************
-    processThrottleCorrection();
+      processThrottleCorrection(); // FlightControlProcessor.h
   }
 
   // ********************** Calculate Motor Commands *************************
