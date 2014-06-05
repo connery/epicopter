@@ -65,7 +65,8 @@ struct PIDdata {
 // ZDAMPENING = 9 (used in altitude hold to dampen vertical accelerations)
 float windupGuard; // Read in from EEPROM
 //// Modified from http://www.arduino.cc/playground/Main/BarebonesPIDForEspresso
-float updatePID(float targetPosition, float currentPosition, struct PIDdata *PIDparameters) {
+float updatePID(float targetPosition, float currentPosition, struct PIDdata *PIDparameters)
+{
 
   // AKA PID experiments
   const float deltaPIDTime = (currentTime - PIDparameters->previousPIDTime) / 1000000.0;
@@ -73,13 +74,17 @@ float updatePID(float targetPosition, float currentPosition, struct PIDdata *PID
   PIDparameters->previousPIDTime = currentTime;  // AKA PID experiments
   float error = targetPosition - currentPosition;
 
-  if (inFlight) {
-    PIDparameters->integratedError += error * deltaPIDTime;
-  }
-  else {
-    PIDparameters->integratedError = 0.0;
-  }
+  if (inFlight)
+    {
+      PIDparameters->integratedError += error * deltaPIDTime;
+    }
+  else
+    {
+      PIDparameters->integratedError = 0.0;
+    }
+
   PIDparameters->integratedError = constrain(PIDparameters->integratedError, -PIDparameters->windupGuard, PIDparameters->windupGuard);
+  
   float dTerm = PIDparameters->D * (currentPosition - PIDparameters->lastError) / (deltaPIDTime * 100); // dT fix from Honk
   PIDparameters->lastError = currentPosition;
 
