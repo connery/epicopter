@@ -34,7 +34,8 @@ protected:
 
 private:
     Ui::Login *m2_ui;
-     QString blah;
+    QString blah;
+    Sender *s;
    // QString masterKey[10][10];
    // QString Table[10][10];
 

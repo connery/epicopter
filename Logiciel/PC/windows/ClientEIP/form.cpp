@@ -26,13 +26,28 @@ void Form::changeEvent(QEvent *e)
     }
 }
 
+void Form::setSender(Sender *s1)
+{
+    s = s1;
+}
+
+QString Form::getCurrentDir(){
+    QString CurrentDir = QDir::currentPath();
+    return CurrentDir;
+}
+
+void Form::setId(int mapid)
+{
+    id = mapid;
+}
+
 void Form::on_Btnload_clicked()
 {
-    int j=0;
+    /*int j=0;
 
     QString ligne2 ="Longitude \t - \t Latitude \t - \t Hauteur\n";
 
-    QString fileName = "C:/Users/washco/Documents/afficherGMap/posi.txt";
+    QString fileName = getCurrentDir()+"/data/posi.txt";
     QFile fichier(fileName);
 
     if (!fichier.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -44,22 +59,6 @@ void Form::on_Btnload_clicked()
     QTextStream flux(&fichier);
 
     QString ligne;
-
-
-/*
-    QStandardItemModel model(2,10,this);
-    QStandardItem entete1;
-    entete1.setText("latitude");
-    entete1.setEditable(false);
-    model.setItem(0,0,&entete1);
-
-
-    QStandardItem entete2;
-    entete2.setText("logitude");
-    entete2.setEditable(false);
-    model.setItem(1,0,&entete2);
-    ligne2 +="eu2?";
-*/
 
     while(! flux.atEnd())
     {
@@ -75,34 +74,96 @@ void Form::on_Btnload_clicked()
          }
         else
         j++;
-       /* ligne2 += "et sinon;";
-         // on crée un item==cellule
-         QStandardItem item;
-
-         // On définir son texte
-         item.setText(ligne);
-
-         // On le met "Read Only"
-         item.setEditable(false);
-         model.setItem(i,j,&item);
-         // Et enfin on l'associe avec notre model
-        if (j == 2)
-         {
-            i++;
-            j=0;
-        }
-        else
-            j++;
-*/
     }
   //  m_ui->tablePos->setModel(&model);
 
     
 }
-    m_ui->textBrowser->setText(ligne2);
+    m_ui->textBrowser->setText(ligne2);*/
+    xmlRead r;
+    r.lire();
+    coord.clear();
+    coord += r.getList();
+    dragTable();
 }
+
+void Form::dragTable()
+{
+//    QString ligne ="Longitude \t - \t Latitude \t - \t Hauteur\n";
+     QTableWidgetItem *monItem;
+      m_ui->tableWidget->setRowCount(coord.size()/3);
+      m_ui->tableWidget->horizontalHeader()->sizeIncrement();
+    int i = 0,ligne = 0;
+    while (i < coord.length()) {
+        QString v1,v2,v3;
+        v1 = coord[i];
+        qDebug()<<"position"+QString::number(ligne)+"latitude" + v1;
+
+        v2 = coord[i+1];
+        qDebug()<<"longitude"+v2;
+
+        v3 = coord[i+2];
+        qDebug()<<"hauteur"+v3;
+
+       // ligne+= v1+" \t - \t "+v2+" \t - \t "+v3+"\n";
+        monItem = new QTableWidgetItem(v1);
+        m_ui->tableWidget->setItem(ligne,0,monItem);
+        monItem = new QTableWidgetItem(v2);
+        m_ui->tableWidget->setItem(ligne,1,monItem);
+        monItem = new QTableWidgetItem(v3);
+        m_ui->tableWidget->setItem(ligne,2,monItem);
+
+        ligne++;
+        i+= 3;
+
+    }
+     //m_ui->textBrowser->setText(ligne);
+}
+
 
 void Form::on_pushButton_clicked()
 {
+    QString andwser, yorn;
+    s->ecrit("VAL;"+QString::number(id)+";");
+
+    while(andwser != "VAL;fin;")
+    {
+        s->setTaille(55);
+        andwser = s->getMsg();
+        qDebug()<<andwser;
+        andwser =andwser.mid(andwser.indexOf("VAL;"),andwser.indexOf("EOF;"));
+        qDebug()<<andwser;
+        if (andwser.mid(0,4)== "VAL;")
+            yorn = "y";
+        else
+            yorn = "n";
+        s->ecrit("VAL;"+yorn+";");
+
+
+    }
+}
+
+void Form::on_pushButton_2_clicked()
+{
+/*    frm *xml = new frm();
+    xml->show();*/
+    //creer une list de position ...
+    coord << "05" << "10" << "15";
+    coord << "25" << "30" << "35";
+    coord << "45" << "50" << "55";
+    coord << "65" << "70" << "75";
+    frm *h = new frm();
+    // boucle de lecture de la list
+            //utiliser la fonction ajout
+    int i = 0;
+    while (i < coord.length()) {
+        QString v1,v2,v3;
+        v1 = coord[i];
+        v2 = coord[i+1];
+        v3 = coord[i+2];
+        h->ajout(v1, v2, v3);
+        i+= 3;
+    }
+    h->show();
 
 }

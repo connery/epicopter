@@ -39,6 +39,10 @@ Login::Login(QWidget *parent) :
     i++;
     }
 */
+
+
+
+      s = new Sender();
 }
 
 Login::~Login()
@@ -70,6 +74,7 @@ void Login::changeEvent(QEvent *e)
 
 void Login::on_BtnQuit_clicked()
 {
+    s->ecrit("END;");
     exit(-1);
 }
 
@@ -161,24 +166,32 @@ void Login::on_BtnLogin_clicked()
     */
 
     /////////////////////////////////////////////////////////////////////////////////////////////
+
+
   //chiffrement
     QString pass = chiffrement(m2_ui->lblPassword->text());
   // envoie du message
-    Sender s;
-    s.ecrit("con;" + m2_ui->lblLogin->text()+";"+pass);
+
+    s->ecrit("con;" + m2_ui->lblLogin->text()+";"+pass+";");
 //    s.ecrit("con " + m2_ui->lblLogin->text()+" "+m2_ui->lblPassword->text());
 
     //reception
-    QString andswer;
-    andswer = s.getMsg();
+    QString andwser;
+    s->setTaille(55);
+    andwser = s->getMsg();
 
-/*    if(andswer == "con;y")
-    {*/
+     andwser =andwser.mid(andwser.indexOf("CON;"),andwser.indexOf("EOF;"));
+    if(andwser == "CON;y;")
+    {
+
         this->hide();
         MainWindow *mw = new MainWindow();
         mw->show();
- /*   }
+        mw->setSender(s);
+        // s->ecrit("END");
+        this->close();
+    }
     else{
-        qDebug() <<andswer;
-    }*/
+        qDebug() <<"reponse :"+andwser;
+    }
 }

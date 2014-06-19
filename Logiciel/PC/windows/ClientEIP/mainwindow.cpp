@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -22,6 +23,11 @@ void MainWindow::SetAd(QString ad)
     this->adresse = ad;
 }
 
+void MainWindow::setSender(Sender *s1)
+{
+    s = s1;
+}
+
 void MainWindow::load()
 {
 
@@ -35,14 +41,32 @@ QString MainWindow::getCurrentDir(){
 void MainWindow::on_btnMap_clicked()
 {
      ui->maWeb->load(QUrl("http://www.talatrique.fr/testEip/map.html"));
+
+     s->ecrit("LAN;map;");
+     s->setTaille(20);
+     QString andwser=s->getMsg();
+     andwser =andwser.mid(andwser.indexOf("LAN;"),andwser.indexOf("EOF;"));
+     andwser = andwser.mid(4,4);
+     qDebug()<<andwser;
+     idmap = andwser.toInt();
+     qDebug()<<"test"+QString::number(idmap);
 }
 
 void MainWindow::on_Btnvalidation_clicked()
 {
    Form *parcour = new Form();
+   parcour->setId(idmap);
+   parcour->setSender(s);
 }
 
 void MainWindow::on_btnLogin_clicked()
 {
   // Login *log = new Login();
+
+}
+
+void MainWindow::on_cancel_clicked()
+{
+    s->ecrit("END;");
+    exit(-1);
 }

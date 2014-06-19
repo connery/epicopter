@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>461</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTextBrowser" name="textBrowser">
-     <property name="enabled">
-      <bool>true</bool>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="rowCount">
+      <number>0</number>
      </property>
+     <column>
+      <property name="text">
+       <string>latitude</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>longitude</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>hauteur</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>
@@ -34,6 +49,20 @@
       <widget class="QPushButton" name="btnEnvoyer">
        <property name="text">
         <string>Envoyer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>exporter</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>validation plan</string>
        </property>
       </widget>
      </item>

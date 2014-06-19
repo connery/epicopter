@@ -30,8 +30,7 @@ private:
     int avancement;
 
 private slots:
-    void on_btnsave_clicked();
-
+    void on_pushButton_clicked();
 };
 
 #endif // FRM_H

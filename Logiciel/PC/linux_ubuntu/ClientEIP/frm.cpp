@@ -114,7 +114,7 @@ void frm::on_pushButton_clicked()
       {
           if(avancement % 3 == 0)
           {
-              xmlWriter.writeStartElement(QString::number((avancement/3)));
+              xmlWriter.writeStartElement("p"+QString::number((avancement/3)));
 
               xmlWriter.writeTextElement("Latitude",s);
           }

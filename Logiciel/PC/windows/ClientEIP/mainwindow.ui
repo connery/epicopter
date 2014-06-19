@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>949</width>
-    <height>556</height>
+    <width>1112</width>
+    <height>704</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,7 +66,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>949</width>
+     <width>1112</width>
      <height>21</height>
     </rect>
    </property>
@@ -90,22 +90,5 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>cancel</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>283</x>
-     <y>504</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>346</x>
-     <y>498</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
