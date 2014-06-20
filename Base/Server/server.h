@@ -36,6 +36,7 @@ typedef struct in_addr IN_ADDR;
 
 #include "client.h"
 #include "network.h"
+#include "db_manager.h"
 
 static void run(void);
 static void end_connection(int sock);

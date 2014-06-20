@@ -1,10 +1,11 @@
-CC=gcc
+CC=gcc `mysql_config --cflags --libs`
 CFLAGS= 
 RM=/bin/rm
 MAKE=/usr/bin/make
 MAKEDEPEND=/usr/X11R6/bin/makedepend
 
 SRC= 	server.c \
+	db_manager.c \
 	network.c
 
 OBJ=$(subst .c,.o,$(SRC))

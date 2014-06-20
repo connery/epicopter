@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <my_global.h>
+#include <mysql.h>
 
 #include "server.h"
 
@@ -57,12 +59,14 @@ char **parser(char *input, int a,char **tab) {
 static void run(void)
 {  
   Network network = createNetwork();
+  SQLManager manager = createManager();
   
   int max = network.getSocket(&network);
   int singleton = 0;
   fd_set rdfs;
   int ckp = 0;
 
+  /*
   while(1)
     {
       int i = 0;
@@ -177,10 +181,13 @@ static void run(void)
 	    }
 	}
     }
-}
+    }
+  */
+  
   
   printf("actual : %i\n", network.getActual(&network));
 
+  manager.free(&manager);
   network.free(&network);
 }
 
