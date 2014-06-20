@@ -66,6 +66,9 @@ static void run(void)
   fd_set rdfs;
   int ckp = 0;
 
+
+  manager.connectManager(&manager, "localhost", "root", "caca");
+  manager.execSQL(&manager, "CREATE DATABASE poil");
   /*
   while(1)
     {

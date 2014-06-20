@@ -25,6 +25,7 @@ serverCopter: $(OBJ)
 clean:
 	$(RM) -f $(OBJ) core *~
 	for i in $(SUBDIRS); do (cd $$i; $(MAKE) clean); done
+	$(RM) serverCopter
 
 depend:
 	$(MAKEDEPEND) -- $(CFLAGS) -- $(SRC)
