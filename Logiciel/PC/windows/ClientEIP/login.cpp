@@ -18,27 +18,19 @@ Login::Login(QWidget *parent) :
 
     QPalette p;
     p = palette();
-    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/2015_logo_epicopter2.png")));
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/fond.png")));
     setPalette(p);
+
+/*    QPixmap pixmap(getCurrentDir()+"/data/push.png");
+    QIcon ButtonIcon(pixmap);
+    m2_ui->BtnQuit->setIcon(ButtonIcon);
+    m2_ui->BtnQuit->setIconSize(pixmap.rect().size());
+*/
+    m2_ui->label_3->setPixmap(QPixmap(getCurrentDir()+"/data/2015_logo_epicopter2.png"));
+
     blah = QString(QCryptographicHash::hash(("myPassword"),QCryptographicHash::Md5).toHex());
     m2_ui->lblPassword->setEchoMode(QLineEdit::Password);
-/*    int i = 46, y = -1, z=0;
 
-    while (i < 127)
-    {
-    y++;
-    if (y != 0 && (y % 9 == 0))
-    {
-        qDebug() <<"++;";
-        y =0;
-        z++;
-    }
-    Table[y][z]=i;
-    qDebug() <<Table[y][z];
-    qDebug() <<y<<" et "<<z;
-    i++;
-    }
-*/
 
 
 

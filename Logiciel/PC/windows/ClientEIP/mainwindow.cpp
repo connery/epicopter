@@ -7,7 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 //    ui->label->setPixmap(QPixmap(getCurrentDir()+"/data/2015_logo_epicopter.png"));
-
+    ui->webView->setMaximumHeight(250);
+    ui->webView->setMinimumHeight(250);
+    QPalette p;
+    p = palette();
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/fond.png")));
+    setPalette(p);
 }
 
 
@@ -40,7 +45,10 @@ QString MainWindow::getCurrentDir(){
 
 void MainWindow::on_btnMap_clicked()
 {
+
      ui->maWeb->load(QUrl("http://www.talatrique.fr/testEip/map.html"));
+     ui->webView->load(QUrl("http://www.talatrique.fr/MickaGraphEIP/mickaGraph"));
+
 
      s->ecrit("LAN;map;");
      s->setTaille(20);

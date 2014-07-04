@@ -6,6 +6,10 @@ Form::Form(QWidget *parent) :
     m_ui(new Ui::Form)
 {
     m_ui->setupUi(this);
+    QPalette p;
+    p = palette();
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/fond.png")));
+    setPalette(p);
     this->show();
 }
 
@@ -165,5 +169,10 @@ void Form::on_pushButton_2_clicked()
         i+= 3;
     }
     h->show();
+
+}
+
+void Form::on_btnEnvoyer_clicked()
+{
 
 }
