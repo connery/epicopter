@@ -1296,8 +1296,6 @@ void setup() {
   pinMode(LED_Green, OUTPUT);
   digitalWrite(LED_Green, LOW);
 
-  Serial.print("test");
-
   initCommunication();
   
   readEEPROM(); // defined in DataStorage.h
@@ -1571,6 +1569,9 @@ void process1HzTask() {
  * Main loop funtions
  ******************************************************************/
 void loop () {
+  
+  //Serial.print("ceci est un test de reception");
+  //delay(1000);
   
   currentTime = micros();
   deltaTime = currentTime - previousTime;
