@@ -67,144 +67,148 @@ void skipSerialValues(byte number) {
   }
 }
 
-void readSerialCommand() {
+void readSerialCommand()
+{
   // Check for serial message
-  if (SERIAL_AVAILABLE()) {
-    queryType = SERIAL_READ();
-    switch (queryType) {
-    case 'A': // Receive roll and pitch rate mode PID
-      readSerialPID(RATE_XAXIS_PID_IDX);
-      readSerialPID(RATE_YAXIS_PID_IDX);
-      rotationSpeedFactor = readFloatSerial();
-      break;
-
-    case 'B': // Receive roll/pitch attitude mode PID
-      readSerialPID(ATTITUDE_XAXIS_PID_IDX);
-      readSerialPID(ATTITUDE_YAXIS_PID_IDX);
-      readSerialPID(ATTITUDE_GYRO_XAXIS_PID_IDX);
-      readSerialPID(ATTITUDE_GYRO_YAXIS_PID_IDX);
-      windupGuard = readFloatSerial(); // defaults found in setup() of AeroQuad.pde
-      break;
-
-    case 'C': // Receive yaw PID
-      readSerialPID(ZAXIS_PID_IDX);
-      readSerialPID(HEADING_HOLD_PID_IDX);
-      headingHoldConfig = readFloatSerial();
-      break;
-
-    case 'D': // Altitude hold PID
-      #if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
+  if (SERIAL_AVAILABLE())
+    {
+      queryType = SERIAL_READ();
+      switch (queryType) {
+      case 'A': // Receive roll and pitch rate mode PID
+	readSerialPID(RATE_XAXIS_PID_IDX);
+	readSerialPID(RATE_YAXIS_PID_IDX);
+	rotationSpeedFactor = readFloatSerial();
+	break;
+	
+      case 'B': // Receive roll/pitch attitude mode PID
+	readSerialPID(ATTITUDE_XAXIS_PID_IDX);
+	readSerialPID(ATTITUDE_YAXIS_PID_IDX);
+	readSerialPID(ATTITUDE_GYRO_XAXIS_PID_IDX);
+	readSerialPID(ATTITUDE_GYRO_YAXIS_PID_IDX);
+	windupGuard = readFloatSerial(); // defaults found in setup() of AeroQuad.pde
+	break;
+	
+      case 'C': // Receive yaw PID
+	readSerialPID(ZAXIS_PID_IDX);
+	readSerialPID(HEADING_HOLD_PID_IDX);
+	headingHoldConfig = readFloatSerial();
+	break;
+	
+      case 'D': // Altitude hold PID
+#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
         readSerialPID(BARO_ALTITUDE_HOLD_PID_IDX);
         PID[BARO_ALTITUDE_HOLD_PID_IDX].windupGuard = readFloatSerial();
         altitudeHoldBump = readFloatSerial();
         altitudeHoldPanicStickMovement = readFloatSerial();
         minThrottleAdjust = readFloatSerial();
         maxThrottleAdjust = readFloatSerial();
-        #if defined AltitudeHoldBaro
-          baroSmoothFactor = readFloatSerial();
-        #else
-          readFloatSerial();
-        #endif
+#if defined AltitudeHoldBaro
+	baroSmoothFactor = readFloatSerial();
+#else
+	readFloatSerial();
+#endif
         readSerialPID(ZDAMPENING_PID_IDX);
-      #endif
-      break;
+#endif
+	break;
 
-    case 'E': // Receive sensor filtering values
-      aref = readFloatSerial();
-      minArmedThrottle = readFloatSerial();
-      break;
+      case 'E': // Receive sensor filtering values
+	aref = readFloatSerial();
+	minArmedThrottle = readFloatSerial();
+	break;
 
-    case 'F': // Receive transmitter smoothing values
-      receiverXmitFactor = readFloatSerial();
-      for(byte channel = XAXIS; channel<LASTCHANNEL; channel++) {
-        receiverSmoothFactor[channel] = readFloatSerial();
-      }
-      break;
+      case 'F': // Receive transmitter smoothing values
+	receiverXmitFactor = readFloatSerial();
+	for(byte channel = XAXIS; channel<LASTCHANNEL; channel++)
+	  {
+	    receiverSmoothFactor[channel] = readFloatSerial();
+	  }
+	break;
 
-    case 'G': // Receive transmitter calibration values
-      channelCal = (int)readFloatSerial();
-      receiverSlope[channelCal] = readFloatSerial();
-      break;
+      case 'G': // Receive transmitter calibration values
+	channelCal = (int)readFloatSerial();
+	receiverSlope[channelCal] = readFloatSerial();
+	break;
 
-    case 'H': // Receive transmitter calibration values
-      channelCal = (int)readFloatSerial();
-      receiverOffset[channelCal] = readFloatSerial();
-      break;
+      case 'H': // Receive transmitter calibration values
+	channelCal = (int)readFloatSerial();
+	receiverOffset[channelCal] = readFloatSerial();
+	break;
 
-    case 'I': // Initialize EEPROM with default values
-      initializeEEPROM(); // defined in DataStorage.h
-      writeEEPROM();
-      storeSensorsZeroToEEPROM();
-      calibrateGyro();
-      zeroIntegralError();
-      #ifdef HeadingMagHold
+      case 'I': // Initialize EEPROM with default values
+	initializeEEPROM(); // defined in DataStorage.h
+	writeEEPROM();
+	storeSensorsZeroToEEPROM();
+	calibrateGyro();
+	zeroIntegralError();
+#ifdef HeadingMagHold
         initializeMagnetometer();
-      #endif
-      #ifdef AltitudeHoldBaro
+#endif
+#ifdef AltitudeHoldBaro
         initializeBaro();
-      #endif
-      break;
+#endif
+	break;
+	
+      case 'J': // calibrate gyros
+	calibrateGyro();
+	break;
 
-    case 'J': // calibrate gyros
-      calibrateGyro();
-      break;
-
-    case 'K': // Write accel calibration values
-      accelScaleFactor[XAXIS] = readFloatSerial();
-      readFloatSerial();
-      accelScaleFactor[YAXIS] = readFloatSerial();
-      readFloatSerial();
-      accelScaleFactor[ZAXIS] = readFloatSerial();
-      readFloatSerial();
-      computeAccelBias();    
-      storeSensorsZeroToEEPROM();
-      break;
-
-    case 'L': // generate accel bias
-      computeAccelBias();
-      #if defined(AeroQuadMega_CHR6DM) || defined(APM_OP_CHR6DM)
+      case 'K': // Write accel calibration values
+	accelScaleFactor[XAXIS] = readFloatSerial();
+	readFloatSerial();
+	accelScaleFactor[YAXIS] = readFloatSerial();
+	readFloatSerial();
+	accelScaleFactor[ZAXIS] = readFloatSerial();
+	readFloatSerial();
+	computeAccelBias();    
+	storeSensorsZeroToEEPROM();
+	break;
+	
+      case 'L': // generate accel bias
+	computeAccelBias();
+#if defined(AeroQuadMega_CHR6DM) || defined(APM_OP_CHR6DM)
         calibrateKinematics();
         accelOneG = meterPerSecSec[ZAXIS];
-      #endif
-      storeSensorsZeroToEEPROM();
-      break;
-
-    case 'M': // calibrate magnetometer
-      #ifdef HeadingMagHold
+#endif
+	storeSensorsZeroToEEPROM();
+	break;
+	
+      case 'M': // calibrate magnetometer
+#ifdef HeadingMagHold
         magBias[XAXIS]  = readFloatSerial();
         magBias[YAXIS]  = readFloatSerial();
         magBias[ZAXIS]  = readFloatSerial();
         writeEEPROM();
-      #else
+#else
         skipSerialValues(3);
-      #endif
-      break;
-
-    case 'N': // battery monitor
-      #ifdef BattMonitor
+#endif
+	break;
+	
+      case 'N': // battery monitor
+#ifdef BattMonitor
         batteryMonitorAlarmVoltage = readFloatSerial();
         batteryMonitorThrottleTarget = readFloatSerial();
         batteryMonitorGoingDownTime = readFloatSerial();
         setBatteryCellVoltageThreshold(batteryMonitorAlarmVoltage);
-      #else
+#else
         skipSerialValues(3);
-      #endif
-      break;
-
-    case 'O': // define waypoints
-      #ifdef UseGPSNavigator
+#endif
+	break;
+	
+      case 'O': // define waypoints
+#ifdef UseGPSNavigator
         missionNbPoint = readIntegerSerial();
         waypoint[missionNbPoint].latitude = readIntegerSerial();
         waypoint[missionNbPoint].longitude = readIntegerSerial();
         waypoint[missionNbPoint].altitude = readIntegerSerial();
-      #else
-        for(byte i = 0; i < 4; i++) {
-          readFloatSerial();
-        }
-      #endif
-      break;
-    case 'P': //  read Camera values
-      #ifdef CameraControl
+#else
+        for(byte i = 0; i < 4; i++)
+	  {
+	    readFloatSerial();
+	  }
+#endif
+	break;
+      case 'P': //  read Camera values
+#ifdef CameraControl
         cameraMode = readFloatSerial();
         servoCenterPitch = readFloatSerial();
         servoCenterRoll = readFloatSerial();
@@ -218,83 +222,87 @@ void readSerialCommand() {
         servoMaxPitch = readFloatSerial();
         servoMaxRoll = readFloatSerial();
         servoMaxYaw = readFloatSerial();
-        #ifdef CameraTXControl
+#ifdef CameraTXControl
           servoTXChannels = readFloatSerial();
-        #endif
-      #else
-        #ifdef CameraTXControl
+#endif
+#else
+#ifdef CameraTXControl
           skipSerialValues(14)
-        #else
-          skipSerialValues(13);
-        #endif
-      #endif
-      break;
-
-    case 'U': // Range Finder
+#else
+	    skipSerialValues(13);
+#endif
+#endif
+	  break;
+	  
+      case 'U': // Range Finder
       #if defined (AltitudeHoldRangeFinder)
         maxRangeFinderRange = readFloatSerial();
         minRangeFinderRange = readFloatSerial();
-      #else
+#else
         skipSerialValues(2);
-      #endif
-      break;
-
-    case 'V': // GPS
-      #if defined (UseGPSNavigator)
+#endif
+	break;
+	
+      case 'V': // GPS
+#if defined (UseGPSNavigator)
         readSerialPID(GPSROLL_PID_IDX);
         readSerialPID(GPSPITCH_PID_IDX);
         readSerialPID(GPSYAW_PID_IDX);
         writeEEPROM();
-      #else
+#else
         skipSerialValues(9);
-      #endif
-      break;
+#endif
+	break;
+	
+      case 'W': // Write all user configurable values to EEPROM
+	writeEEPROM(); // defined in DataStorage.h
+	zeroIntegralError();
+	break;
+	
+      case 'X': // Stop sending messages
+	break;
+	
+      case '1': // Calibrate ESCS's by setting Throttle high on all channels
+	validateCalibrateCommand(1);
+	break;
+	
+      case '2': // Calibrate ESC's by setting Throttle low on all channels
+	validateCalibrateCommand(2);
+	break;
+	
+      case '3': // Test ESC calibration
+	if (validateCalibrateCommand(3))
+	  {
+	    testCommand = readFloatSerial();
+	  }
+	break;
+	
+      case '4': // Turn off ESC calibration
+	if (validateCalibrateCommand(4))
+	  {
+	    calibrateESC = 0;
+	    testCommand = 1000;
+	  }
+	break;
+	
+      case '5': // Send individual motor commands (motor, command)
+	if (validateCalibrateCommand(5))
+	  {
+	    for (byte motor = 0; motor < LASTMOTOR; motor++)
+	      {
+		motorConfiguratorCommand[motor] = (int)readFloatSerial();
+	      }
+	  }
+	break;
 
-    case 'W': // Write all user configurable values to EEPROM
-      writeEEPROM(); // defined in DataStorage.h
-      zeroIntegralError();
-      break;
-
-    case 'X': // Stop sending messages
-      break;
-
-    case '1': // Calibrate ESCS's by setting Throttle high on all channels
-      validateCalibrateCommand(1);
-      break;
-
-    case '2': // Calibrate ESC's by setting Throttle low on all channels
-      validateCalibrateCommand(2);
-      break;
-
-    case '3': // Test ESC calibration
-      if (validateCalibrateCommand(3)) {
-        testCommand = readFloatSerial();
+	case 'Z': // fast telemetry transfer <--- get rid if this?
+	  if (readFloatSerial() == 1.0)
+	    fastTransfer = ON;
+	  else
+	    fastTransfer = OFF;
+	break;
       }
-      break;
-
-    case '4': // Turn off ESC calibration
-      if (validateCalibrateCommand(4)) {
-        calibrateESC = 0;
-        testCommand = 1000;
-      }
-      break;
-
-    case '5': // Send individual motor commands (motor, command)
-      if (validateCalibrateCommand(5)) {
-        for (byte motor = 0; motor < LASTMOTOR; motor++) {
-          motorConfiguratorCommand[motor] = (int)readFloatSerial();
-        }
-      }
-      break;
-
-    case 'Z': // fast telemetry transfer <--- get rid if this?
-      if (readFloatSerial() == 1.0)
-        fastTransfer = ON;
-      else
-        fastTransfer = OFF;
-      break;
-    }
-  }
+   }
 }
 
 //***************************************************************************************************

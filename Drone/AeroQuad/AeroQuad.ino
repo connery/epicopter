@@ -68,6 +68,34 @@
 //********* PLATFORM SPECIFIC SECTION ********************
 //********************************************************
 //********************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #ifdef AeroQuad_v1
   #define LED_Green 13
   #define LED_Red 12
@@ -462,7 +490,7 @@
     pinMode(45, OUTPUT); // LED 3
     pinMode(46, OUTPUT); // LED 4
     digitalWrite(43, HIGH); // LED 1 on
-    digitalWrite(44, HIGH); // LED 2 on
+    digitalWrite(44, HIGH); // LED 2 oc n
     digitalWrite(45, HIGH); // LED 3 on
     digitalWrite(46, HIGH); // LED 4 on
 
@@ -472,25 +500,28 @@
   
   // called when eeprom is initialized
   void initializePlatformSpecificAccelCalibration() {
-    // Kenny default value, a real accel calibration is strongly recommended
-    accelScaleFactor[XAXIS] = 0.0046449995;
-    accelScaleFactor[YAXIS] = -0.0047950000;
-    accelScaleFactor[ZAXIS] = -0.0047549996;
-    #ifdef HeadingMagHold
-      magBias[XAXIS]  = 60.000000;
-      magBias[YAXIS]  = -39.000000;
-      magBias[ZAXIS]  = -7.500000;
-    #endif
-  }
+    // Kenny default value, a real acc
 
-  /**
-   * Measure critical sensors
-   */
-  void measureCriticalSensors() {
-    measureGyroSum();
-    measureAccelSum();
-  }
-#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #ifdef AeroQuadMega_v21 // Version utilise par Epicopter
   #define LED_Green 13
