@@ -257,8 +257,8 @@ void readPilotCommands()
   readReceiver(); // recuperation des commandes du pilote 
 
 
-  Serial.print("ReceiverCommand[XAXIS] : ")
-  Serial.print(receiverCommand[XAXIS]);
+  SERIAL_PRINT("ReceiverCommand[XAXIS] : ");
+  SERIAL_PRINTLN(receiverCommand[XAXIS]);
   
   
   if (receiverCommand[THROTTLE] < MINCHECK) // MINCHECK 1100
