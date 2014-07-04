@@ -68,34 +68,6 @@
 //********* PLATFORM SPECIFIC SECTION ********************
 //********************************************************
 //********************************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef AeroQuad_v1
   #define LED_Green 13
   #define LED_Red 12
@@ -490,7 +462,7 @@
     pinMode(45, OUTPUT); // LED 3
     pinMode(46, OUTPUT); // LED 4
     digitalWrite(43, HIGH); // LED 1 on
-    digitalWrite(44, HIGH); // LED 2 oc n
+    digitalWrite(44, HIGH); // LED 2 on
     digitalWrite(45, HIGH); // LED 3 on
     digitalWrite(46, HIGH); // LED 4 on
 
@@ -500,62 +472,59 @@
   
   // called when eeprom is initialized
   void initializePlatformSpecificAccelCalibration() {
-    // Kenny default value, a real acc
+    // Kenny default value, a real accel calibration is strongly recommended
+    accelScaleFactor[XAXIS] = 0.0046449995;
+    accelScaleFactor[YAXIS] = -0.0047950000;
+    accelScaleFactor[ZAXIS] = -0.0047549996;
+    #ifdef HeadingMagHold
+      magBias[XAXIS]  = 60.000000;
+      magBias[YAXIS]  = -39.000000;
+      magBias[ZAXIS]  = -7.500000;
+    #endif
+  }
 
+  /**
+   * Measure critical sensors
+   */
+  void measureCriticalSensors() {
+    measureGyroSum();
+    measureAccelSum();
+  }
+#endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef AeroQuadMega_v21 // Version utilise par Epicopter
+#ifdef AeroQuadMega_v21
   #define LED_Green 13
   #define LED_Red 4
   #define LED_Yellow 31
 
-#include <Device_I2C.h> // protocole de communication microprosesseur, norme I2C (Phillips)
+  #include <Device_I2C.h>
 
-// Gyroscope declaration
-#define ITG3200_ADDRESS_ALTERNATE
-#include <Gyroscope_ITG3200_9DOF.h>
+  // Gyroscope declaration
+  #define ITG3200_ADDRESS_ALTERNATE
+  #include <Gyroscope_ITG3200_9DOF.h>
 
-// Accelerometer declaration
-#include <Accelerometer_ADXL345_9DOF.h>
+  // Accelerometer declaration
+  #include <Accelerometer_ADXL345_9DOF.h>
 
-// Receiver Declaration
-#define RECEIVER_MEGA
+  // Receiver Declaration
+  #define RECEIVER_MEGA
 
-// Motor declaration
-#define MOTOR_PWM_Timer
+  // Motor declaration
+  #define MOTOR_PWM_Timer
 
-// heading mag hold declaration
-#ifdef HeadingMagHold
-#include <Compass.h> // declaration de la sur-couche fonctionelle magnetometre
-#define SPARKFUN_9DOF_5883L
-#endif
+  // heading mag hold declaration
+  #ifdef HeadingMagHold
+    #include <Compass.h>
+    #define SPARKFUN_9DOF_5883L
+  #endif
 
-// Altitude declaration
-#ifdef AltitudeHoldBaro
-#define BMP085
-#endif
-#ifdef AltitudeHoldRangeFinder
-#define XLMAXSONAR 
-#endif
+  // Altitude declaration
+  #ifdef AltitudeHoldBaro
+    #define BMP085
+  #endif
+  #ifdef AltitudeHoldRangeFinder
+    #define XLMAXSONAR 
+  #endif
 
 
   // Battery Monitor declaration
@@ -1124,7 +1093,7 @@
   #include <Receiver_SBUS.h>
 #elif defined(RECEIVER_328P)
   #include <Receiver_328p.h>
-#elif defined(RECEIVER_MEGA) // Version utilise par Epicopter __AVR_ATmega2560__
+#elif defined(RECEIVER_MEGA)
   #include <Receiver_MEGA.h>
 #elif defined(RECEIVER_APM)
   #include <Receiver_APM.h>
@@ -1156,7 +1125,7 @@
   #endif
 #elif defined(MOTOR_PWM)
   #include <Motors_PWM.h>
-#elif defined(MOTOR_PWM_Timer) // Version utilise par Epicopter
+#elif defined(MOTOR_PWM_Timer)
   #include <Motors_PWM_Timer.h>
 #elif defined(MOTOR_APM)
   #include <Motors_APM.h>
@@ -1172,7 +1141,7 @@
 #if defined(HMC5843)
   #include <HeadingFusionProcessorMARG.h>
   #include <Magnetometer_HMC5843.h>
-#elif defined(SPARKFUN_9DOF_5883L) || defined(SPARKFUN_5883L_BOB) || defined(HMC5883L) // Version utilise par Epicopter
+#elif defined(SPARKFUN_9DOF_5883L) || defined(SPARKFUN_5883L_BOB) || defined(HMC5883L)
   #include <HeadingFusionProcessorMARG.h>
   #include <Magnetometer_HMC5883L.h>
 #elif defined(COMPASS_CHR6DM)
@@ -1181,7 +1150,7 @@
 //********************************************************
 //******* ALTITUDE HOLD BAROMETER DECLARATION ************
 //********************************************************
-#if defined(BMP085) // Version utilise par Epicopter
+#if defined(BMP085)
   #include <BarometricSensor_BMP085.h>
 #elif defined(MS5611)
  #include <BarometricSensor_MS5611.h>
@@ -1218,7 +1187,7 @@
 //********************************************************
 #if defined(quadXConfig)
   #include "FlightControlQuadX.h"
-#elif defined(quadPlusConfig) // Version utilise par epicopter
+#elif defined(quadPlusConfig)
   #include "FlightControlQuadPlus.h"
 #elif defined(hexPlusConfig)
   #include "FlightControlHexPlus.h"
@@ -1439,13 +1408,13 @@ void setup() {
 /*******************************************************************
  * 100Hz task
  ******************************************************************/
-void process100HzTask()
-{  
+void process100HzTask() {
+  
   G_Dt = (currentTime - hundredHZpreviousTime) / 1000000.0;
   hundredHZpreviousTime = currentTime;
   
-  evaluateGyroRate(); // Gyroscope_ITG3200Common.h Gyroscope_ITG3200_9D0F.h
-  evaluateMetersPerSec(); 
+  evaluateGyroRate();
+  evaluateMetersPerSec();
 
   for (int axis = XAXIS; axis <= ZAXIS; axis++) {
     filteredAccel[axis] = computeFourthOrder(meterPerSecSec[axis], &fourthOrder[axis]);
@@ -1455,34 +1424,29 @@ void process100HzTask()
   
   #if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
     zVelocity = (filteredAccel[ZAXIS] * (1 - accelOneG * invSqrt(isq(filteredAccel[XAXIS]) + isq(filteredAccel[YAXIS]) + isq(filteredAccel[ZAXIS])))) - runTimeAccelBias[ZAXIS] - runtimeZBias;
-    
-if (!runtimaZBiasInitialized)
-  {
-    runtimeZBias = (filteredAccel[ZAXIS] * (1 - accelOneG * invSqrt(isq(filteredAccel[XAXIS]) + isq(filteredAccel[YAXIS]) + isq(filteredAccel[ZAXIS])))) - runTimeAccelBias[ZAXIS];
-    runtimaZBiasInitialized = true;
-  }
+    if (!runtimaZBiasInitialized) {
+      runtimeZBias = (filteredAccel[ZAXIS] * (1 - accelOneG * invSqrt(isq(filteredAccel[XAXIS]) + isq(filteredAccel[YAXIS]) + isq(filteredAccel[ZAXIS])))) - runTimeAccelBias[ZAXIS];
+      runtimaZBiasInitialized = true;
+    }
     estimatedZVelocity += zVelocity;
     estimatedZVelocity = (velocityCompFilter1 * zVelocity) + (velocityCompFilter2 * estimatedZVelocity);
   #endif    
 
   #if defined(AltitudeHoldBaro)
     measureBaroSum(); 
-
-    if (frameCounter % THROTTLE_ADJUST_TASK_SPEED == 0)
-      {  //  50 Hz tasks
-	evaluateBaroAltitude();
-      }
+    if (frameCounter % THROTTLE_ADJUST_TASK_SPEED == 0) {  //  50 Hz tasks
+      evaluateBaroAltitude();
+    }
   #endif
         
   processFlightControl();
   
   
   #if defined(BinaryWrite)
-    if (fastTransfer == ON)
-      {
-	// write out fastTelemetry to Configurator or openLog
-	fastTelemetry();
-      }
+    if (fastTransfer == ON) {
+      // write out fastTelemetry to Configurator or openLog
+      fastTelemetry();
+    }
   #endif      
   
   #ifdef SlowTelemetry
@@ -1601,15 +1565,10 @@ void process1HzTask() {
  ******************************************************************/
 void loop () {
   
-  //Serial.print("ceci est un test de reception");
-  //delay(1000);
-  
   currentTime = micros();
   deltaTime = currentTime - previousTime;
 
-  // remplie le tableau gyroSample[3] et accelSample[3] de l'addition des nouvelles valeurs du gyroscope et de l'accelerometre en x, y, z aux precendentes
-  // VERIFIER LES VALEURS A L'INITIALISATION
-  measureCriticalSensors(); // (Aeroquad32/platform_aeroquad32.h)
+  measureCriticalSensors();
 
   // ================================================================
   // 100Hz task loop
