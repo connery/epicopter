@@ -256,10 +256,31 @@ void readPilotCommands()
 
   readReceiver(); // recuperation des commandes du pilote 
 
+  // CODE DEVELOPPEMENT (croux_g)
 
   SERIAL_PRINT("ReceiverCommand[XAXIS] : ");
-  SERIAL_PRINTLN(receiverCommand[XAXIS]);
-  
+  SERIAL_PRINT(receiverCommand[XAXIS]);
+  SERIAL_PRINT(" [YAXIS] : ");
+  SERIAL_PRINT(receiverCommand[YAXIS]);
+  SERIAL_PRINT(" [ZAXIS] : ");
+  SERIAL_PRINT(receiverCommand[ZAXIS]);
+
+  SERIAL_PRINT(" [THROTTLE] : ");
+  SERIAL_PRINT(receiverCommand[THROTTLE]);
+  SERIAL_PRINT(" [MODE] : ");
+  SERIAL_PRINT(receiverCommand[MODE]);
+  SERIAL_PRINT(" [AUX1] : ");
+  SERIAL_PRINT(receiverCommand[AUX1]);
+  SERIAL_PRINT(" [AUX2] : ");
+  SERIAL_PRINT(receiverCommand[AUX2]);
+  SERIAL_PRINT(" [AUX3] : ");
+  SERIAL_PRINT(receiverCommand[AUX3]);
+  SERIAL_PRINT(" [AUX4] : ");
+  SERIAL_PRINT(receiverCommand[AUX4]);
+  SERIAL_PRINT(" [AUX5] : ");
+  SERIAL_PRINTLN(receiverCommand[AUX5]);
+
+  // FIN CODE DEVELOPPEMENT
   
   if (receiverCommand[THROTTLE] < MINCHECK) // MINCHECK 1100
     {
