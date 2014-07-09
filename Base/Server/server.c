@@ -7,9 +7,6 @@
 
 #include "server.h"
 
-
-
-
 static void run(void)
 {  
   Network network = createNetwork();
@@ -21,15 +18,24 @@ static void run(void)
   fd_set rdfs;
   int ckp = 0;
 
-  manager.connectManager(&manager, "localhost", "root", "root");
 
+  manager.connectManager(&manager, "localhost", "root", "root");
+  managere.connectPManager(&managere);
+  
   if (manager.getDB(&manager) != NULL) {
     manager.execSQL(&manager, "USE epicopter");
-    //   manager.execSQL(&manager, "INSERT INTO test VALUES ('2', '35,000', '35,00', '600');");
+    manager.execSQL(&manager, "SELECT * FROM test;");
+    manager.printMResults(&manager);
   }
   else
     puts("error");
 
+  if (managere.getConn(&managere) != NULL)
+    {
+      managere.execPSQL(&managere, "SELECT * FROM test;");
+      managere.printPResults(&managere);
+    }
+  
   /*
   while(1)
     {

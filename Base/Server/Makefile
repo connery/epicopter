@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g 
 
 INCLUDES = -I/usr/include/postgresql
 

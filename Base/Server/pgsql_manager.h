@@ -14,14 +14,16 @@ typedef struct PGManager
   PGresult *res;
   
   void(*connectPManager)(struct PGManager *this);
+  void(*execPSQL)(struct PGManager *this, char *request);
+  void(*printPResults)(struct PGManager *this);
 
   const char*(*getConnInfo)(struct PGManager *this);
   PGconn*(*getConn)(struct PGManager *this);
   PGresult*(*getResult)(struct PGManager *this);
 
-  void(*setConnInfo)(struct PGManager *this, const char *info);
-  void(*setConn)(struct PGManager *this, PGconn *conn);
-  void(*setResult)(struct PGManager *this, PGresult *res);
+  void(*setConnInfo)(struct PGManager *this, const char *new);
+  void(*setConn)(struct PGManager *this, PGconn *new);
+  void(*setResult)(struct PGManager *this, PGresult *new);
 
   void(*free)(struct PGManager *this);
 }
@@ -29,6 +31,8 @@ typedef struct PGManager
   
   PGManager createPManager(void);
   void connectPManager(PGManager *this);
+  void execPSQL(PGManager *this, char *request);
+  void printPResults(PGManager *this);
   void freePManager(struct PGManager *this);
   void closePManager(PGManager *this);
 
@@ -36,9 +40,9 @@ typedef struct PGManager
   PGconn *getConn(PGManager *this);
   PGresult *getResult(PGManager *this);
 
-  void setConnInfo(PGManager *this, const char* info);
-  void setConn(PGManager *this, PGconn *conn);
-  void setResult(PGManager *this, PGresult *res);
+  void setConnInfo(PGManager *this, const char* new);
+  void setConn(PGManager *this, PGconn *new);
+  void setResult(PGManager *this, PGresult *new);
 
 #ifdef __cplusplus
 }

@@ -14,7 +14,7 @@ SQLManager createManager()
   SQLManager this;
   initDB(&this);
   this.free = freeManager;
-  puts("MYSQL manager created");
+  puts("MYSQL manager created.");
   return this;
 }
 
@@ -33,6 +33,7 @@ static void initDB(SQLManager *this)
   
   this->connectManager = connectManager;
   this->execSQL = execSQL;
+  this->printMResults = printMResults;
 }
 
 MYSQL *getDB(SQLManager *this) {
@@ -57,7 +58,7 @@ void execSQL(SQLManager *this, char *request) {
     putError(this);
     closeManager(this);
   } else
-    puts("Request done");
+    puts("Request done.");
 }
 
 void closeManager(SQLManager *this) {
@@ -67,5 +68,23 @@ void closeManager(SQLManager *this) {
 
 void freeManager(SQLManager *this) {
   closeManager(this);
-  puts("MYSQL Manager destroyed");
+  puts("MYSQL Manager destroyed.");
+}
+
+void printMResults(SQLManager *this) {
+ 
+  MYSQL_RES *result = mysql_store_result(this->db);
+  
+  if (result == NULL) 
+    closeManager(&this);
+
+  int num_fields = mysql_num_fields(result);
+
+  MYSQL_ROW row;
+  
+  int i;
+  while ((row = mysql_fetch_row(result))) 
+    for(i = 0; i < num_fields; i++) 
+      printf("%s ", row[i] ? row[i] : "NULL"); 
+  printf("\n"); 
 }

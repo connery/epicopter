@@ -40,6 +40,5 @@ typedef struct in_addr IN_ADDR;
 #include "pgsql_manager.h"
 
 static void run(void);
-static void end_connection(int sock);
 
 #endif /* guard */
