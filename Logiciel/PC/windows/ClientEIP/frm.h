@@ -22,6 +22,7 @@ public:
     void ecriture();
     void init();
     void fin();
+    QString getCurrentDir();
     ~frm();
 
 private:

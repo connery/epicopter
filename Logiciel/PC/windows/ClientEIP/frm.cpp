@@ -7,6 +7,10 @@ frm::frm(QWidget *parent) :
 {
     ui->setupUi(this);
     avancement = 0;
+    QPalette p;
+    p = palette();
+    p.setBrush(QPalette::Window, QBrush(QPixmap("/data/blueBackground.png")));
+    setPalette(p);
 }
 
 frm::~frm()
@@ -14,6 +18,11 @@ frm::~frm()
     delete ui;
 }
 
+
+QString frm::getCurrentDir(){
+    QString CurrentDir = QDir::currentPath();
+    return CurrentDir;
+}
 
 void frm::ajout(QString latitude, QString longitude, QString hauteur)
 {

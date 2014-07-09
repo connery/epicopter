@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->webView->setMinimumHeight(250);
     QPalette p;
     p = palette();
-    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/fond.png")));
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/blueBackground.png")));
     setPalette(p);
 }
 

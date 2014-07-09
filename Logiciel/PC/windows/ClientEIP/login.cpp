@@ -18,7 +18,7 @@ Login::Login(QWidget *parent) :
 
     QPalette p;
     p = palette();
-    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/fond.png")));
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/blueBackground.png")));
     setPalette(p);
 
 /*    QPixmap pixmap(getCurrentDir()+"/data/push.png");
@@ -26,7 +26,7 @@ Login::Login(QWidget *parent) :
     m2_ui->BtnQuit->setIcon(ButtonIcon);
     m2_ui->BtnQuit->setIconSize(pixmap.rect().size());
 */
-    m2_ui->label_3->setPixmap(QPixmap(getCurrentDir()+"/data/2015_logo_epicopter2.png"));
+    m2_ui->label_3->setPixmap(QPixmap(getCurrentDir()+"/data/2015_new_logo_epicopter2.png"));
 
     blah = QString(QCryptographicHash::hash(("myPassword"),QCryptographicHash::Md5).toHex());
     m2_ui->lblPassword->setEchoMode(QLineEdit::Password);
@@ -176,7 +176,7 @@ void Login::on_BtnLogin_clicked()
     if(andwser == "CON;y;")
     {
 
-        this->hide();
+       this->hide();
         MainWindow *mw = new MainWindow();
         mw->show();
         mw->setSender(s);

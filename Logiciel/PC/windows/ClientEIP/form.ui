@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>461</width>
+    <width>531</width>
     <height>330</height>
    </rect>
   </property>
@@ -16,22 +16,28 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTableWidget" name="tableWidget">
+     <property name="styleSheet">
+      <string notr="true">border-style: outset;
+border-width: 3px;
+border-radius: 10px;
+border-color: white;</string>
+     </property>
      <property name="rowCount">
       <number>0</number>
      </property>
      <column>
       <property name="text">
-       <string>latitude</string>
+       <string>Latitude</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>longitude</string>
+       <string>Longitude</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>hauteur</string>
+       <string>Hauteur</string>
       </property>
      </column>
     </widget>
@@ -40,6 +46,31 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="Btnload">
+       <property name="styleSheet">
+        <string notr="true"> QPushButton#Btnload:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+ 
+ QPushButton#Btnload{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 12px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+       </property>
        <property name="text">
         <string>Load parcourt</string>
        </property>
@@ -47,6 +78,31 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnEnvoyer">
+       <property name="styleSheet">
+        <string notr="true"> QPushButton#btnEnvoyer:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+
+ QPushButton#btnEnvoyer{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 12px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+       </property>
        <property name="text">
         <string>Envoyer</string>
        </property>
@@ -54,20 +110,95 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_2">
+       <property name="styleSheet">
+        <string notr="true"> QPushButton#pushButton_2:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+
+ QPushButton#pushButton_2{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 12px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+       </property>
        <property name="text">
-        <string>exporter</string>
+        <string>Exporter</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton">
+       <property name="styleSheet">
+        <string notr="true"> QPushButton#pushButton:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+
+ QPushButton#pushButton{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 12px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+       </property>
        <property name="text">
-        <string>validation plan</string>
+        <string>Validation plan</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnCancel">
+       <property name="styleSheet">
+        <string notr="true"> QPushButton#btnCancel:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+
+ QPushButton#btnCancel{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 12px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+       </property>
        <property name="text">
         <string>Annuler</string>
        </property>
