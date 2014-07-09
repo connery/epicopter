@@ -16,8 +16,7 @@ static void run(void)
   int max = network.getSocket(&network);
   int singleton = 0;
   fd_set rdfs;
-  int ckp = 0;
-
+  int ckp = 1;
 
   manager.connectManager(&manager, "localhost", "root", "root");
   managere.connectPManager(&managere);
@@ -32,11 +31,11 @@ static void run(void)
 
   if (managere.getConn(&managere) != NULL)
     {
-      managere.execPSQL(&managere, "SELECT * FROM test;");
+      managere.execPSQL(&managere, "SELECT * FROM flight;");
       managere.printPResults(&managere);
     }
   
-  /*
+  
   while(1)
     {
       int i = 0;
@@ -77,7 +76,7 @@ static void run(void)
 
 	  network.getClients(&network)[network.getActual(&network)] = c;	  
 	  network.incActual(&network);	  
-
+	  
 	  if (network.readClient(&network, csock) < 0)
 	    {
 	      continue;
@@ -86,7 +85,7 @@ static void run(void)
 	    max = csock > max ? csock : max;
 	    
 	    if (strcmp(network.getBuffer(&network), "END;") == 0) {
-	      network.removeClient(&network, network.getActual(&network) - 1);	  
+	      network.removeClient(&network, network.getActual(&network) - 1);
 	      singleton = 0;
 	    } else {
 	      network.setBuffer(&network, "CON;y;EOF;");
@@ -104,7 +103,7 @@ static void run(void)
 	      if (FD_ISSET(network.getClients(&network)[i].sock, &rdfs))
 		{
 		  int n = network.readClient(&network, network.getClients(&network)[i].sock);
-		  if (n < 0) { 
+		  if (n < 0) {
 		    network.removeClient(&network, i);
 		    break;
 		  }
@@ -125,15 +124,22 @@ static void run(void)
 		      if (ckp == 5) {
 			network.setBuffer(&network, "VAL;fin;EOF;");
 			network.writeClient(&network, network.getClients(&network)[i].sock); 
-			ckp++;
+			ckp = 0;
 			break;
 		      }
-		      else if (ckp >= 0 || strcmp(network.getBuffer(&network), "VAL;y") == 0) {
-			  ckp++;
-			  network.setBuffer(&network, "VAL;latitude;longitude;hauteur;EOF;");
-			  network.writeClient(&network, network.getClients(&network)[i].sock); 
-			  break;
-			}
+		      else if (ckp < 5 &&
+			       (ckp >= 0 || strcmp(network.getBuffer(&network), "VAL;y") == 0)) {
+			/*
+			char rqt = "SELECT * FROM test WHERE ";
+			char *tmp = malloc(strlen(rqt) + 8);
+			strcat(rqt, 
+			
+			*/
+			ckp++;
+			network.setBuffer(&network, "VAL;43;35;50;EOF;");
+			network.writeClient(&network, network.getClients(&network)[i].sock); 
+			break;
+		      }
 		    
 		    if (strcmp(network.getBuffer(&network), "VAL;n") == 0) {
 		      network.setBuffer(&network, "VAL;latitude;longtitude;hauteur;EOF;");
@@ -147,13 +153,13 @@ static void run(void)
 		    network.writeClient(&network, network.getClients(&network)[i].sock); 
 		    break;
 		  }
+		  }
 		}
 	    }
 	}
     }
-    }
   
-  */
+  
   managere.free(&managere);
   manager.free(&manager);
   network.free(&network);

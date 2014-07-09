@@ -83,8 +83,35 @@ void printMResults(SQLManager *this) {
   MYSQL_ROW row;
   
   int i;
-  while ((row = mysql_fetch_row(result))) 
-    for(i = 0; i < num_fields; i++) 
+
+  while ((row = mysql_fetch_row(result))) {
+    for(i = 0; i < num_fields; i++) {
       printf("%s ", row[i] ? row[i] : "NULL"); 
+    }
+      printf("\n"); 
+  }
   printf("\n"); 
 }
+
+/*
+void getRows(MYSQL_RES res) {
+  char *ret = malloc(sizeof(char) * 55);
+
+  int num_fields = mysql_num_fields(result);
+
+  MYSQL_ROW row;
+  
+  int i;
+
+  while ((row = mysql_fetch_row(result))) 
+    for(i = 0; i < num_fields; i++) 
+      {
+
+	printf("%s ", row[i] ? row[i] : "NULL");
+      }
+
+  printf("\n"); 
+
+  return ret;
+}
+*/

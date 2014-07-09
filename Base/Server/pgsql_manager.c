@@ -75,13 +75,13 @@ void printPResults(PGManager *this) {
 
   int nFields = PQnfields(this->getResult(this));
   for (i = 0; i < nFields; i++)
-    printf("Table name : %-15s", PQfname(this->getResult(this), i));
+    printf("%s ", PQfname(this->getResult(this), i));
   printf("\n");
   
   for (i = 0; i < PQntuples(this->getResult(this)); i++)
     {
       for (j = 0; j < nFields; j++)
-	printf("%-15s", PQgetvalue(this->getResult(this), i, j));
+	printf("%s ", PQgetvalue(this->getResult(this), i, j));
       printf("\n");
     }
 }

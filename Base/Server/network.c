@@ -47,11 +47,17 @@ void removeClient(Network *this, int to_remove)
   puts("REMOVING CLIENT");
 
   closesocket(this->getClients(this)[to_remove].sock);
+  
+  
   memmove(this->getClients(this) + to_remove,
 	  this->getClients(this) + to_remove + 1,
 	  (this->getActual(this) - to_remove - 1) * sizeof(Client));
 
+  
+  printf("actual %i", this->getActual(this));
   this->decActual(this);
+  printf("actual %i", this->getActual(this));
+
 }
 
 int readClient(Network *this, SOCKET csock)
@@ -62,17 +68,14 @@ int readClient(Network *this, SOCKET csock)
       perror("recv()");
       n = 0;
     }
-  puts("reading :");
-  puts(this->buffer);
-	 
   return n;
+  puts(this->buffer);
 }
 
 void writeClient(Network *this, SOCKET csock)
 {
-  puts("writing :");
   puts(this->buffer);
-   if (send(csock, this->buffer, strlen(this->buffer), 0) < 0)
+  if (send(csock, this->buffer, strlen(this->buffer), 0) < 0)
     {
       perror("send()");
       exit(errno);
@@ -95,8 +98,9 @@ char *getBuffer(Network *this) {
 
 void setBuffer(Network *this, char *tmp) {
   if (strlen(this->buffer) > 0)
-    this->buffer = NULL;
-  this->buffer = malloc(strlen(tmp));
+      this->buffer = '\0';
+
+  this->buffer = malloc(strlen(tmp) + 55);
   strncpy(this->buffer, tmp, strlen(tmp));
 }
 
