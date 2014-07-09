@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-  //#define closesocket(s) close(s)
-#include <my_global.h>
+#define closesocket(s) close(s)
+  //#include <my_global.h>
 
 #include "server.h"
 

@@ -1,31 +1,33 @@
-CC=gcc `mysql_config --cflags --libs`
-CFLAGS= 
-RM=/bin/rm
-MAKE=/usr/bin/make
-MAKEDEPEND=/usr/X11R6/bin/makedepend
+CC = gcc
 
-SRC= 	server.c \
-	db_manager.c \
-	network.c
+CFLAGS = -Wall -g
 
-OBJ=$(subst .c,.o,$(SRC))
+INCLUDES = -I/usr/include/postgresql
 
-SUBDIR= .
+LFLAGS = -L/usr/lib 
 
-.SUFFIXES: .c
+LIBS = -lpq `mysql_config --cflags --libs`
+
+SRCS = utils.c network.c msql_manager.c pgsql_manager.c server.c
+
+OBJS = $(SRCS:.c=.o)
+
+MAIN = ServerCopter
+
+.PHONY: depend clean
+
+all:    $(MAIN)
+	@echo  ServerCopter has been compiled
+
+$(MAIN): $(OBJS) 
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+
 .c.o:
-	$(CC) -c $(CFLAGS) $<
-all:
-	for i in $(SUBDIRS); do (cd $$i; $(MAKE) all); done
-	$(MAKE) serverCopter
-
-serverCopter: $(OBJ)
-	$(CC) -o $@ $(LDFLAGS) $^
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 clean:
-	$(RM) -f $(OBJ) core *~
-	for i in $(SUBDIRS); do (cd $$i; $(MAKE) clean); done
-	$(RM) serverCopter
+	$(RM) *.o *~ $(MAIN)
 
-depend:
-	$(MAKEDEPEND) -- $(CFLAGS) -- $(SRC)
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^
+

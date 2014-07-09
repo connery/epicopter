@@ -2,73 +2,34 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <my_global.h>
-#include <mysql.h>
+//#include <my_global.h>
+#include <mysql/mysql.h>
 
 #include "server.h"
 
 
-int getSeparator(char *input) {
-  int i;
-  int c = 0;
-
-  for (i = 0; input[i]; i++)
-    if (input[i] == ';')
-      c++;
-  return c;
-}
-
-char **parser(char *input, int a,char **tab) {
-  int i, j, k;
-  int c = getSeparator(input);
-
-  if (a == 0)
-    {
-      tab = malloc(sizeof(char) * c);
-            
-      for (i = 0; i < c; i++) {
-	tab[i] = malloc(sizeof(char) * 60);
-      }    
-    }
-  else
-    {
-      for (i = 0; i < c; i++)
-	free(tab[i]);
-      
-      free(tab);
-      
-      tab = malloc( sizeof(char) * c);
-      
-      for (i = 0; i < c; i++) 
-	tab[i] = malloc(sizeof(char) * 60);
-    }
-
-  k = 0;
-  for (i = 0; i < c; i++) 
-    for (j = 0; input[k] != ';'; j++, k++) {
-      tab[i][j] = input[k];
-      
-      if (input[k] == ';')
-	k++;
-      
-    }
-  return tab;
-}
 
 
 static void run(void)
 {  
   Network network = createNetwork();
   SQLManager manager = createManager();
+  PGManager managere = createPManager();
   
   int max = network.getSocket(&network);
   int singleton = 0;
   fd_set rdfs;
   int ckp = 0;
 
+  manager.connectManager(&manager, "localhost", "root", "root");
 
-  manager.connectManager(&manager, "localhost", "root", "caca");
-  manager.execSQL(&manager, "CREATE DATABASE poil");
+  if (manager.getDB(&manager) != NULL) {
+    manager.execSQL(&manager, "USE epicopter");
+    //   manager.execSQL(&manager, "INSERT INTO test VALUES ('2', '35,000', '35,00', '600');");
+  }
+  else
+    puts("error");
+
   /*
   while(1)
     {
@@ -163,13 +124,13 @@ static void run(void)
 		      }
 		      else if (ckp >= 0 || strcmp(network.getBuffer(&network), "VAL;y") == 0) {
 			  ckp++;
-			  network.setBuffer(&network, "VAL;longitude;latitude;hauteur;EOF;");
+			  network.setBuffer(&network, "VAL;latitude;longitude;hauteur;EOF;");
 			  network.writeClient(&network, network.getClients(&network)[i].sock); 
 			  break;
 			}
 		    
 		    if (strcmp(network.getBuffer(&network), "VAL;n") == 0) {
-		      network.setBuffer(&network, "VAL;longitude;latitude;hauteur;EOF;");
+		      network.setBuffer(&network, "VAL;latitude;longtitude;hauteur;EOF;");
 		      network.writeClient(&network, network.getClients(&network)[i].sock); 
 		      break;
 		    } 
@@ -185,11 +146,9 @@ static void run(void)
 	}
     }
     }
+  
   */
-  
-  
-  printf("actual : %i\n", network.getActual(&network));
-
+  managere.free(&managere);
   manager.free(&manager);
   network.free(&network);
 }

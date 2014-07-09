@@ -36,11 +36,10 @@ typedef struct in_addr IN_ADDR;
 
 #include "client.h"
 #include "network.h"
-#include "db_manager.h"
+#include "msql_manager.h"
+#include "pgsql_manager.h"
 
 static void run(void);
 static void end_connection(int sock);
-static void send_message_to_all_clients(Client *clients, Client client, int actual, const char *buffer, char from_server);
-static void clear_clients(Client *clients, int actual);
 
 #endif /* guard */

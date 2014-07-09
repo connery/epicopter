@@ -13,7 +13,7 @@ Network createNetwork()
   Network this;
   initNetwork(&this);
   this.free = freeNetwork;
-  puts("Network constructed");
+  puts("Network created");
   return this;
 }
 
