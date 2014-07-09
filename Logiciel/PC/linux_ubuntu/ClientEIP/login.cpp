@@ -18,27 +18,19 @@ Login::Login(QWidget *parent) :
 
     QPalette p;
     p = palette();
-    p.setBrush(QPalette::Window, QBrush(QPixmap("../ClientEIP/data/2015_logo_epicopter2.png")));
+    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/blueBackground.png")));
     setPalette(p);
+
+/*    QPixmap pixmap(getCurrentDir()+"/data/push.png");
+    QIcon ButtonIcon(pixmap);
+    m2_ui->BtnQuit->setIcon(ButtonIcon);
+    m2_ui->BtnQuit->setIconSize(pixmap.rect().size());
+*/
+    m2_ui->label_3->setPixmap(QPixmap(getCurrentDir()+"/data/2015_new_logo_epicopter2.png"));
+
     blah = QString(QCryptographicHash::hash(("myPassword"),QCryptographicHash::Md5).toHex());
     m2_ui->lblPassword->setEchoMode(QLineEdit::Password);
-/*    int i = 46, y = -1, z=0;
-
-    while (i < 127)
-    {
-    y++;
-    if (y != 0 && (y % 9 == 0))
-    {
-        qDebug() <<"++;";
-        y =0;
-        z++;
-    }
-    Table[y][z]=i;
-    qDebug() <<Table[y][z];
-    qDebug() <<y<<" et "<<z;
-    i++;
-    }
-*/
+    s = new Sender();
 }
 
 Login::~Login()
@@ -50,12 +42,12 @@ QString Login::chiffrement(QString pass)
 {
    return( QString(QCryptographicHash::hash(("pass"),QCryptographicHash::Md5).toHex()));
 }
-/*
+
 QString Login::getCurrentDir(){
-    QString CurrentDir = QDir::currentPath();
-    return CurrentDir;
+  //  QString CurrentDir = QDir::currentPath();
+    return "."; //CurrentDir;
 }
-*/
+
 void Login::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
@@ -70,6 +62,7 @@ void Login::changeEvent(QEvent *e)
 
 void Login::on_BtnQuit_clicked()
 {
+    s->ecrit("END;");
     exit(-1);
 }
 
@@ -161,24 +154,45 @@ void Login::on_BtnLogin_clicked()
     */
 
     /////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
   //chiffrement
     QString pass = chiffrement(m2_ui->lblPassword->text());
   // envoie du message
-    Sender s;
-    s.ecrit("con;" + m2_ui->lblLogin->text()+";"+pass);
+
+    s->ecrit("con;" + m2_ui->lblLogin->text()+";"+pass+";");
 //    s.ecrit("con " + m2_ui->lblLogin->text()+" "+m2_ui->lblPassword->text());
 
     //reception
-    QString andswer;
-    andswer = s.getMsg();
+    QString andwser;
+    s->setTaille(55);
+    andwser = s->getMsg();
 
-/*    if(andswer == "con;y")
+     andwser =andwser.mid(andwser.indexOf("CON;"),andwser.indexOf("EOF;"));
+    if(andwser == "CON;y;")
     {*/
+
         this->hide();
         MainWindow *mw = new MainWindow();
         mw->show();
- /*   }
+        mw->setSender(s);
+        // s->ecrit("END");
+        this->close();
+   /* }
     else{
-        qDebug() <<andswer;
+        qDebug() <<"reponse :"+andwser;
     }*/
 }
+
+void Login::on_lblPassword_textEdited(const QString &arg1)
+{
+    m2_ui->lblPassword->setStyleSheet("background: white");
+    m2_ui->lblLogin->setStyleSheet("background-color: rgb(109, 249, 233)");
+}
+
+void Login::on_lblLogin_textEdited(const QString &arg1)
+{
+    m2_ui->lblLogin->setStyleSheet("background: white");
+    m2_ui->lblPassword->setStyleSheet("background-color: rgb(109, 249, 233)");
+}
+

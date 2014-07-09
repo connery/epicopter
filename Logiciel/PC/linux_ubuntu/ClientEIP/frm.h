@@ -21,6 +21,7 @@ public:
     void ajout(QString latitude, QString longitude, QString hauteur);
     void ecriture();
     void init();
+    QString getCurrentDir();
     void fin();
     ~frm();
 

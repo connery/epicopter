@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>949</width>
-    <height>556</height>
+    <width>1112</width>
+    <height>704</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,29 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QWebView" name="maWeb">
-      <property name="url">
+     <widget class="QWebView" name="maWeb" native="true">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="url" stdset="0">
+       <url>
+        <string>about:blank</string>
+       </url>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWebView" name="webView" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>34</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="url" stdset="0">
        <url>
         <string>about:blank</string>
        </url>
@@ -31,20 +52,63 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="btnMap">
+        <property name="styleSheet">
+         <string notr="true"> QPushButton#btnMap:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ } 
+
+QPushButton#btnMap{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+        </property>
         <property name="text">
          <string>Affmap</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnLogin">
-        <property name="text">
-         <string>Login</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="Btnvalidation">
+        <property name="styleSheet">
+         <string notr="true"> QPushButton#Btnvalidation:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ } 
+
+ QPushButton#Btnvalidation{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+        </property>
         <property name="text">
          <string>Validation</string>
         </property>
@@ -52,6 +116,30 @@
       </item>
       <item>
        <widget class="QPushButton" name="cancel">
+        <property name="styleSheet">
+         <string notr="true"> QPushButton#cancel:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ } 
+ QPushButton#cancel{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+        </property>
         <property name="text">
          <string>Quitter</string>
         </property>
@@ -66,8 +154,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>949</width>
-     <height>21</height>
+     <width>1112</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -90,22 +178,5 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>cancel</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>283</x>
-     <y>504</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>346</x>
-     <y>498</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

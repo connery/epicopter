@@ -28,13 +28,14 @@ public:
     virtual ~Login();
     QString chiffrement(QString);
     QString dechiffrement(QString);
-  //  QString getCurrentDir();
+    QString getCurrentDir();
 protected:
     virtual void changeEvent(QEvent *e);
 
 private:
     Ui::Login *m2_ui;
-     QString blah;
+    QString blah;
+    Sender *s;
    // QString masterKey[10][10];
    // QString Table[10][10];
 
@@ -42,6 +43,8 @@ private:
 private slots:
     void on_BtnLogin_clicked();
     void on_BtnQuit_clicked();
+    void on_lblPassword_textEdited(const QString &arg1);
+    void on_lblLogin_textEdited(const QString &arg1);
 };
 
 #endif // LOGIN_H

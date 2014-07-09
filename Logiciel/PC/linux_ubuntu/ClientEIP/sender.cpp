@@ -1,22 +1,25 @@
 #include "sender.h"
-
+#include <QDebug>
 
 
 Sender::Sender()
 {
   QByteArray data; // <-- fill with data
-
+    taille = 5;
   _pSocket = new QTcpSocket( this ); // <-- needs to be a member variable: QTcpSocket * _pSocket;
   connect( _pSocket, SIGNAL(readyRead()), SLOT(readTcpData()) );
-  data.append("zboub");
+  //data.append("zboub");
   _pSocket->connectToHost(IP_CLIENT, PORT_CLIENT);
-  if( _pSocket->waitForConnected() ) {
+/*  if( _pSocket->waitForConnected() ) {
     qDebug() << "zeeazazae";
     _pSocket->write( data,data.size() );
     QApplication::processEvents();
     _pSocket->waitForBytesWritten();
     //_pSocket->writeData(data,data.size());
-  }
+  }*/
+}
+void Sender::setTaille(int t){
+    taille = t;
 }
 
 void Sender::ecrit(QString str)
@@ -27,7 +30,7 @@ void Sender::ecrit(QString str)
      data.append(str);
      _pSocket->connectToHost(IP_CLIENT, PORT_CLIENT);
 
-     _pSocket->write( data,data.size());
+     _pSocket->write( data,(data.size()+1));
      QApplication::processEvents();
      _pSocket->waitForBytesWritten();
      }
@@ -68,9 +71,31 @@ void Sender::readTcpData()
 }
 
 QString Sender::getMsg(){
-    char buffer[1024] = {0};
-    _pSocket->read(buffer, _pSocket->bytesAvailable());
 
-    QString str( buffer);
-    return str;
+   // QString str;
+
+  /*  while(str.size() < 1)
+    {
+        QDataStream in(_pSocket);
+        in.setVersion(QDataStream::Qt_4_0);
+        in >> str;
+        qDebug() <<"reponse :"+str;
+       QThread::sleep(1);
+    }*/
+
+    char buffer[1024];
+   // QApplication::processEvents();
+  //  _pSocket->waitForBytesWritten();
+    _pSocket->waitForReadyRead();
+   _pSocket->read(buffer,  taille);
+
+     QString str( buffer);
+
+ /*   _pSocket->read(buffer, _pSocket->bytesAvailable());
+    QString str2( buffer);*/
+  //  return (str/*+str2*/);
+
+
+
+        return str;
 }
