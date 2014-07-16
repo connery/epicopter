@@ -5,10 +5,10 @@
 
 typedef struct
 {
-  int id;
-  int latitude;
-  int longitude;
-  int height;
+  char id[3];
+  char latitude[20];
+  char longitude[20];
+  char height[6];
 } Checkpoint;
 
 #endif

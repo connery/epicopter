@@ -24,7 +24,8 @@ static void run(void)
   if (manager.getDB(&manager) != NULL) {
     manager.execSQL(&manager, "USE epicopter");
     manager.execSQL(&manager, "SELECT * FROM epicopter;");
-    manager.printMResults(&manager);
+    //    manager.printMResults(&manager);
+    Flightplan f = manager.generateFlightPlan(&manager);
   }
   else
     puts("error");

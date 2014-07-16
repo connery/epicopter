@@ -35,6 +35,7 @@ static void initDB(SQLManager *this)
   this->connectManager = connectManager;
   this->execSQL = execSQL;
   this->printMResults = printMResults;
+  this->generateFlightPlan = generateFlightPlan;
 }
 
 MYSQL *getDB(SQLManager *this) {
@@ -72,19 +73,11 @@ void freeManager(SQLManager *this) {
   puts("MYSQL Manager destroyed.");
 }
 
+Flightplan generateFlightPlan(SQLManager *this) {
+  MYSQL_RES *res = mysql_store_result(this->db);
 
-Checkpoint createRow(MYSQL_ROW row, int nbField) {
-  Checkpoint cp = {0, 12, 34, 56};
-
-  return cp;
-}
-
-
-void generateRes(MYSQL_RES *res, SQLManager *this) {
   int i, j;
   int nbRow, nbField;
-
-  printf("printres \n");
 
   nbRow = mysql_num_rows(res);
   nbField =  mysql_num_fields(res);
@@ -95,16 +88,32 @@ void generateRes(MYSQL_RES *res, SQLManager *this) {
 
   MYSQL_ROW row;
   i = 0;
-  
-  printf("Before while\n");
-  
+   
   while (row = mysql_fetch_row(res)) {
-    printf("Entering while\n");
-    Checkpoint cp = {i, i, i, i};
+    Checkpoint cp = {"", "", "", ""};
+    
+    strcat(cp.id, row[0]);
+    strcat(cp.latitude, row[1]);
+    strcat(cp.longitude, row[2]);
+    strcat(cp.height, row[3]);
     f.route[i] = cp;
-    printf("Checkpoint no %i\nLatitude %i Longitude %i Hauteur %i\n", f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
+    printf("Checkpoint no %s\nLatitude %s Longitude %s Hauteur %s\n",
+	   f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
     i++;
   }
+  return f;
+}
+
+
+void getRows(MYSQL_RES *res) {
+  char *ret = malloc(sizeof(char) * 55);
+
+  int num_fields = mysql_num_fields(res);
+
+  MYSQL_ROW row;
+  
+  int i;
+
 }
 
 void printMResults(SQLManager *this) {
@@ -123,31 +132,16 @@ void printMResults(SQLManager *this) {
   printf("numbers of fields %i\n", num_fields);
   printf("numbers of row %i\n", mysql_num_rows(result));
 
-  printf("Test double tab\n");
-  
-  generateRes(result, this);
-}
 
-
-/*
-void getRows(MYSQL_RES res) {
-  char *ret = malloc(sizeof(char) * 55);
-
-  int num_fields = mysql_num_fields(result);
-
-  MYSQL_ROW row;
-  
-  int i;
-
-  while ((row = mysql_fetch_row(result))) 
+  while ((row = mysql_fetch_row(result))) {
     for(i = 0; i < num_fields; i++) 
       {
-
 	printf("%s ", row[i] ? row[i] : "NULL");
       }
-
+    printf("\n");
+  }
   printf("\n"); 
 
-  return ret;
 }
-*/
+
+

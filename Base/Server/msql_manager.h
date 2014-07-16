@@ -7,6 +7,7 @@ extern "C" {
 
   //#include <my_global.h>
 #include <mysql/mysql.h>
+#include "server.h"
 
 typedef struct SQLManager
 {
@@ -19,6 +20,7 @@ typedef struct SQLManager
 			char *db_user, char *db_pwd);
   void(*execSQL)(struct SQLManager *this, char *request);
   void(*printMResults)(struct SQLManager *this);
+  Flightplan(*generateFlightPlan)(struct SQLManager *this);
 } 
   SQLManager;
 
@@ -30,6 +32,7 @@ typedef struct SQLManager
   void setDB(SQLManager *this, MYSQL *new);
   void execSQL(SQLManager *this, char *request);
   void printMResults(SQLManager *this);
+  Flightplan generateFlightPlan(SQLManager *this);
 #ifdef __cplusplus
 }
 #endif
