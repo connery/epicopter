@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "server.h"
 #include "msql_manager.h"
 
 static void initDB(SQLManager *this);
@@ -71,6 +72,41 @@ void freeManager(SQLManager *this) {
   puts("MYSQL Manager destroyed.");
 }
 
+
+Checkpoint createRow(MYSQL_ROW row, int nbField) {
+  Checkpoint cp = {0, 12, 34, 56};
+
+  return cp;
+}
+
+
+void generateRes(MYSQL_RES *res, SQLManager *this) {
+  int i, j;
+  int nbRow, nbField;
+
+  printf("printres \n");
+
+  nbRow = mysql_num_rows(res);
+  nbField =  mysql_num_fields(res);
+
+  Flightplan f;
+  f.id = 1;
+  f.route = malloc(sizeof(Checkpoint) * nbRow);
+
+  MYSQL_ROW row;
+  i = 0;
+  
+  printf("Before while\n");
+  
+  while (row = mysql_fetch_row(res)) {
+    printf("Entering while\n");
+    Checkpoint cp = {i, i, i, i};
+    f.route[i] = cp;
+    printf("Checkpoint no %i\nLatitude %i Longitude %i Hauteur %i\n", f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
+    i++;
+  }
+}
+
 void printMResults(SQLManager *this) {
  
   MYSQL_RES *result = mysql_store_result(this->db);
@@ -84,14 +120,14 @@ void printMResults(SQLManager *this) {
   
   int i;
 
-  while ((row = mysql_fetch_row(result))) {
-    for(i = 0; i < num_fields; i++) {
-      printf("%s ", row[i] ? row[i] : "NULL"); 
-    }
-      printf("\n"); 
-  }
-  printf("\n"); 
+  printf("numbers of fields %i\n", num_fields);
+  printf("numbers of row %i\n", mysql_num_rows(result));
+
+  printf("Test double tab\n");
+  
+  generateRes(result, this);
 }
+
 
 /*
 void getRows(MYSQL_RES res) {

@@ -23,7 +23,7 @@ static void run(void)
   
   if (manager.getDB(&manager) != NULL) {
     manager.execSQL(&manager, "USE epicopter");
-    manager.execSQL(&manager, "SELECT * FROM test;");
+    manager.execSQL(&manager, "SELECT * FROM epicopter;");
     manager.printMResults(&manager);
   }
   else
@@ -36,6 +36,7 @@ static void run(void)
     }
   
   
+  /*
   while(1)
     {
       int i = 0;
@@ -134,7 +135,7 @@ static void run(void)
 			char *tmp = malloc(strlen(rqt) + 8);
 			strcat(rqt, 
 			
-			*/
+
 			ckp++;
 			network.setBuffer(&network, "VAL;43;35;50;EOF;");
 			network.writeClient(&network, network.getClients(&network)[i].sock); 
@@ -158,7 +159,7 @@ static void run(void)
 	    }
 	}
     }
-  
+  */
   
   managere.free(&managere);
   manager.free(&manager);

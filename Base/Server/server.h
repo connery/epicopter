@@ -35,6 +35,8 @@ typedef struct in_addr IN_ADDR;
 #define BUF_SIZE 1024
 
 #include "client.h"
+#include "checkpoint.h"
+#include "flightplan.h"
 #include "network.h"
 #include "msql_manager.h"
 #include "pgsql_manager.h"
