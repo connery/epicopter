@@ -394,15 +394,17 @@ void initHomeBase() {
    */
   void processGpsNavigation() {
 
-    if (haveAGpsLock()) {
-      
-      if (navigationState == ON) {
-        processNavigation();
+    if (haveAGpsLock()) // GpsAdapter.h -> si le GPS est actif
+      {
+	if (navigationState == ON)
+	  {
+	    processNavigation();
+	  }
+	else if (positionHoldState == ON )
+	  {
+	    processPositionHold();
+	  }
       }
-      else if (positionHoldState == ON ) {
-        processPositionHold();
-      }
-    }
   }
 #endif  // #define UseGPSNavigator
 
