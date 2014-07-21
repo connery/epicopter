@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "server.h"
 #include "pgsql_manager.h"
 
 static void initPG(PGManager *this);
@@ -33,6 +34,7 @@ static void initPG(PGManager *this) {
   this->connectPManager = connectPManager;
   this->execPSQL = execPSQL;
   this->printPResults = printPResults;
+  this->generatePFlightPlan = generatePFlightPlan;
 }
 
 void connectPManager(PGManager *this) {
@@ -74,16 +76,37 @@ void printPResults(PGManager *this) {
   int i, j;
 
   int nFields = PQnfields(this->getResult(this));
-  for (i = 0; i < nFields; i++)
-    printf("%s ", PQfname(this->getResult(this), i));
-  printf("\n");
+  
+  for (i = 0; i < PQntuples(this->getResult(this)); i++)
+    {      
+      for (j = 0; j < nFields; j++)
+	printf("%s =>", PQgetvalue(this->getResult(this), i, j));
+      
+      printf("\n");
+    }
+
+}
+
+Flightplan generatePFlightPlan(PGManager *this) {
+  Flightplan f;
+  int i;
+
+  f.id = 1;
+  f.route = malloc(sizeof(Checkpoint) * PQntuples(this->getResult(this)));
   
   for (i = 0; i < PQntuples(this->getResult(this)); i++)
     {
-      for (j = 0; j < nFields; j++)
-	printf("%s ", PQgetvalue(this->getResult(this), i, j));
-      printf("\n");
+    Checkpoint cp = {"", "", "", ""};
+    
+    strcat(cp.id, PQgetvalue(this->getResult(this), i, 0));
+    strcat(cp.latitude, PQgetvalue(this->getResult(this), i, 1));
+    strcat(cp.longitude, PQgetvalue(this->getResult(this), i, 2));
+    strcat(cp.height, PQgetvalue(this->getResult(this), i, 3));
+    f.route[i] = cp;
+    printf("Checkpoint no %s\nLatitude %s Longitude %s Hauteur %s\n",
+	   f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
     }
+  return f;
 }
 
 void freePManager(PGManager *this) {

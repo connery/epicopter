@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <libpq-fe.h>
+#include "server.h"
 
 typedef struct PGManager
 {
@@ -16,6 +17,7 @@ typedef struct PGManager
   void(*connectPManager)(struct PGManager *this);
   void(*execPSQL)(struct PGManager *this, char *request);
   void(*printPResults)(struct PGManager *this);
+  Flightplan(*generatePFlightPlan)(struct PGManager *this);
 
   const char*(*getConnInfo)(struct PGManager *this);
   PGconn*(*getConn)(struct PGManager *this);
@@ -35,6 +37,7 @@ typedef struct PGManager
   void printPResults(PGManager *this);
   void freePManager(struct PGManager *this);
   void closePManager(PGManager *this);
+  Flightplan generatePFlightPlan(PGManager *this);
 
   const char *getConnInfo(PGManager *this);
   PGconn *getConn(PGManager *this);

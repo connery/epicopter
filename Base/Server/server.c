@@ -7,6 +7,13 @@
 
 #include "server.h"
 
+void generateReturn(char *buffer, Flightplan *f) {
+
+
+  
+}
+
+
 static void run(void)
 {  
   Network network = createNetwork();
@@ -34,10 +41,11 @@ static void run(void)
     {
       managere.execPSQL(&managere, "SELECT * FROM flight;");
       managere.printPResults(&managere);
+      managere.generatePFlightPlan(&managere);
     }
   
   
-  /*
+  
   while(1)
     {
       int i = 0;
@@ -121,6 +129,20 @@ static void run(void)
 		      network.removeClient(&network, i);
 		      break;
 		    }
+
+		    if (strncmp(network.getBuffer(&network), "ENV;", 4) == 0) {
+		      puts("Sent buffer");
+		      puts(network.getBuffer(&network));
+		      if (strcmp(network.getBuffer(&network), "ENV;FIN;") != 0) {
+			network.setBuffer(&network, "ENV;OK;EOF;");
+			network.writeClient(&network, network.getClients(&network)[i].sock); 
+			break;
+		      }
+		      else {
+			puts("End sending");
+			break;
+		      }
+		    }
 		    
 		    if (strncmp(network.getBuffer(&network), "VAL;", 4) == 0) {
 		      if (ckp == 5) {
@@ -131,13 +153,8 @@ static void run(void)
 		      }
 		      else if (ckp < 5 &&
 			       (ckp >= 0 || strcmp(network.getBuffer(&network), "VAL;y") == 0)) {
-			/*
-			char rqt = "SELECT * FROM test WHERE ";
-			char *tmp = malloc(strlen(rqt) + 8);
-			strcat(rqt, 
-			
-
 			ckp++;
+
 			network.setBuffer(&network, "VAL;43;35;50;EOF;");
 			network.writeClient(&network, network.getClients(&network)[i].sock); 
 			break;
@@ -160,7 +177,7 @@ static void run(void)
 	    }
 	}
     }
-  */
+  
   
   managere.free(&managere);
   manager.free(&manager);

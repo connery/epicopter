@@ -1,3 +1,4 @@
+
 #include <errno.h>
 #include <stdio.h>
 #include <strings.h>
@@ -91,29 +92,18 @@ Flightplan generateFlightPlan(SQLManager *this) {
    
   while (row = mysql_fetch_row(res)) {
     Checkpoint cp = {"", "", "", ""};
-    
+
     strcat(cp.id, row[0]);
     strcat(cp.latitude, row[1]);
     strcat(cp.longitude, row[2]);
     strcat(cp.height, row[3]);
     f.route[i] = cp;
+
     printf("Checkpoint no %s\nLatitude %s Longitude %s Hauteur %s\n",
 	   f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
     i++;
   }
   return f;
-}
-
-
-void getRows(MYSQL_RES *res) {
-  char *ret = malloc(sizeof(char) * 55);
-
-  int num_fields = mysql_num_fields(res);
-
-  MYSQL_ROW row;
-  
-  int i;
-
 }
 
 void printMResults(SQLManager *this) {
