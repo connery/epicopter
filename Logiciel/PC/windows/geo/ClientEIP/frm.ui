@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frm</class>
+ <widget class="QWidget" name="frm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>282</width>
+    <height>128</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>frm</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>261</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>KacstQurn</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Voulez vous exporter le fichier ?</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>70</y>
+     <width>101</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QPushButton#pushButton:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+ 
+QPushButton#pushButton{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+   </property>
+   <property name="text">
+    <string>Oui</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>70</y>
+     <width>101</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QPushButton#pushButton_2:pressed{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: red;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }
+ 
+QPushButton#pushButton_2{
+    color: rgb(255, 255, 255);
+	 background-color: rgb(64, 84, 197);
+     border-style: outset;
+     border-width: 2px;
+     border-radius: 10px;
+     border-color: beige;
+     font: bold 14px;
+     min-width: 5em;
+     padding: 6px;
+ }</string>
+   </property>
+   <property name="text">
+    <string>Non</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>frm</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>206</x>
+     <y>60</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
