@@ -6,9 +6,11 @@
 
 int main(int argc, char *argv[])
 {
-  int file_descriptor_tab[4];
+  int file_descriptor_tab[8]; // UNE SERIE DE 2 PIPES VERS ARDUINO, UNE SERIE DE 2 PIPES VERS LE CLIENT
   pid_t pid;
   char buf;
+
+  // PIPES VERS ARDUINO :
 
   if (pipe(file_descriptor_tab) == -1)
     {
@@ -19,6 +21,20 @@ int main(int argc, char *argv[])
     {
       exit(EXIT_FAILURE);
     }
+
+  // PIPES VERS CLIENT :
+
+  if (pipe(&(file_descriptor_tab[4])) == -1)
+    {
+      exit(EXIT_FAILURE);
+    }
+
+  if (pipe(&(file_descriptor_tab[6])) == -1)
+    {
+      exit(EXIT_FAILURE);
+    }
+
+  // DIVISION DES PROCESSUS :
 
   pid = fork();
 
@@ -54,20 +70,74 @@ int main(int argc, char *argv[])
 
         if (pid == 0)
 	  {
+	    // On lance le client
 
-	    while(1)
-	      {
-		write(file_descriptor_tab[1], "X#", 2); // Envoie des instructions
-	      }
+	    execl("/bin/sh", "client_drone", "127.0.0.1", "client_drone#01", file_descriptor_tab[4]); // parametre : file_descriptor_tab[4] 
+
 	  }
 	else
 	  {
+	    // Gestion des informations de vol
+
+	    fd_set rdfs;
+
+	    int max_fd;
 	    
-	    while (read(file_descriptor_tab[2], &buf, 1) > 0)
+	    if (file_descriptor_tab[2] < file_descriptor_tab[5])
+	      max_fd = file_descriptor_tab[5] + 1;
+	    else
+	      max_fd = file_descriptor_tab[2] + 1;
+
+	    while (1)
 	      {
-		write(STDOUT_FILENO, "_", 1);
-		write(STDOUT_FILENO, &buf, 1);
-		write(STDOUT_FILENO, "_", 1);
+		FD_ZERO(&rdfs);
+
+		/* add exit pipe arduino file_descriptor_tab[2] */
+		FD_SET(file_descriptor_tab[2], &rdfs);
+
+		/* add exit pipe client file_descriptor_tab[5] */
+		FD_SET(file_descriptor_tab[5], &rdfs);
+
+
+		if (select(max_fd, &rdfs, NULL, NULL, NULL) == -1)
+		  {
+		    exit();
+		  }
+
+
+		if (FD_ISSET(file_descriptor_tab[2], &rdfs))
+		  {
+		    /* read on exit pipe arduino file_descriptor_tab[2] */
+		    
+		     while (read(file_descriptor_tab[2], &buf, 1) > 0)
+		       {
+		
+			 write(STDOUT_FILENO, "<-", 2);
+			 write(STDOUT_FILENO, &buf, 1);
+			 write(STDOUT_FILENO, "<-", 2);
+		       }
+
+		  }
+		else if (FD_ISSET(file_descriptor_tab[5], &rdfs))
+		  {
+		    /* read on exit pipe client file_descriptor_tab[5] */
+
+		    while (read(file_descriptor_tab[5], &buf, 1) > 0)
+		      {
+
+			write(file_descriptor_tab[1], &buf, 1);
+			
+			write(STDOUT_FILENO, "->", 2);
+			write(STDOUT_FILENO, &buf, 1);
+			write(STDOUT_FILENO, "->", 2);
+		      }
+
+		  }
+
+		// Envoie des instructions en fonction des donnees recues :
+
+		// Exemple :  write(file_descriptor_tab[1], "X#", 2);
+
 	      }
 
 	    wait(NULL);
@@ -79,6 +149,10 @@ int main(int argc, char *argv[])
     close(file_descriptor_tab[1]);
     close(file_descriptor_tab[2]);
     close(file_descriptor_tab[3]);
+    close(file_descriptor_tab[4]);
+    close(file_descriptor_tab[5]);
+    close(file_descriptor_tab[6]);
+    close(file_descriptor_tab[7]);
 
     exit(EXIT_SUCCESS);
   }
