@@ -7,10 +7,9 @@
 
 #include "server.h"
 
-void generateReturn(char *buffer, Flightplan *f) {
-
-
-  
+void *myThread(SQLManager *manager) {
+  manager->execSQL(manager, manager->getRequest(manager));
+  manager->setFP(manager, manager->generateFlightPlan(manager));
 }
 
 
@@ -19,33 +18,44 @@ static void run(void)
   Network network = createNetwork();
   SQLManager manager = createManager();
   PGManager managere = createPManager();
-  
+
   int max = network.getSocket(&network);
   int singleton = 0;
   fd_set rdfs;
-  int ckp = 1;
+  int ckp = 0;
+
+  pthread_t tid;
+  void *status;
 
   manager.connectManager(&manager, "localhost", "root", "root");
   managere.connectPManager(&managere);
-  
+
   if (manager.getDB(&manager) != NULL) {
     manager.execSQL(&manager, "USE epicopter");
-    manager.execSQL(&manager, "SELECT * FROM epicopter;");
-    //    manager.printMResults(&manager);
-    Flightplan f = manager.generateFlightPlan(&manager);
+    manager.setRequest(&manager, "SELECT * FROM flights");
+
+    pthread_create(&tid, NULL, myThread, &manager);
+    pthread_join(tid, &status);
+
+    Flightplan k = manager.getFP(&manager);
+    
+    int u ;
+    for (u = 0; u < k.nbCkp; u++)
+      puts(generateReturn(&k, 0));
+    
   }
   else
     puts("error");
 
+  
   if (managere.getConn(&managere) != NULL)
     {
       managere.execPSQL(&managere, "SELECT * FROM flight;");
-      managere.printPResults(&managere);
+      //   managere.printPResults(&managere);
       managere.generatePFlightPlan(&managere);
     }
-  
-  
-  
+
+  /*
   while(1)
     {
       int i = 0;
@@ -121,7 +131,7 @@ static void run(void)
 		    
 		    if (strcmp(network.getBuffer(&network), "LAN;map;") == 0) {
 		      network.setBuffer(&network, "LAN;0005;EOF;");
-		      network.writeClient(&network, network.getClients(&network)[i].sock); 
+		      network.writeClient(&network, network.getClients(&network)[i].sock);
 		      break;
 		    }
 		  
@@ -145,26 +155,25 @@ static void run(void)
 		    }
 		    
 		    if (strncmp(network.getBuffer(&network), "VAL;", 4) == 0) {
-		      if (ckp == 5) {
+		      if (ckp < f.nbCkp && strncmp(network.getBuffer(&network), "VAL;", 4) == 0) {
+			network.setBuffer(&network, generateReturn(&f, ckp));
+			network.writeClient(&network, network.getClients(&network)[i].sock);
+			ckp++;
+			break;
+		      }
+		      else if (ckp == f.nbCkp) {
 			network.setBuffer(&network, "VAL;fin;EOF;");
 			network.writeClient(&network, network.getClients(&network)[i].sock); 
 			ckp = 0;
 			break;
 		      }
-		      else if (ckp < 5 &&
-			       (ckp >= 0 || strcmp(network.getBuffer(&network), "VAL;y") == 0)) {
-			ckp++;
-
-			network.setBuffer(&network, "VAL;43;35;50;EOF;");
-			network.writeClient(&network, network.getClients(&network)[i].sock); 
-			break;
-		      }
-		    
-		    if (strcmp(network.getBuffer(&network), "VAL;n") == 0) {
-		      network.setBuffer(&network, "VAL;latitude;longtitude;hauteur;EOF;");
+		      /*
+		    if (strcmp(network.getBuffer(&network), "VAL;n") == 0 && ckp < f.nbCkp) {
+		      network.setBuffer(&network, generateReturn(&f, ckp));
 		      network.writeClient(&network, network.getClients(&network)[i].sock); 
 		      break;
 		    } 
+
 		  }			  
 		  
 		  if (strncmp(network.getBuffer(&network), "CON;", 4) == 0) {
@@ -177,8 +186,8 @@ static void run(void)
 	    }
 	}
     }
-  
-  
+  */
+
   managere.free(&managere);
   manager.free(&manager);
   network.free(&network);

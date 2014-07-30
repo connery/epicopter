@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 #include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
-
+#include <pthread.h>
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1

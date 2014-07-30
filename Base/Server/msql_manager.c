@@ -32,7 +32,11 @@ static void initDB(SQLManager *this)
   
   this->getDB = getDB;
   this->setDB = setDB;
-  
+  this->getFP = getFP;
+  this->setFP = setFP;
+  this->getRequest = getRequest;
+  this->setRequest = setRequest;
+
   this->connectManager = connectManager;
   this->execSQL = execSQL;
   this->printMResults = printMResults;
@@ -45,6 +49,22 @@ MYSQL *getDB(SQLManager *this) {
 
 void setDB(SQLManager *this, MYSQL *new) {
   this->db = new;
+}
+
+Flightplan getFP(SQLManager *this) {
+  return this->fp;
+}
+
+void setFP(SQLManager *this, Flightplan new) {
+  this->fp = new;
+}
+
+char *getRequest(SQLManager *this) {
+  return this->request;
+}
+
+void setRequest(SQLManager *this, char *new) {
+  this->request = new;
 }
 
 void connectManager(SQLManager *this, char *db_name, char *db_user, char *db_pwd) {
@@ -89,7 +109,8 @@ Flightplan generateFlightPlan(SQLManager *this) {
 
   MYSQL_ROW row;
   i = 0;
-   
+  f.nbCkp = 0;
+
   while (row = mysql_fetch_row(res)) {
     Checkpoint cp = {"", "", "", ""};
 
@@ -99,8 +120,7 @@ Flightplan generateFlightPlan(SQLManager *this) {
     strcat(cp.height, row[3]);
     f.route[i] = cp;
 
-    printf("Checkpoint no %s\nLatitude %s Longitude %s Hauteur %s\n",
-	   f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
+    f.nbCkp++;
     i++;
   }
   return f;

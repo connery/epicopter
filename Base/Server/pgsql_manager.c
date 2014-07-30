@@ -103,8 +103,7 @@ Flightplan generatePFlightPlan(PGManager *this) {
     strcat(cp.longitude, PQgetvalue(this->getResult(this), i, 2));
     strcat(cp.height, PQgetvalue(this->getResult(this), i, 3));
     f.route[i] = cp;
-    printf("Checkpoint no %s\nLatitude %s Longitude %s Hauteur %s\n",
-	   f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
+
     }
   return f;
 }

@@ -7,6 +7,7 @@ typedef struct
 {
   int id;
   Checkpoint *route;
+  int nbCkp;
 } Flightplan;
 
 #endif
