@@ -15,12 +15,6 @@ char *generateReturn(Flightplan *f, int nb) {
   for (; val[i]; i++, j++)
     ret[j] = val[i];
 
-  for (i = 0; cp.id[i]; j++, i++)
-    ret[j] = cp.id[i];
-
-  ret[j] = ';';
-  j++;
-
   for (i = 0; cp.latitude[i]; i++, j++)
     ret[j] = cp.latitude[i];
 

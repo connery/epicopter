@@ -27,7 +27,7 @@ typedef struct SQLManager
   void(*free)(struct SQLManager *this);
   void(*connectManager)(struct SQLManager *this, char *db_name,
 			char *db_user, char *db_pwd);
-  void(*execSQL)(struct SQLManager *this, char *request);
+  void(*execSQL)(struct SQLManager *this);
   void(*printMResults)(struct SQLManager *this);
   Flightplan(*generateFlightPlan)(struct SQLManager *this);
 } 
@@ -47,7 +47,7 @@ typedef struct SQLManager
   char *getRequest(SQLManager *this);
   void setRequest(SQLManager *this, char *new);
 
-  void execSQL(SQLManager *this, char *request);
+  void execSQL(SQLManager *this);
   void printMResults(SQLManager *this);
   Flightplan generateFlightPlan(SQLManager *this);
 #ifdef __cplusplus

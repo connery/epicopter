@@ -26,10 +26,14 @@ static void initPG(PGManager *this) {
   this->getConnInfo = getConnInfo;
   this->getConn = getConn;
   this->getResult = getResult;
+  this->getPFP = getPFP;
+  this->getPRequest = getPRequest;
 
   this->setConnInfo = setConnInfo;
   this->setConn = setConn;
   this->setResult = setResult;
+  this->setPFP = setPFP;
+  this->setPRequest = setPRequest;
 
   this->connectPManager = connectPManager;
   this->execPSQL = execPSQL;
@@ -60,11 +64,11 @@ void closePManager(PGManager *this) {
   this->res = NULL;
 }
 
-void execPSQL(PGManager *this, char *request) {
+void execPSQL(PGManager *this) {
 
   if (PQstatus(this->getConn(this)) == CONNECTION_OK) {
     
-    this->setResult(this, PQexec(this->getConn(this), request));
+    this->setResult(this, PQexec(this->getConn(this), this->getPRequest(this)));
     if (PQresultStatus(this->getResult(this)) != PGRES_TUPLES_OK)
       fprintf(stderr, "Request failed: %s", PQerrorMessage(this->getConn(this)));
     else
@@ -93,17 +97,17 @@ Flightplan generatePFlightPlan(PGManager *this) {
 
   f.id = 1;
   f.route = malloc(sizeof(Checkpoint) * PQntuples(this->getResult(this)));
-  
+  f.nbCkp = 0;
+
   for (i = 0; i < PQntuples(this->getResult(this)); i++)
     {
-    Checkpoint cp = {"", "", "", ""};
+    Checkpoint cp = {"", "", ""};
     
-    strcat(cp.id, PQgetvalue(this->getResult(this), i, 0));
-    strcat(cp.latitude, PQgetvalue(this->getResult(this), i, 1));
-    strcat(cp.longitude, PQgetvalue(this->getResult(this), i, 2));
-    strcat(cp.height, PQgetvalue(this->getResult(this), i, 3));
+    strcat(cp.latitude, PQgetvalue(this->getResult(this), i, 0));
+    strcat(cp.longitude, PQgetvalue(this->getResult(this), i, 1));
+    strcat(cp.height, PQgetvalue(this->getResult(this), i, 2));
     f.route[i] = cp;
-
+    f.nbCkp++;
     }
   return f;
 }
@@ -125,6 +129,14 @@ PGresult *getResult(PGManager *this) {
   return this->res;
 }
 
+Flightplan getPFP(PGManager *this) {
+  return this->fp;
+}
+
+char *getPRequest(PGManager *this) {
+  return this->request;
+}
+
 void setConnInfo(PGManager *this, const char* new) {
   this->conninfo = new;
 }
@@ -135,4 +147,12 @@ void setConn(PGManager *this, PGconn *new) {
 
 void setResult(PGManager *this, PGresult *new) {
   this->res = new;
+}
+
+void setPFP(PGManager *this, Flightplan new) {
+  this->fp = new;
+}
+
+void setPRequest(PGManager *this, char *new) {
+  this->request = new;
 }

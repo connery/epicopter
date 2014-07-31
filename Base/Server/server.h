@@ -42,5 +42,6 @@ typedef struct in_addr IN_ADDR;
 #include "pgsql_manager.h"
 
 static void run(void);
-
+void *mySQLThread(SQLManager *manager);
+void *myPSQLThread(PGManager *manager);
 #endif /* guard */

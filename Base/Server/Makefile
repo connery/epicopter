@@ -8,7 +8,7 @@ LFLAGS = -L/usr/lib
 
 LIBS = -lpq `mysql_config --cflags --libs` -lpthread
 
-SRCS = utils.c network.c msql_manager.c pgsql_manager.c server.c 
+SRCS = request.c utils.c network.c msql_manager.c pgsql_manager.c server.c 
 
 OBJS = $(SRCS:.c=.o)
 

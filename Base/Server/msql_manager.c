@@ -76,8 +76,8 @@ void connectManager(SQLManager *this, char *db_name, char *db_user, char *db_pwd
     puts("Connected to MYSQL databse.");
 }
 
-void execSQL(SQLManager *this, char *request) {
-  if (mysql_query(this->db, request) == 1) {
+void execSQL(SQLManager *this) {
+  if (mysql_query(this->db, this->getRequest(this)) == 1) {
     putError(this);
     closeManager(this);
   } else
@@ -112,12 +112,11 @@ Flightplan generateFlightPlan(SQLManager *this) {
   f.nbCkp = 0;
 
   while (row = mysql_fetch_row(res)) {
-    Checkpoint cp = {"", "", "", ""};
+    Checkpoint cp = {"", "", ""};
 
-    strcat(cp.id, row[0]);
-    strcat(cp.latitude, row[1]);
-    strcat(cp.longitude, row[2]);
-    strcat(cp.height, row[3]);
+    strcat(cp.latitude, row[0]);
+    strcat(cp.longitude, row[1]);
+    strcat(cp.height, row[2]);
     f.route[i] = cp;
 
     f.nbCkp++;
