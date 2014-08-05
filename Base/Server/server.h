@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 #include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
-
+#include <pthread.h>
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
@@ -42,5 +42,6 @@ typedef struct in_addr IN_ADDR;
 #include "pgsql_manager.h"
 
 static void run(void);
-
+void *mySQLThread(SQLManager *manager);
+void *myPSQLThread(PGManager *manager);
 #endif /* guard */

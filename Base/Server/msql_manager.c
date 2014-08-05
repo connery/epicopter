@@ -32,7 +32,11 @@ static void initDB(SQLManager *this)
   
   this->getDB = getDB;
   this->setDB = setDB;
-  
+  this->getFP = getFP;
+  this->setFP = setFP;
+  this->getRequest = getRequest;
+  this->setRequest = setRequest;
+
   this->connectManager = connectManager;
   this->execSQL = execSQL;
   this->printMResults = printMResults;
@@ -47,6 +51,22 @@ void setDB(SQLManager *this, MYSQL *new) {
   this->db = new;
 }
 
+Flightplan getFP(SQLManager *this) {
+  return this->fp;
+}
+
+void setFP(SQLManager *this, Flightplan new) {
+  this->fp = new;
+}
+
+char *getRequest(SQLManager *this) {
+  return this->request;
+}
+
+void setRequest(SQLManager *this, char *new) {
+  this->request = new;
+}
+
 void connectManager(SQLManager *this, char *db_name, char *db_user, char *db_pwd) {
   if (mysql_real_connect(this->db, db_name, db_user, db_pwd,
 			 NULL, 0, NULL, 0) == NULL) {
@@ -56,8 +76,8 @@ void connectManager(SQLManager *this, char *db_name, char *db_user, char *db_pwd
     puts("Connected to MYSQL databse.");
 }
 
-void execSQL(SQLManager *this, char *request) {
-  if (mysql_query(this->db, request) == 1) {
+void execSQL(SQLManager *this) {
+  if (mysql_query(this->db, this->getRequest(this)) == 1) {
     putError(this);
     closeManager(this);
   } else
@@ -89,18 +109,17 @@ Flightplan generateFlightPlan(SQLManager *this) {
 
   MYSQL_ROW row;
   i = 0;
-   
-  while (row = mysql_fetch_row(res)) {
-    Checkpoint cp = {"", "", "", ""};
+  f.nbCkp = 0;
 
-    strcat(cp.id, row[0]);
-    strcat(cp.latitude, row[1]);
-    strcat(cp.longitude, row[2]);
-    strcat(cp.height, row[3]);
+  while (row = mysql_fetch_row(res)) {
+    Checkpoint cp = {"", "", ""};
+
+    strcat(cp.latitude, row[0]);
+    strcat(cp.longitude, row[1]);
+    strcat(cp.height, row[2]);
     f.route[i] = cp;
 
-    printf("Checkpoint no %s\nLatitude %s Longitude %s Hauteur %s\n",
-	   f.route[i].id, f.route[i].latitude, f.route[i].longitude, f.route[i].height);
+    f.nbCkp++;
     i++;
   }
   return f;

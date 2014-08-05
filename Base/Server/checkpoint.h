@@ -5,7 +5,6 @@
 
 typedef struct
 {
-  char id[3];
   char latitude[20];
   char longitude[20];
   char height[6];

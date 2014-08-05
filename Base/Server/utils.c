@@ -1,5 +1,45 @@
 #include <stdlib.h>
 
+#include "server.h"
+
+char *generateReturn(Flightplan *f, int nb) {
+  Checkpoint cp = f->route[nb];
+ 
+  char *ret = malloc(sizeof(char) * 55);
+  char *val = "VAL;";
+  char *end = "EOF;";
+
+  int i = 0;
+  int j = 0;
+
+  for (; val[i]; i++, j++)
+    ret[j] = val[i];
+
+  for (i = 0; cp.latitude[i]; i++, j++)
+    ret[j] = cp.latitude[i];
+
+  ret[j] = ';';
+  j++;
+
+  for (i = 0; cp.longitude[i]; i++, j++)
+    ret[j] = cp.longitude[i];
+
+  ret[j] = ';';
+  j++;
+  
+  for (i = 0; cp.height[i]; i++, j++)
+    ret[j] = cp.height[i];
+
+  ret[j] = ';';
+  j++;
+
+  for (i = 0; end[i]; i++, j++)
+    ret[j] = end[i];
+  
+  ret[j] = '\0';
+  return ret;
+}
+
 char* itoa(int i, char b[]){
   char const digit[] = "0123456789";
   char* p = b;
