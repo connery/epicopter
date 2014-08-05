@@ -4,13 +4,15 @@
 #include <unistd.h>
 //#include <string>
 
-int main(int argc, char *argv[])
-{
-  int file_descriptor_tab[8]; // UNE SERIE DE 2 PIPES VERS ARDUINO, UNE SERIE DE 2 PIPES VERS LE CLIENT
-  pid_t pid;
-  char buf;
+#include "linked_lists_lib/my_list.h"
 
-  // PIPES VERS ARDUINO :
+int * pipe_tab_initialisation();
+
+int * pipe_tab_initialisation()
+{
+  int file_descriptor_tab[8];
+
+   // PIPES VERS ARDUINO :
 
   if (pipe(file_descriptor_tab) == -1)
     {
@@ -33,6 +35,17 @@ int main(int argc, char *argv[])
     {
       exit(EXIT_FAILURE);
     }
+
+  return (file_descriptor_tab)
+}
+
+int main(int argc, char *argv[])
+{
+  int file_descriptor_tab[8]; // UNE SERIE DE 2 PIPES VERS ARDUINO, UNE SERIE DE 2 PIPES VERS LE CLIENT
+  pid_t pid;
+  char buf;
+
+  file_descriptor_tab = pipe_tab_initialisation();
 
   // DIVISION DES PROCESSUS :
 
@@ -79,6 +92,23 @@ int main(int argc, char *argv[])
 	  {
 	    // Gestion des informations de vol
 
+	    // creation de la boucle de lecture
+
+	    t_mylist        * pointer;
+
+	    for (pointer = my_put_in_list(0, ''), int i = 0; i < 20; i++)
+	      {
+		pointer = my_put_in_list(pointer, '');
+	      }
+	    
+	    t_mylist        * begin;
+	    for (begin = pointer; begin->next; begin = begin->next);
+
+	    begin->next = pointer;
+	    pointer->prev = begin;
+	    
+	    //
+
 	    fd_set rdfs;
 
 	    int max_fd;
@@ -111,6 +141,14 @@ int main(int argc, char *argv[])
 		    
 		     while (read(file_descriptor_tab[2], &buf, 1) > 0)
 		       {
+
+			 pointer->c = buf;
+			 pointer = pointer->next;
+
+			 // (1) lecture des instructions recues depuis la carte arduino (parseur de donnees)
+			 // (2) interpretation / enregistrement des donnees
+			 // (3) reponse si necessaire : write(file_descriptor_tab[1], '', 1);
+
 		
 			 write(STDOUT_FILENO, "<-", 2);
 			 write(STDOUT_FILENO, &buf, 1);
@@ -125,7 +163,7 @@ int main(int argc, char *argv[])
 		    while (read(file_descriptor_tab[5], &buf, 1) > 0)
 		      {
 
-			write(file_descriptor_tab[1], &buf, 1);
+			write(file_descriptor_tab[1], &buf, 1); // transmission des donnees recues depuis le client vers la carte arduino
 			
 			write(STDOUT_FILENO, "->", 2);
 			write(STDOUT_FILENO, &buf, 1);
