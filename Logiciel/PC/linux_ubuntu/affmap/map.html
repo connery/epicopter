@@ -116,10 +116,19 @@
         if ( typeof this.counter[nbr] == 'undefined' ) this.counter[nbr] = location;
         if ( typeof this.dis  == 'undefined' ) this.dis = 0;
 
+
         document.getElementById("lat").innerHTML = location.lat();
         document.getElementById("lon").innerHTML = location.lng();
         document.getElementById("zoom_level").innerHTML = map.getZoom()+1;
         map.setCenter(location);
+
+`	var line = new google.maps.Polyline({
+		path : counter,
+		strokeColor : "#000FDE",
+		strokeOpacity : 1.0,
+		strokeWeight : 5,
+		map : map
+	});
 
         var distanceKm = google.maps.geometry.spherical.computeDistanceBetween(this.counter[nbr], this.counter[nbr-1]);
         this.dis = this.dis + distanceKm/1000;
