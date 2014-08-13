@@ -221,13 +221,15 @@ void processThrottleCorrection() // Correction du throttle en fonction de la sta
   throttleAdjust += batteyMonitorThrottleCorrection;
 #endif
 
-#if defined (AutoLanding) && defined BattMonitorAutoDescent
+#if defined (AutoLanding)
+  #if defined BattMonitorAutoDescent
   if (batteyMonitorThrottleCorrection != 0)  // don't auto land in the same time that the battery monitor do auto descent, or Override the auto descent to land, TBD
     {
       throttleAdjust += autoLandingThrottleCorrection;
     }
 #else
   throttleAdjust += autoLandingThrottleCorrection;
+#endif
 #endif
 
   

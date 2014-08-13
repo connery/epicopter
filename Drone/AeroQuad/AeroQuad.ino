@@ -230,7 +230,7 @@
 
 //******** FLIGHT CONFIGURATION DECLARATION **************
 
-#elif defined(quadPlusConfig) // quadPlusConfig DEFINED
+#if defined(quadPlusConfig) // quadPlusConfig DEFINED
   #include "FlightControlQuadPlus.h"
 #endif
 
