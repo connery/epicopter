@@ -86,12 +86,14 @@ static void app(const char *address, const char *name, const int manage_filedesc
 	      printf("--- Connection accepted ---\n");
 
 
-	      write(manage_filesecriptor, "X#", 2); // TEST
+	      //write(manage_filedescriptor, "X#", 2); // TEST
 
 
 	      //pa = createPacket("", DEC, name);
 	      //printf("--- Asking for deconnection ---\n");
 	      //write_server(sock, pa);
+
+	      while(1) {}
 	    }
 
 	  /* if (pa->header.opcode == CON) { */
@@ -214,7 +216,7 @@ int main(int argc, char **argv)
       return EXIT_FAILURE;
     }
 
-  if (argc < 3)
+  if (argc < 4)
     {
       app(argv[1], argv[2], 0);
     }

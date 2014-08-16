@@ -36,12 +36,13 @@ int * pipe_tab_initialisation()
       exit(EXIT_FAILURE);
     }
 
-  return (file_descriptor_tab)
+  return (file_descriptor_tab);
 }
 
 int main(int argc, char *argv[])
 {
-  int file_descriptor_tab[8]; // UNE SERIE DE 2 PIPES VERS ARDUINO, UNE SERIE DE 2 PIPES VERS LE CLIENT
+  int *file_descriptor_tab = malloc(sizeof(int) * 8); // UNE SERIE DE 2 PIPES VERS ARDUINO, UNE SERIE DE 2 PIPES VERS LE CLIENT
+
   pid_t pid;
   char buf;
 
@@ -95,10 +96,11 @@ int main(int argc, char *argv[])
 	    // creation de la boucle de lecture
 
 	    t_mylist        * pointer;
+	    int i;
 
-	    for (pointer = my_put_in_list(0, ''), int i = 0; i < 20; i++)
+	    for (pointer = my_put_in_list(0, ' '), i = 0; i < 20; i++)
 	      {
-		pointer = my_put_in_list(pointer, '');
+		pointer = my_put_in_list(pointer, ' ');
 	      }
 	    
 	    t_mylist        * begin;

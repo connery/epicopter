@@ -13,17 +13,17 @@
 
 t_mylist	*check(t_mylist *l, int e)
 {
-  if (!l->prev && !l->next && l->entier == e)
+  if (!l->prev && !l->next && l->c == e)
     {
       free(l);
       return (0);
     }
-  else if (!l->prev && l->entier == e)
+  else if (!l->prev && l->c == e)
     {
       l->next->prev = 0;
       free(l);
     }
-  else if (!l->next && l->entier == e)
+  else if (!l->next && l->c == e)
     {
       l->prev->next = 0;
       free(l);
@@ -38,7 +38,7 @@ t_mylist	*my_del_elem_in_list(t_mylist *l, int e)
   for (; l->next; l = l->next)
     {
       l = check(l, e);
-      if (l->entier == e)
+      if (l->c == e)
         {
           l->next->prev = l->prev;
           l->prev->next = l->next;

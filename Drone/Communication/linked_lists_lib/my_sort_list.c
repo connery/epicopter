@@ -22,7 +22,7 @@ t_mylist		*my_sort_list(t_mylist *list)
         {
           temp = list->c;
           list->c = list->prev->c;
-          list->prev->entier = temp;
+          list->prev->c = temp;
           while (list->next)
             list = list->next;
         }
