@@ -31,29 +31,30 @@
 
 char queryType = 'X';
 
-void initCommunication() {
-  // do nothing here for now
-}
+void initCommunication() {} // do nothing here for now
 
-//***************************************************************************************************
 //********************************** Serial Commands ************************************************
-//***************************************************************************************************
+
 bool validateCalibrateCommand(byte command)
 {
-  if (readFloatSerial() == 123.45) {// use a specific float value to validate full throttle call is being sent
-    motorArmed = OFF;
-    calibrateESC = command;
-    return true;
-  }
-  else {
-    calibrateESC = 0;
-    testCommand = 1000;
-    return false;
-  }
+  if (readFloatSerial() == 123.45) // use a specific float value to validate full throttle call is being sent
+    {
+      motorArmed = OFF;
+      calibrateESC = command;
+      return true;
+    }
+  else
+    {
+      calibrateESC = 0;
+      testCommand = 1000;
+      return false;
+    }
 }
 
-void readSerialPID(unsigned char PIDid) {
+void readSerialPID(unsigned char PIDid)
+{
   struct PIDdata* pid = &PID[PIDid];
+
   pid->P = readFloatSerial();
   pid->I = readFloatSerial();
   pid->D = readFloatSerial();
@@ -61,16 +62,17 @@ void readSerialPID(unsigned char PIDid) {
   pid->integratedError = 0;
 }
 
-void skipSerialValues(byte number) {
-  for(byte i=0; i<number; i++) {
-    readFloatSerial();
-  }
+void skipSerialValues(byte number)
+{
+  for (byte i = 0; i < number; i++)
+    {
+      readFloatSerial();
+    }
 }
 
 void readSerialCommand()
 {
-  // Check for serial message
-  if (SERIAL_AVAILABLE())
+  if (SERIAL_AVAILABLE()) // Check for serial message
     {
       queryType = SERIAL_READ();
       switch (queryType) {
@@ -95,20 +97,20 @@ void readSerialCommand()
 	break;
 	
       case 'D': // Altitude hold PID
-#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
+      #if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
         readSerialPID(BARO_ALTITUDE_HOLD_PID_IDX);
         PID[BARO_ALTITUDE_HOLD_PID_IDX].windupGuard = readFloatSerial();
         altitudeHoldBump = readFloatSerial();
         altitudeHoldPanicStickMovement = readFloatSerial();
         minThrottleAdjust = readFloatSerial();
         maxThrottleAdjust = readFloatSerial();
-#if defined AltitudeHoldBaro
+      #if defined AltitudeHoldBaro
 	baroSmoothFactor = readFloatSerial();
-#else
+      #else
 	readFloatSerial();
-#endif
+      #endif
         readSerialPID(ZDAMPENING_PID_IDX);
-#endif
+      #endif
 	break;
 
       case 'E': // Receive sensor filtering values
@@ -140,12 +142,12 @@ void readSerialCommand()
 	storeSensorsZeroToEEPROM();
 	calibrateGyro();
 	zeroIntegralError();
-#ifdef HeadingMagHold
+      #ifdef HeadingMagHold
         initializeMagnetometer();
-#endif
-#ifdef AltitudeHoldBaro
+      #endif
+      #ifdef AltitudeHoldBaro
         initializeBaro();
-#endif
+      #endif
 	break;
 	
       case 'J': // calibrate gyros
@@ -165,50 +167,53 @@ void readSerialCommand()
 	
       case 'L': // generate accel bias
 	computeAccelBias();
-#if defined(AeroQuadMega_CHR6DM) || defined(APM_OP_CHR6DM)
+      #if defined(AeroQuadMega_CHR6DM) || defined(APM_OP_CHR6DM)
         calibrateKinematics();
         accelOneG = meterPerSecSec[ZAXIS];
-#endif
+      #endif
 	storeSensorsZeroToEEPROM();
 	break;
 	
       case 'M': // calibrate magnetometer
-#ifdef HeadingMagHold
+      #ifdef HeadingMagHold
         magBias[XAXIS]  = readFloatSerial();
         magBias[YAXIS]  = readFloatSerial();
         magBias[ZAXIS]  = readFloatSerial();
         writeEEPROM();
-#else
+      #else
         skipSerialValues(3);
-#endif
+      #endif
 	break;
 	
       case 'N': // battery monitor
-#ifdef BattMonitor
+      #ifdef BattMonitor
         batteryMonitorAlarmVoltage = readFloatSerial();
         batteryMonitorThrottleTarget = readFloatSerial();
         batteryMonitorGoingDownTime = readFloatSerial();
         setBatteryCellVoltageThreshold(batteryMonitorAlarmVoltage);
-#else
+      #else
         skipSerialValues(3);
-#endif
+      #endif
 	break;
 	
       case 'O': // define waypoints
-#ifdef UseGPSNavigator
+      #ifdef UseGPSNavigator
         missionNbPoint = readIntegerSerial();
         waypoint[missionNbPoint].latitude = readIntegerSerial();
         waypoint[missionNbPoint].longitude = readIntegerSerial();
         waypoint[missionNbPoint].altitude = readIntegerSerial();
-#else
-        for(byte i = 0; i < 4; i++)
+      #else
+      
+	for (byte i = 0; i < 4; i++)
 	  {
 	    readFloatSerial();
 	  }
-#endif
+      
+      #endif
 	break;
+      
       case 'P': //  read Camera values
-#ifdef CameraControl
+      #ifdef CameraControl
         cameraMode = readFloatSerial();
         servoCenterPitch = readFloatSerial();
         servoCenterRoll = readFloatSerial();
@@ -222,36 +227,36 @@ void readSerialCommand()
         servoMaxPitch = readFloatSerial();
         servoMaxRoll = readFloatSerial();
         servoMaxYaw = readFloatSerial();
-#ifdef CameraTXControl
+	#ifdef CameraTXControl
           servoTXChannels = readFloatSerial();
-#endif
-#else
-#ifdef CameraTXControl
+	#endif
+      #else
+        #ifdef CameraTXControl
           skipSerialValues(14)
-#else
-	    skipSerialValues(13);
-#endif
-#endif
-	  break;
+        #else
+	  skipSerialValues(13);
+        #endif
+      #endif
+	break;
 	  
       case 'U': // Range Finder
       #if defined (AltitudeHoldRangeFinder)
         maxRangeFinderRange = readFloatSerial();
         minRangeFinderRange = readFloatSerial();
-#else
+      #else
         skipSerialValues(2);
-#endif
+      #endif
 	break;
 	
       case 'V': // GPS
-#if defined (UseGPSNavigator)
+      #if defined (UseGPSNavigator)
         readSerialPID(GPSROLL_PID_IDX);
         readSerialPID(GPSPITCH_PID_IDX);
         readSerialPID(GPSYAW_PID_IDX);
         writeEEPROM();
-#else
+      #else
         skipSerialValues(9);
-#endif
+      #endif
 	break;
 	
       case 'W': // Write all user configurable values to EEPROM
@@ -295,19 +300,17 @@ void readSerialCommand()
 	  }
 	break;
 
-	case 'Z': // fast telemetry transfer <--- get rid if this?
-	  if (readFloatSerial() == 1.0)
-	    fastTransfer = ON;
-	  else
-	    fastTransfer = OFF;
+      case 'Z': // fast telemetry transfer <--- get rid if this?
+	if (readFloatSerial() == 1.0)
+	  fastTransfer = ON;
+        else
+	  fastTransfer = OFF;
 	break;
       }
    }
 }
 
-//***************************************************************************************************
 //********************************* Serial Telemetry ************************************************
-//***************************************************************************************************
 
 void PrintValueComma(float val) {
   SERIAL_PRINT(val);
@@ -354,10 +357,12 @@ void PrintPID(unsigned char IDPid)
   PrintValueComma(PID[IDPid].D);
 }
 
-void PrintDummyValues(byte number) {
-  for(byte i=0; i<number; i++) {
-    PrintValueComma(0);
-  }
+void PrintDummyValues(byte number)
+{
+  for (byte i = 0; i < number; i++)
+    {
+      PrintValueComma(0);
+    }
 }
 
 
@@ -365,9 +370,10 @@ float getHeading()
 {
   #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM) || defined(APM_OP_CHR6DM)
     float heading = trueNorthHeading;
-    if (heading < 0) { 
-      heading += (2.0 * M_PI);
-    }
+    if (heading < 0)
+      { 
+	heading += (2.0 * M_PI);
+      }
     return heading;
   #else
     return(gyroHeading);
@@ -375,7 +381,8 @@ float getHeading()
 }
 
 void sendSerialTelemetry() {
-  switch (queryType) {
+  switch (queryType)
+    {
   case '=': // Reserved debug command to view any variable from Serial Monitor
     break;
 
