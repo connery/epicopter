@@ -74,7 +74,8 @@ void readSerialCommand()
 {
   if (SERIAL_AVAILABLE()) // Check for serial message
     {
-      queryType = SERIAL_READ();
+      queryType = SERIAL_READ(); // Returns the first byte of incoming serial data available (or -1 if no data is available)
+
       switch (queryType) {
       case 'A': // Receive roll and pitch rate mode PID
 	readSerialPID(RATE_XAXIS_PID_IDX);
@@ -198,10 +199,10 @@ void readSerialCommand()
 	
       case 'O': // define waypoints
       #ifdef UseGPSNavigator
-        missionNbPoint = readIntegerSerial();
-        waypoint[missionNbPoint].latitude = readIntegerSerial();
-        waypoint[missionNbPoint].longitude = readIntegerSerial();
-        waypoint[missionNbPoint].altitude = readIntegerSerial();
+        missionNbPoint = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
+        waypoint[missionNbPoint].latitude = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
+        waypoint[missionNbPoint].longitude = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
+        waypoint[missionNbPoint].altitude = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
       #else
       
 	for (byte i = 0; i < 4; i++)
@@ -747,20 +748,24 @@ void sendSerialTelemetry() {
   }
 }
 
-void readValueSerial(char *data, byte size) {
+void readValueSerial(char *data, byte size)
+{
   byte index = 0;
   byte timeout = 0;
   data[0] = '\0';
 
   do {
-    if (SERIAL_AVAILABLE() == 0) {
-      delay(1);
-      timeout++;
-    } else {
-      data[index] = SERIAL_READ();
-      timeout = 0;
-      index++;
-    }
+    if (SERIAL_AVAILABLE() == 0)
+      {
+	delay(1);
+	timeout++;
+      }
+    else
+      {
+	data[index] = SERIAL_READ();
+	timeout = 0;
+	index++;
+      }
   } while ((index == 0 || data[index-1] != ';') && (timeout < 10) && (index < size-1));
 
   data[index] = '\0';

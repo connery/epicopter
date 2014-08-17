@@ -24,19 +24,6 @@
 
 #include "UserConfiguration.h" // Edit this file first before uploading to the AeroQuad
 
-/*
-	Pour epicopter UserConfiguration.h est configure comme suivant :
-
-	#define AeroQuadMega_v21 pour utilisation de la carte electronique ARDUINO MEGA 2560
-	#define quadPlusConfig pour la configuration de vol quatre moteur definissant chaque bras comme un axe
-	#define USE_400HZ_ESC 
-	#define HeadingMagHold Enable Magnetometer
-	#define AltitudeHoldBaro
-	
-	#define SKETCH_SERIAL_SUM_PPM SERIAL_SUM_PPM_1 configuration de la telecommande spektrum dx6i
-
-*****************************************************************************/
-
 #if defined(UseGPSNMEA) || defined(UseGPSUBLOX) || defined(UseGPSMTK) || defined(UseGPS406)
  #define UseGPS
 #endif 
@@ -119,7 +106,7 @@
 
 #endif
   
-#ifndef UseGPS // NON ACTIF
+#ifndef UseGPS
 
   #undef UseGPSNavigator
 
@@ -204,7 +191,7 @@ void measureCriticalSensors() // Measure critical sensors
 
 #endif
 
-#if defined(UseGPS) //****************** GPS DECLARATION ********************* // NON ACTIF
+#if defined(UseGPS)
  
   #if !defined(HeadingMagHold)
     #error We need the magnetometer to use the GPS
@@ -225,7 +212,7 @@ void measureCriticalSensors() // Measure critical sensors
 #include "HeadingHoldProcessor.h"
 #include "DataStorage.h"
 
-#if defined(UseGPS) || defined(BattMonitor) // NON ACTIF
+#if defined(UseGPS) || defined(BattMonitor) // ACTIF
 
   #include "LedStatusProcessor.h"
 
@@ -326,7 +313,7 @@ void setup() /* Main setup function, called one time at bootup initialize all sy
 
 #endif
   
-#if defined(UseGPS) // NON ACTIF
+#if defined(UseGPS) // ACTIF
 
     initializeGps();
 
@@ -390,7 +377,7 @@ void process100HzTask() // * 100Hz task
   
   #endif      
   
-  #if defined(UseGPS) // NON ACTIF
+  #if defined(UseGPS) // ACTIF
   
     updateGps();
 
@@ -412,7 +399,7 @@ void process50HzTask() // 50Hz task
 
   #endif
 
-  #if defined(UseGPS) // NON ACTIF
+  #if defined(UseGPS) // ACTIF
 
     if (haveAGpsLock() && !isHomeBaseInitialized())
       {

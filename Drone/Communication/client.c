@@ -86,14 +86,14 @@ static void app(const char *address, const char *name, const int manage_filedesc
 	      printf("--- Connection accepted ---\n");
 
 
-	      //write(manage_filedescriptor, "X#", 2); // TEST
+	      write(manage_filedescriptor, "X#", 2); // TEST
+	      write(manage_filedescriptor, "O1;2147483647;2147483647;100;", 29); // TEST ENVOIE COOERDONNEE GPS
 
 
 	      //pa = createPacket("", DEC, name);
 	      //printf("--- Asking for deconnection ---\n");
 	      //write_server(sock, pa);
 
-	      while(1) {}
 	    }
 
 	  /* if (pa->header.opcode == CON) { */
