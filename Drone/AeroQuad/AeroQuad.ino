@@ -44,7 +44,7 @@
 #include <AQMath.h>
 #include <FourtOrderFilter.h>
 
-#ifdef BattMonitor // En configuration actuelle BattMonitor n'est pas definit : NON ACTIF
+#ifdef BattMonitor // ACTIF
 
   #include <BatteryMonitorTypes.h>
 
@@ -121,9 +121,10 @@ void initPlatform() // Put AeroQuadMega_v21 specific initialization need here
   digitalWrite(LED_Yellow, LOW);
 
   // pins set to INPUT for camera stabilization so won't interfere with new camera class
-  pinMode(33, INPUT); // disable SERVO 1, jumper D12 for roll
-  pinMode(34, INPUT); // disable SERVO 2, jumper D11 for pitch
-  pinMode(35, INPUT); // disable SERVO 3, jumper D13 for yaw
+
+  /* pinMode(33, INPUT); // disable SERVO 1, jumper D12 for roll */
+  /* pinMode(34, INPUT); // disable SERVO 2, jumper D11 for pitch */
+  /* pinMode(35, INPUT); // disable SERVO 3, jumper D13 for yaw */
 
   pinMode(43, OUTPUT); // LED 1
   pinMode(44, OUTPUT); // LED 2
