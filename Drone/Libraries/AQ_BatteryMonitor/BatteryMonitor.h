@@ -40,26 +40,31 @@ void setBatteryCellVoltageThreshold(float alarmVoltage) {
 }
 
 // Reset Battery statistics
-void resetBattery(byte batno) {
+void resetBattery(byte batno)
+{
 
-  if (batno < numberOfBatteries) {
-    batteryData[batno].voltage      = 1200;
-#ifdef BM_EXTENDED
-    batteryData[batno].minVoltage   = 9900;
-    batteryData[batno].current      = 0;
-    batteryData[batno].maxCurrent   = 0;
-    batteryData[batno].usedCapacity = 0;
-#endif
-  }
+  if (batno < numberOfBatteries)
+    {
+      batteryData[batno].voltage      = 1200;
+  #ifdef BM_EXTENDED
+      batteryData[batno].minVoltage   = 9900;
+      batteryData[batno].current      = 0;
+      batteryData[batno].maxCurrent   = 0;
+      batteryData[batno].usedCapacity = 0;
+  #endif
+    }
 }
 
-void initializeBatteryMonitor(byte nb, float alarmVoltage) {
+void initializeBatteryMonitor(byte nb, float alarmVoltage)
+{
 
   numberOfBatteries = nb;
   setBatteryCellVoltageThreshold(alarmVoltage);
-  for (int i = 0; i < numberOfBatteries; i++) {
-    resetBattery(i);
-  }
+  
+  for (int i = 0; i < numberOfBatteries; i++)
+    {
+      resetBattery(i);
+    }
   measureBatteryVoltage(0); // Initial measurement
 }
 
@@ -94,31 +99,43 @@ boolean batteryIsWarning(byte batNo) {
   return false;
 }
 
-void measureBatteryVoltage(unsigned short deltaTime) {
+void measureBatteryVoltage(unsigned short deltaTime)
+{
 
   batteryAlarm = false;  
   batteryWarning = false;
-  for (int i = 0; i < numberOfBatteries; i++) {
-    batteryData[i].voltage = (long)analogRead(batteryData[i].vPin) * batteryData[i].vScale / (1L<<ADC_NUMBER_OF_BITS) + batteryData[i].vBias;
-#ifdef BM_EXTENDED
-    if (batteryData[i].voltage < batteryData[i].minVoltage) {
-      batteryData[i].minVoltage = batteryData[i].voltage;
-    }
-    if (batteryData[i].cPin != BM_NOPIN) {
-      batteryData[i].current = (long)analogRead(batteryData[i].cPin) * batteryData[i].cScale * 10 / (1L<<ADC_NUMBER_OF_BITS) + batteryData[i].cBias * 10;
-      if (batteryData[i].current > batteryData[i].maxCurrent) { 
-        batteryData[i].maxCurrent = batteryData[i].current;
-      }
-      // current in 10mA , time in ms -> usedCapacity in uAh  // i.e. / 360 <=> * ( 91 / 32768 )
-      batteryData[i].usedCapacity += (long)batteryData[i].current * (long)deltaTime * 91 / 32768;
-    }
-#endif
-    if (batteryIsAlarm(i)) {
-      batteryAlarm = true;
-    }
-    if (batteryIsWarning(i)) {
-      batteryWarning = true;
-    }
-  }  
+
+  for (int i = 0; i < numberOfBatteries; i++)
+    {
+      batteryData[i].voltage = (long)analogRead(batteryData[i].vPin) * batteryData[i].vScale / (1L<<ADC_NUMBER_OF_BITS) + batteryData[i].vBias;
+
+      #ifdef BM_EXTENDED
+
+        if (batteryData[i].voltage < batteryData[i].minVoltage)
+	  {
+	    batteryData[i].minVoltage = batteryData[i].voltage;
+	  }
+        if (batteryData[i].cPin != BM_NOPIN)
+	  {
+	    batteryData[i].current = (long)analogRead(batteryData[i].cPin) * batteryData[i].cScale * 10 / (1L<<ADC_NUMBER_OF_BITS) + batteryData[i].cBias * 10;
+	    if (batteryData[i].current > batteryData[i].maxCurrent)
+	      { 
+	        batteryData[i].maxCurrent = batteryData[i].current;
+	      }
+	    // current in 10mA , time in ms -> usedCapacity in uAh  // i.e. / 360 <=> * ( 91 / 32768 )
+	    batteryData[i].usedCapacity += (long)batteryData[i].current * (long)deltaTime * 91 / 32768;
+	  }
+
+      #endif
+
+      if (batteryIsAlarm(i))
+	{
+	  batteryAlarm = true;
+	}
+      if (batteryIsWarning(i))
+	{
+	  batteryWarning = true;
+	}
+    }  
 }
 #endif

@@ -91,11 +91,11 @@
 
 /* #endif */
 
-#ifdef BattMonitor // Battery Monitor declaration : NON ACTIF
+#ifdef BattMonitor // Battery Monitor declaration : ACTIF
 
   #ifdef POWERED_BY_VIN
     #define BattDefaultConfig DEFINE_BATTERY(0, 0, 15.0, 0, BM_NOPIN, 0, 0) // v2 shield powered via VIN (no diode)
-  #else
+  #else // powered by power jack : ACTIF
     #define BattDefaultConfig DEFINE_BATTERY(0, 0, 15.0, 0.82, BM_NOPIN, 0, 0) // v2 shield powered via power jack
   #endif
 
@@ -296,10 +296,12 @@ void setup() /* Main setup function, called one time at bootup initialize all sy
     PID[SONAR_ALTITUDE_HOLD_PID_IDX].windupGuard = PID[BARO_ALTITUDE_HOLD_PID_IDX].windupGuard;
 #endif
   
-/* #ifdef BattMonitor // NON ACTIF */
-/*     initializeBatteryMonitor(sizeof(batteryData) / sizeof(struct BatteryData), batteryMonitorAlarmVoltage); */
-/*     vehicleState |= BATTMONITOR_ENABLED; */
-/* #endif */
+#ifdef BattMonitor // ACTIF
+
+    initializeBatteryMonitor(sizeof(batteryData) / sizeof(struct BatteryData), batteryMonitorAlarmVoltage); // batteryMonitorAlarmVoltage defined into DataStorage at value 3.33
+    vehicleState |= BATTMONITOR_ENABLED;
+
+#endif
 
 #if defined(BinaryWrite) || defined(BinaryWritePID)
   
@@ -432,11 +434,11 @@ void process10HzTask2() //  * low priority 10Hz task 2
   G_Dt = (currentTime - lowPriorityTenHZpreviousTime) / 1000000.0;
   lowPriorityTenHZpreviousTime = currentTime;
   
-  /* #if defined(BattMonitor) // NON ACTIF */
+  #if defined(BattMonitor) // ACTIF
   
-  /*   measureBatteryVoltage(G_Dt*1000.0); */
+    measureBatteryVoltage(G_Dt*1000.0);
 
-  /* #endif */
+  #endif
 
   readSerialCommand(); // LECTURE DE COMMANDE SUR LA VOIE SERIE USB
   sendSerialTelemetry();
