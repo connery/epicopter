@@ -223,7 +223,7 @@ void updateGps() {
 }
 
 boolean haveAGpsLock() {
-  return (gpsData.state > GPS_NOFIX) && (gpsData.sats >= MIN_NB_SATS_IN_USE);
+  return (gpsData.state > GPS_NOFIX) && (gpsData.sats >= MIN_NB_SATS_IN_USE); // gpsData.state > 1 et nbr de sattelite(s) actif(s) : definit a la valeur 0 dans le fichier GpsAdapter.h
 }
 
 long getCourse() {
