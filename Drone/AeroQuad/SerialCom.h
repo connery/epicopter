@@ -200,9 +200,16 @@ void readSerialCommand()
       case 'O': // define waypoints
       #ifdef UseGPSNavigator
         missionNbPoint = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
-        waypoint[missionNbPoint].latitude = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
-        waypoint[missionNbPoint].longitude = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
-        waypoint[missionNbPoint].altitude = readIntegerSerial(); // retourne un int et placement du curseur apres le ';'
+
+	add_waypoint(missionNbPoint);
+
+	set_waypointlist_latitude(readIntegerSerial());
+	set_waypointlist_longitude(readIntegerSerial());
+	set_waypointlist_altitude(readIntegerSerial());
+
+        //waypoint[missionNbPoint].latitude = readIntegerSerial();
+        //waypoint[missionNbPoint].longitude = readIntegerSerial();
+        //waypoint[missionNbPoint].altitude = readIntegerSerial();
       #else
       
 	for (byte i = 0; i < 4; i++)
@@ -542,12 +549,23 @@ void sendSerialTelemetry() {
 
   case 'o': // send waypoints
     #ifdef UseGPSNavigator
-      for (byte index = 0; index < MAX_WAYPOINTS; index++) {
-        PrintValueComma(index);
-        PrintValueComma(waypoint[index].latitude);
-        PrintValueComma(waypoint[index].longitude);
-        PrintValueComma(waypoint[index].altitude);
-      }
+    
+      for ( struct GeodeticPosition * begin = waypointlist; waypointlist ; waypointlist = waypointlist->next)
+        {
+          PrintValueComma(waypointlist->point_nb);
+          PrintValueComma(waypointlist->latitude);
+          PrintValueComma(waypointlist->longitude);
+          PrintValueComma(waypointlist->altitude);
+        }
+      waypointlist = begin;
+    
+      /* for (byte index = 0; index < MAX_WAYPOINTS; index++) { */
+      /*   PrintValueComma(index); */
+      /*   PrintValueComma(waypoint[index].latitude); */
+      /*   PrintValueComma(waypoint[index].longitude); */
+      /*   PrintValueComma(waypoint[index].altitude); */
+      /* } */
+
     #else
       PrintDummyValues(4);
     #endif

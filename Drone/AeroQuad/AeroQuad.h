@@ -234,6 +234,7 @@ void reportVehicleState();
 
     int waypointIndex = -1;    
     float distanceToDestination = 99999999.0;
+
     GeodeticPosition waypoint[MAX_WAYPOINTS] = {
       GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION,
       GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION,
