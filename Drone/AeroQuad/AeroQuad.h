@@ -253,9 +253,9 @@ struct GeodeticPosition * add_waypoint(int point_nb)
 {
   struct GeodeticPosition * new_waypoint;
 
-  if (waypointlist != 0) {for ( ; (waypointlist->prev) ; waypointlist = waypointlist->prev)}
+  if (waypointlist != 0) {for ( ; (waypointlist->prev) ; waypointlist = waypointlist->prev); }
 
-  new_waypoint = malloc(sizeof(* new_waypoint));
+  new_waypoint = malloc(sizeof(struct GeodeticPosition));
 
   new_waypoint->point_nb = point_nb;
   new_waypoint->latitude = 0;
@@ -273,7 +273,7 @@ struct GeodeticPosition * add_waypoint(int point_nb)
 
 struct GeodeticPosition * show_waypointlist()
 {
-  for ( ; waypointlist ; waypointlist = waypointlist->next)
+  for ( ; waypointlist ; waypointlist = waypointlist->next);
 
     return (waypointlist);
 }
