@@ -107,7 +107,7 @@ struct GeodeticPosition * add_waypoint(int point_nb)
 
 struct GeodeticPosition * show_waypointlist()
 {
-  for ( ; waypoint ; waypoint = waypoint->next)
+  for ( ; waypointlist ; waypointlist = waypointlist->next)
 
   return (waypointlist);
 }
