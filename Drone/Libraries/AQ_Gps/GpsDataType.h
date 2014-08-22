@@ -58,6 +58,12 @@ struct GeodeticPosition {
   long	altitude;
 };
 
+struct GeodeticPosition * add_waypoint(int point_nb);
+struct GeodeticPosition * show_waypointlist();
+struct GeodeticPosition * set_waypointlist_latitude(long latitude);
+struct GeodeticPosition * set_waypointlist_longitude(long longitude);
+struct GeodeticPosition * set_waypointlist_altitude(long altitude);
+
 struct gpsData {
     int32_t  lat,lon;  // position as degrees (*10E7)
     int32_t  course;   // degrees (*10E5)
@@ -78,8 +84,6 @@ struct gpsConfigEntry {
   const unsigned char *data;
   const unsigned char len;
 };
-
-
 
 struct GeodeticPosition * waypointlist = 0; // Nouveau conteneur de positions
 
