@@ -243,64 +243,9 @@ void reportVehicleState();
       
     GeodeticPosition positionHoldPointToReach = GPS_INVALID_POSITION;
 
+    struct GeodeticPosition * waypointlist = 0; // Nouveau conteneur de positions          
+    struct GeodeticPosition * waypointlist_begin = 0;          
 
-
-
-
-struct GeodeticPosition * waypointlist = 0; // Nouveau conteneur de positions                                                                                                                                                             
-
-struct GeodeticPosition * add_waypoint(int point_nb)
-{
-  struct GeodeticPosition * new_waypoint;
-
-  if (waypointlist != 0) {for ( ; (waypointlist->prev) ; waypointlist = waypointlist->prev); }
-
-  new_waypoint = malloc(sizeof(struct GeodeticPosition));
-
-  new_waypoint->point_nb = point_nb;
-  new_waypoint->latitude = 0;
-  new_waypoint->longitude = 0;
-  new_waypoint->altitude = 0;
-
-  new_waypoint->next = waypointlist;
-  new_waypoint->prev = 0;
-
-  if (waypointlist != 0) {waypointlist->prev = new_waypoint;}
-  waypointlist = new_waypoint;
-
-  return (waypointlist);
-}
-
-struct GeodeticPosition * show_waypointlist()
-{
-  for ( ; waypointlist ; waypointlist = waypointlist->next);
-
-    return (waypointlist);
-}
-
-struct GeodeticPosition * set_waypointlist_latitude(long latitude)
-{
-  waypointlist->latitude = latitude;
-
-  return (waypointlist);
-}
-
-struct GeodeticPosition * set_waypointlist_longitude(long longitude)
-{
-  waypointlist->longitude = longitude;
-
-  return (waypointlist);
-}
-
-struct GeodeticPosition * set_waypointlist_altitude(long altitude)
-{
-  waypointlist->altitude = altitude;
-
-  return (waypointlist);
-}
-
-
-    
     void evaluateMissionPositionToReach();
     void processGpsNavigation();
   #endif

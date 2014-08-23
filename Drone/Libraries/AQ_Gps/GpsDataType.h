@@ -50,21 +50,20 @@ enum {
 
 #define GPS_INVALID_POSITION {0, 0, 0, GPS_INVALID_ANGLE, GPS_INVALID_ANGLE, 0}
 
-struct GeodeticPosition {
+struct GeodeticPosition
+{
+  int	number;
 
   struct GeodeticPosition * next;
   struct GeodeticPosition * prev;
-
-  int	point_nb;
 
   long	latitude;
   long	longitude;
   long	altitude;
 };
 
-typedef struct GeodeticPosition struct_GeodeticPosition;
-
-struct gpsData {
+struct gpsData
+{
     int32_t  lat,lon;  // position as degrees (*10E7)
     int32_t  course;   // degrees (*10E5)
     uint32_t speed;    // cm/s
@@ -80,9 +79,61 @@ struct gpsData {
     uint32_t idlecount; // how many times gpsUpdate has been called without getting a valid message
 };
 
-struct gpsConfigEntry {
+struct gpsConfigEntry
+{
   const unsigned char *data;
   const unsigned char len;
 };
+
+struct GeodeticPosition * add_waypoint(int point_nb)
+{
+  struct GeodeticPosition * new_waypoint;
+
+  if (waypointlist != 0) {for ( ; (waypointlist->prev) ; waypointlist = waypointlist->prev); }
+
+  new_waypoint = (struct GeodeticPosition *)malloc(sizeof(* new_waypoint));
+
+  new_waypoint->number = point_nb;
+  new_waypoint->latitude = 0;
+  new_waypoint->longitude = 0;
+  new_waypoint->altitude = 0;
+
+  new_waypoint->next = waypointlist;
+  new_waypoint->prev = 0;
+
+  if (waypointlist != 0) {waypointlist->prev = new_waypoint;}
+  waypointlist = new_waypoint;
+
+  return (waypointlist);
+}
+
+struct GeodeticPosition * show_waypointlist()
+{
+  for ( ; waypointlist ; waypointlist = waypointlist->next);
+
+  return (waypointlist);
+}
+
+struct GeodeticPosition * set_waypointlist_latitude(long latitude)
+{
+  waypointlist->latitude = latitude;
+
+  return (waypointlist);
+}
+
+struct GeodeticPosition * set_waypointlist_longitude(long longitude)
+{
+  waypointlist->longitude = longitude;
+
+  return (waypointlist);
+}
+
+struct GeodeticPosition * set_waypointlist_altitude(long altitude)
+{
+  waypointlist->altitude = altitude;
+
+  return (waypointlist);
+}
+
 
 #endif

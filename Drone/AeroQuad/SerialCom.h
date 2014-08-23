@@ -550,14 +550,14 @@ void sendSerialTelemetry() {
   case 'o': // send waypoints
     #ifdef UseGPSNavigator
     
-      for ( struct GeodeticPosition * begin = waypointlist; waypointlist ; waypointlist = waypointlist->next)
+      for ( waypointlist_begin = waypointlist; waypointlist ; waypointlist = waypointlist->next)
         {
           PrintValueComma(waypointlist->point_nb);
           PrintValueComma(waypointlist->latitude);
           PrintValueComma(waypointlist->longitude);
           PrintValueComma(waypointlist->altitude);
         }
-      waypointlist = begin;
+      waypointlist = waypointlist_begin;
     
       /* for (byte index = 0; index < MAX_WAYPOINTS; index++) { */
       /*   PrintValueComma(index); */
