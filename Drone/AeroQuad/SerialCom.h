@@ -552,7 +552,7 @@ void sendSerialTelemetry() {
     
       for ( waypointlist_begin = waypointlist; waypointlist ; waypointlist = waypointlist->next)
         {
-          PrintValueComma(waypointlist->point_nb);
+          PrintValueComma(waypointlist->number);
           PrintValueComma(waypointlist->latitude);
           PrintValueComma(waypointlist->longitude);
           PrintValueComma(waypointlist->altitude);

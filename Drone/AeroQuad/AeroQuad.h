@@ -243,9 +243,6 @@ void reportVehicleState();
       
     GeodeticPosition positionHoldPointToReach = GPS_INVALID_POSITION;
 
-    struct GeodeticPosition * waypointlist = 0; // Nouveau conteneur de positions          
-    struct GeodeticPosition * waypointlist_begin = 0;          
-
     void evaluateMissionPositionToReach();
     void processGpsNavigation();
   #endif

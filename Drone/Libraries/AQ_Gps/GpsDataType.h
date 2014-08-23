@@ -85,6 +85,9 @@ struct gpsConfigEntry
   const unsigned char len;
 };
 
+struct GeodeticPosition * waypointlist = 0; // Nouveau conteneur de positions
+struct GeodeticPosition * waypointlist_begin = 0;
+
 struct GeodeticPosition * add_waypoint(int point_nb)
 {
   struct GeodeticPosition * new_waypoint;
