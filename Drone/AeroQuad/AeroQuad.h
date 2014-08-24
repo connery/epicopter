@@ -212,16 +212,18 @@ void reportVehicleState();
 /**
  * GPS navigation global declaration
  */
-#define MAX_WAYPOINTS 16  // needed for EEPROM adr offset declarations
+#define MAX_WAYPOINTS 16  // needed for EEPROM adr offset declarations // : deprecie (Geo)
 #if defined (UseGPS)
 
   #include <GpsAdapter.h>
   
   #define DEFAULT_HOME_ALTITUDE 5  // default home base altitude is equal to 5 meter
+
   GeodeticPosition homePosition = GPS_INVALID_POSITION; 
   GeodeticPosition missionPositionToReach = GPS_INVALID_POSITION;  // in case of no GPS navigator, indicate the home position into the OSD
 
   #if defined UseGPSNavigator
+
     byte navigationState = OFF;  // ON, OFF or ALTPANIC
     byte positionHoldState = OFF;  // ON, OFF or ALTPANIC
 
@@ -232,19 +234,20 @@ void reportVehicleState();
     boolean isPositionHoldInitialized = false;
     boolean isGpsNavigationInitialized = false;
 
-    int waypointIndex = -1;    
+    /* int waypointIndex = -1; */    
     float distanceToDestination = 99999999.0;
 
-    GeodeticPosition waypoint[MAX_WAYPOINTS] = {
-      GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION,
-      GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION,
-      GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION,
-      GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION};
+    /* GeodeticPosition waypoint[MAX_WAYPOINTS] = { */
+    /*   GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, */
+    /*   GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, */
+    /*   GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, */
+    /*   GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION, GPS_INVALID_POSITION}; */
       
     GeodeticPosition positionHoldPointToReach = GPS_INVALID_POSITION;
 
     void evaluateMissionPositionToReach();
     void processGpsNavigation();
+
   #endif
 #endif
 //////////////////////////////////////////////////////
@@ -252,19 +255,22 @@ void reportVehicleState();
 /**
  * EEPROM global section
  */
-typedef struct {
+typedef struct
+{
   float p;
   float i;
   float d;
 } t_NVR_PID;
 
-typedef struct {
+typedef struct
+{
   float slope;
   float offset;
   float smooth_factor;
 } t_NVR_Receiver;
 
-typedef struct {    
+typedef struct
+{    
   t_NVR_PID ROLL_PID_GAIN_ADR;
   t_NVR_PID LEVELROLL_PID_GAIN_ADR;
   t_NVR_PID YAW_PID_GAIN_ADR;
@@ -330,8 +336,12 @@ typedef struct {
   float SERVOMAXYAW_ADR;
   float SERVOTXCHANNELS_ADR;
   // GPS mission storing
+
   float GPS_MISSION_NB_POINT_ADR;
-  GeodeticPosition WAYPOINT_ADR[MAX_WAYPOINTS];
+  GeodeticPosition WAYPOINT_ADR[MAX_WAYPOINTS]; // Attribut deprecie (Geo)
+
+  GeodeticPosition * WAYPOINT_ADR_LIST = 0; // Nouvel attribut (Geo)
+
 } t_NVR_Data;  
 
 
