@@ -234,7 +234,7 @@ void reportVehicleState();
     boolean isPositionHoldInitialized = false;
     boolean isGpsNavigationInitialized = false;
 
-    /* int waypointIndex = -1; */    
+    int waypointIndex = -1; // USED IN : GPSNAVIGATOR.H FOR EVALUATEMISSIONPOSITIONTOREACH     
     float distanceToDestination = 99999999.0;
 
     /* GeodeticPosition waypoint[MAX_WAYPOINTS] = { */
