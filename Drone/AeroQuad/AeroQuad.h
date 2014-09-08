@@ -340,8 +340,6 @@ typedef struct
   float GPS_MISSION_NB_POINT_ADR;
   GeodeticPosition WAYPOINT_ADR[MAX_WAYPOINTS]; // Attribut deprecie (Geo)
 
-  GeodeticPosition * WAYPOINT_ADR_LIST = 0; // Nouvel attribut (Geo)
-
 } t_NVR_Data;  
 
 
