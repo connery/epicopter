@@ -550,12 +550,15 @@ void sendSerialTelemetry() {
   case 'o': // send waypoints
     #ifdef UseGPSNavigator
     
-      for ( waypointlist_begin = waypointlist; waypointlist ; waypointlist = waypointlist->next)
+      for ( waypointlist_begin = waypointlist; waypointlist && waypointlist->next ; waypointlist = waypointlist->next) ;
+      for ( waypointlist_begin = waypointlist; waypointlist && waypointlist->prev ; waypointlist = waypointlist->prev)
         {
+          //SERIAL_PRINT("_");
           PrintValueComma(waypointlist->number);
           PrintValueComma(waypointlist->latitude);
           PrintValueComma(waypointlist->longitude);
           PrintValueComma(waypointlist->altitude);
+          //SERIAL_PRINT("_END_");
         }
       waypointlist = waypointlist_begin;
     
