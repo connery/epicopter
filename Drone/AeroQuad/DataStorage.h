@@ -527,25 +527,31 @@ void writeEEPROM()
     writePID(GPSROLL_PID_IDX, GPSROLL_PID_GAIN_ADR);
     writePID(GPSPITCH_PID_IDX, GPSPITCH_PID_GAIN_ADR);
     writePID(GPSYAW_PID_IDX, GPSYAW_PID_GAIN_ADR);
-    
-    for (byte location = 0; location < MAX_WAYPOINTS; location++)
-      {
+
+    // DEPRECIATE
+
+    /* for (byte location = 0; location < MAX_WAYPOINTS; location++) */
+    /*   { */
 	/* writeLong(waypoint[location].longitude, WAYPOINT_ADR[location].longitude); */
 	/* writeLong(waypoint[location].latitude, WAYPOINT_ADR[location].latitude); */
 	/* writeLong(waypoint[location].altitude, WAYPOINT_ADR[location].altitude); */
 
-
-	for ( waypointlist_begin = waypointlist; waypointlist ; waypointlist = waypointlist->next)
-	  {
-	    writeLong(waypointlist->longitude, waypointlist->longitude);
-	    writeLong(waypointlist->latitude, waypointlist->latitude);
-	    writeLong(waypointlist->altitude, waypointlist->altitude); 
-	  }
-	waypointlist = waypointlist_begin;
-
-
 	// PROTYPE LIKE THIS : writeLong(long, int);
-      }
+      /* } */
+
+
+    // DEV
+    
+    /* for ( waypointlist_begin = waypointlist; waypointlist ; waypointlist = waypointlist->next) */
+    /*   { */
+    /*     writeLong(waypointlist->longitude, waypointlist->longitude); */
+    /*     writeLong(waypointlist->latitude, waypointlist->latitude); */
+    /*     writeLong(waypointlist->altitude, waypointlist->altitude);  */
+    /*   } */
+    /* waypointlist = waypointlist_begin; */
+
+    
+    
        
   #endif
 
