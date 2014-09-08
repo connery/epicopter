@@ -120,7 +120,8 @@ void initHomeBase() {
   /** 
    * @return true if there is a mission to execute
    */
-  boolean haveMission() {
+  boolean haveMission()
+  {
     return missionNbPoint != 0;
   }
 
@@ -128,33 +129,41 @@ void initHomeBase() {
   /**
    * Evalutate the position to reach depending of the state of the mission 
    */
-  void evaluateMissionPositionToReach() {
+  void evaluateMissionPositionToReach()
+  {
 
-    if (waypointIndex == -1) { // if mission have not been started
-      waypointIndex++;
-    }
-    
-    if (waypointIndex < MAX_WAYPOINTS && distanceToDestination < MIN_DISTANCE_TO_REACHED) {
-      waypointIndex++;
-    }
-    
-    if (waypointIndex >= MAX_WAYPOINTS || 
-        waypoint[waypointIndex].altitude == GPS_INVALID_ALTITUDE) { // if mission is completed, last step is to go home 2147483647 == invalid altitude
-
-      missionPositionToReach.latitude = homePosition.latitude;
-      missionPositionToReach.longitude = homePosition.longitude;
-      missionPositionToReach.altitude = homePosition.altitude; 
-    }
-    else {
-      
-      missionPositionToReach.latitude = waypoint[waypointIndex].latitude;
-      missionPositionToReach.longitude = waypoint[waypointIndex].longitude;
-      missionPositionToReach.altitude = (waypoint[waypointIndex].altitude/100);
-
-      if (missionPositionToReach.altitude > 2000.0) {
-        missionPositionToReach.altitude = 2000.0; // fix max altitude to 2 km
+    if (waypointIndex == -1) // if mission have not been started
+      {
+	waypointIndex++;
       }
-    }
+    
+    if (waypointIndex < MAX_WAYPOINTS && distanceToDestination < MIN_DISTANCE_TO_REACHED)
+      {
+	waypointIndex++;
+      }
+    
+
+    // CODE A MODIFIER
+
+    /* if (waypointIndex >= MAX_WAYPOINTS ||  waypoint[waypointIndex].altitude == GPS_INVALID_ALTITUDE) */
+    /*   { // if mission is completed, last step is to go home 2147483647 == invalid altitude */
+
+    /* 	missionPositionToReach.latitude = homePosition.latitude; */
+    /* 	missionPositionToReach.longitude = homePosition.longitude; */
+    /* 	missionPositionToReach.altitude = homePosition.altitude;  */
+    /*   } */
+    /* else */
+    /*   { */
+      
+    /* 	missionPositionToReach.latitude = waypoint[waypointIndex].latitude; */
+    /* 	missionPositionToReach.longitude = waypoint[waypointIndex].longitude; */
+    /* 	missionPositionToReach.altitude = (waypoint[waypointIndex].altitude/100); */
+
+    /* 	if (missionPositionToReach.altitude > 2000.0) */
+    /* 	  { */
+    /* 	    missionPositionToReach.altitude = 2000.0; // fix max altitude to 2 km */
+    /* 	  } */
+    /*   } */
   }
 
 
