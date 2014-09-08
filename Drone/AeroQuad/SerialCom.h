@@ -551,7 +551,7 @@ void sendSerialTelemetry() {
     #ifdef UseGPSNavigator
     
       for ( waypointlist_begin = waypointlist; waypointlist && waypointlist->next ; waypointlist = waypointlist->next) ;
-      for ( waypointlist_begin = waypointlist; waypointlist && waypointlist->prev ; waypointlist = waypointlist->prev)
+      for ( waypointlist_begin = waypointlist; waypointlist ; waypointlist = waypointlist->prev)
         {
           //SERIAL_PRINT("_");
           PrintValueComma(waypointlist->number);
