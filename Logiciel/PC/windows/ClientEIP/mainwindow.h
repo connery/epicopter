@@ -11,7 +11,7 @@
 #include <QDebug>
 #include "form.h"
 #include "login.h"
-#include "hauteur.h"
+
 #include "sender.h"
 
 namespace Ui
@@ -23,10 +23,14 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+protected:
+      void closeEvent(QCloseEvent *event);
+
+
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-   // void geoCode(QString local);
+
     void load();
     void SetAd(QString ad);
     QString getCurrentDir();
@@ -38,13 +42,11 @@ private:
     QString adresse;
     int idmap;
     Sender *s;
-   // QWebView *mView;
+
 
 private slots:
-    void on_btnLogin_clicked();
-    void on_Btnvalidation_clicked();
-    void on_btnMap_clicked();
-    void on_cancel_clicked();
+    void validate();
+    void annuler();
 };
 
 #endif // MAINWINDOW_H

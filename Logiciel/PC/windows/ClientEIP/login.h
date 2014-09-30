@@ -31,6 +31,7 @@ public:
     QString getCurrentDir();
 protected:
     virtual void changeEvent(QEvent *e);
+     void closeEvent(QCloseEvent *event);
 
 private:
     Ui::Login *m2_ui;
@@ -42,7 +43,6 @@ private:
 
 private slots:
     void on_BtnLogin_clicked();
-    void on_BtnQuit_clicked();
 };
 
 #endif // LOGIN_H

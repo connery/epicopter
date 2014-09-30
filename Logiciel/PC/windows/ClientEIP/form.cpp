@@ -31,6 +31,12 @@ void Form::changeEvent(QEvent *e)
     }
 }
 
+void Form::closeEvent(QCloseEvent *event)
+{
+     s->ecrit("END;");
+     event->accept();
+}
+
 void Form::setSender(Sender *s1)
 {
     s = s1;

@@ -7,15 +7,22 @@ frm::frm(QWidget *parent) :
 {
     ui->setupUi(this);
     avancement = 0;
-    QPalette p;
+
+    /*QPalette p;
     p = palette();
     p.setBrush(QPalette::Window, QBrush(QPixmap("/data/blueBackground.png")));
-    setPalette(p);
+    setPalette(p);*/
 }
 
 frm::~frm()
 {
     delete ui;
+}
+
+void frm::closeEvent(QCloseEvent *event)
+{
+   //  s->ecrit("END;");
+   //  event->accept();
 }
 
 

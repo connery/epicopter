@@ -35,6 +35,7 @@ public:
 protected:
     virtual void changeEvent(QEvent *e);
     void resizeEvent ( QResizeEvent * event );
+      void closeEvent(QCloseEvent *event);
 
 private:
     Ui::Form *m_ui;

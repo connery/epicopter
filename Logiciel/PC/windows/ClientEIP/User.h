@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#define IP_CLIENT "25.113.94.163"
+#define IP_CLIENT "192.168.0.10"
 #define PORT_CLIENT 48888
 #define PACKET_SIZE 4096
 #define HEADER_SIZE sizeof(Header)
