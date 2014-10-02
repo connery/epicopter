@@ -6,17 +6,25 @@ frm::frm(QWidget *parent) :
     ui(new Ui::frm)
 {
     ui->setupUi(this);
-    QPalette p;
-    p = palette();
-    p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/blueBackground.png")));
-    setPalette(p);
     avancement = 0;
+
+    /*QPalette p;
+    p = palette();
+    p.setBrush(QPalette::Window, QBrush(QPixmap("/data/blueBackground.png")));
+    setPalette(p);*/
 }
 
 frm::~frm()
 {
     delete ui;
 }
+
+void frm::closeEvent(QCloseEvent *event)
+{
+   //  s->ecrit("END;");
+   //  event->accept();
+}
+
 
 QString frm::getCurrentDir(){
     QString CurrentDir = QDir::currentPath();

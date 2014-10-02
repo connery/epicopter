@@ -6,17 +6,61 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    ui->label->setPixmap(QPixmap(getCurrentDir()+"/data/2015_new_logo_epicopter.png"));
-    ui->webView->setMaximumHeight(250);
-    ui->webView->setMinimumHeight(250);
+
+    /* pallete :  mettre une image dans un item
     QPalette p;
     p = palette();
     p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/blueBackground.png")));
     setPalette(p);
+    */
+
+
+
+    //load la map avec l'id
+    /*
+     *
+     * à tester avec la base op
+     *
+    */
+    /*
+    s->ecrit("LAN;map;");
+    s->setTaille(20);
+    QString andwser=s->getMsg();
+    andwser =andwser.mid(andwser.indexOf("LAN;"),andwser.indexOf("EOF;"));
+    andwser = andwser.mid(4,4);
+    qDebug()<<andwser;
+    idmap = andwser.toInt();
+    qDebug()<<"test"+QString::number(idmap);
+    ui->maWeb->load(QUrl("http://www.talatrique.fr/testEip/map.html?i_ui="+andwser));
+    ui->webView->load(QUrl("http://www.talatrique.fr/MickaGraphEIP/mickaGraph"));
+    */
+
+
+    ui->maWeb->load(QUrl("http://www.talatrique.fr/testEip/map.html?i_ui=5"));
+
+    connect(ui->actionValider,SIGNAL(triggered()),this,SLOT(validate()));
 }
 
 
 
+void MainWindow::validate()
+{
+    Form *parcour = new Form();
+    parcour->setId(idmap);
+    parcour->setSender(s);
+}
+
+void MainWindow::annuler()
+{
+
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+   //  s->ecrit("END;");
+     event->accept();
+}
 
 MainWindow::~MainWindow()
 {
@@ -41,40 +85,4 @@ void MainWindow::load()
 QString MainWindow::getCurrentDir(){
     QString CurrentDir = QDir::currentPath();
     return CurrentDir;
-}
-
-void MainWindow::on_btnMap_clicked()
-{
-
-     ui->maWeb->load(QUrl("http://www.talatrique.fr/testEip/map.html"));
-     ui->webView->load(QUrl("http://www.talatrique.fr/MickaGraphEIP/mickaGraph"));
-
-/*
-     s->ecrit("LAN;map;");
-     s->setTaille(20);
-     QString andwser=s->getMsg();
-     andwser =andwser.mid(andwser.indexOf("LAN;"),andwser.indexOf("EOF;"));
-     andwser = andwser.mid(4,4);
-     qDebug()<<andwser;
-     idmap = andwser.toInt();
-     qDebug()<<"test"+QString::number(idmap);*/
-}
-
-void MainWindow::on_Btnvalidation_clicked()
-{
-   Form *parcour = new Form();
-   parcour->setId(idmap);
-   parcour->setSender(s);
-}
-
-void MainWindow::on_btnLogin_clicked()
-{
-  // Login *log = new Login();
-
-}
-
-void MainWindow::on_cancel_clicked()
-{
-    s->ecrit("END;");
-    exit(-1);
 }

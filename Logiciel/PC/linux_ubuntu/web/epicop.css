@@ -1,0 +1,9 @@
+#map_canvas {
+	width: 70%;
+	float:left;
+}
+
+#conteneur1 {
+	width: 30%; 
+	float:right;
+}

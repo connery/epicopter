@@ -34,6 +34,8 @@ public:
 
 protected:
     virtual void changeEvent(QEvent *e);
+    void resizeEvent ( QResizeEvent * event );
+      void closeEvent(QCloseEvent *event);
 
 private:
     Ui::Form *m_ui;
@@ -46,6 +48,9 @@ private slots:
     void on_Btnload_clicked();
     void on_pushButton_2_clicked();
     void on_btnEnvoyer_clicked();
+    void on_tableWidget_cellEntered(int row, int column);
+    void on_tableWidget_cellChanged(int row, int column);
+
 };
 
 #endif // FORM_H

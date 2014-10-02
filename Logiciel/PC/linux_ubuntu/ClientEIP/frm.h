@@ -21,14 +21,18 @@ public:
     void ajout(QString latitude, QString longitude, QString hauteur);
     void ecriture();
     void init();
-    QString getCurrentDir();
     void fin();
+    QString getCurrentDir();
     ~frm();
 
 private:
     Ui::frm *ui;
     QList<QString> list;
     int avancement;
+
+protected:
+      void closeEvent(QCloseEvent *event);
+
 
 private slots:
     void on_pushButton_clicked();

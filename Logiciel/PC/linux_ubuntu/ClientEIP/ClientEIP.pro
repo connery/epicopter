@@ -10,7 +10,7 @@ QT       += core gui \
             xml \
             xmlpatterns \
             sql \
-            webkit
+            webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,8 +27,7 @@ SOURCES += main.cpp\
     sender.cpp \
     tcpclientproto.cpp \
     xmlread.cpp \
-    mygraphicsview.cpp \
-    hauteur.cpp
+    mygraphicsview.cpp
 
 HEADERS  += mainwindow.h \
     form.h \
@@ -39,12 +38,10 @@ HEADERS  += mainwindow.h \
     tcpclientproto.h \
     xmlread.h \
     User.h \
-    mygraphicsview.h \
-    hauteur.h
+    mygraphicsview.h
 
 FORMS    += mainwindow.ui \
     form.ui \
     frm.ui \
     login.ui \
-    xmlread.ui \
-    hauteur.ui
+    xmlread.ui

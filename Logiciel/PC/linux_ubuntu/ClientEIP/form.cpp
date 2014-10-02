@@ -11,7 +11,8 @@ Form::Form(QWidget *parent) :
     p.setBrush(QPalette::Window, QBrush(QPixmap(getCurrentDir()+"/data/blueBackground.png")));
     setPalette(p);
     this->show();
-}
+    m_ui->tableWidget->horizontalHeader()->resizeSections(QHeaderView::Stretch);
+ }
 
 Form::~Form()
 {
@@ -28,6 +29,12 @@ void Form::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void Form::closeEvent(QCloseEvent *event)
+{
+     s->ecrit("END;");
+     event->accept();
 }
 
 void Form::setSender(Sender *s1)
@@ -93,6 +100,7 @@ void Form::on_Btnload_clicked()
 
 void Form::dragTable()
 {
+      m_ui->tableWidget->horizontalHeader()->resizeSections(QHeaderView::Stretch);
 //    QString ligne ="Longitude \t - \t Latitude \t - \t Hauteur\n";
      QTableWidgetItem *monItem;
       m_ui->tableWidget->setRowCount(coord.size()/3);
@@ -101,13 +109,13 @@ void Form::dragTable()
     while (i < coord.length()) {
         QString v1,v2,v3;
         v1 = coord[i];
-        qDebug()<<"position"+QString::number(ligne)+"latitude" + v1;
+        //qDebug()<<"position"+QString::number(ligne)+"latitude" + v1;
 
         v2 = coord[i+1];
-        qDebug()<<"longitude"+v2;
+        //qDebug()<<"longitude"+v2;
 
         v3 = coord[i+2];
-        qDebug()<<"hauteur"+v3;
+        //qDebug()<<"hauteur"+v3;
 
        // ligne+= v1+" \t - \t "+v2+" \t - \t "+v3+"\n";
         monItem = new QTableWidgetItem(v1);
@@ -122,43 +130,91 @@ void Form::dragTable()
 
     }
      //m_ui->textBrowser->setText(ligne);
+
 }
 
 
 void Form::on_pushButton_clicked()
 {
-    QString andwser, yorn;
+    QString andwser, yorn, lat, lon, hau;
+    coord.clear();
     s->ecrit("VAL;"+QString::number(id)+";");
 
-    while(andwser != "VAL;fin;")
+    while(andwser != ";fin;")
     {
+       // qDebug()<<"boucle";
         s->setTaille(55);
         andwser = s->getMsg();
-        qDebug()<<andwser;
+        //qDebug()<<andwser;
         andwser =andwser.mid(andwser.indexOf("VAL;"),andwser.indexOf("EOF;"));
-        qDebug()<<andwser;
+        //qDebug()<<andwser;
         if (andwser.mid(0,4)== "VAL;")
             yorn = "y";
         else
             yorn = "n";
-        s->ecrit("VAL;"+yorn+";");
 
+        if (andwser != "VAL;fin;")
+        {
+        andwser =andwser.mid(andwser.indexOf("VAL;"+4));
+
+            QString tmp = "";
+            /* parsing à tester */
+                tmp = andwser.mid(andwser.indexOf(";")+1);
+                qDebug()<<"andwser : "+andwser;
+
+                lat = tmp.mid(0, lat.indexOf(";"));
+                qDebug()<<"lat : "+lat;
+                tmp.remove(0,lat.size()+1);
+
+                qDebug()<<"tmp : "+tmp;
+
+                lon = tmp.mid(0,tmp.indexOf(";"));
+                lon = lon.mid(0, lon.indexOf(";"));
+                // qDebug()<<"lon : "+lon;
+
+                tmp.remove(0,lon.size()+1);
+                qDebug()<<"tmp : "+tmp;
+                //qDebug()<<"hau : "+hau;
+
+                hau = tmp.mid(0,tmp.indexOf(";"));
+                hau = hau.mid(0, hau.indexOf(";"));tmp = "";
+                /* parsing à tester */
+                tmp = andwser.mid(andwser.indexOf(";")+1);
+                qDebug()<<"andwser : "+andwser;
+
+                lat = tmp.mid(0, lat.indexOf(";"));
+                qDebug()<<"lat : "+lat;
+                tmp.remove(0,lat.size()+1);
+
+                qDebug()<<"tmp : "+tmp;
+
+                lon = tmp.mid(0,tmp.indexOf(";"));
+                lon = lon.mid(0, lon.indexOf(";"));
+                    // qDebug()<<"lon : "+lon;
+
+                tmp.remove(0,lon.size()+1);
+                 qDebug()<<"tmp : "+tmp;
+                    //qDebug()<<"hau : "+hau;
+
+                hau = tmp.mid(0,tmp.indexOf(";"));
+                hau = hau.mid(0, hau.indexOf(";"));
+            coord << lat << lon <<hau;
+        }
+        else
+            break;
+
+
+        s->ecrit("VAL;"+yorn+";");
+         //qDebug()<< andwser;
 
     }
+    qDebug()<<"avant dragtable";
+    dragTable();
 }
 
 void Form::on_pushButton_2_clicked()
 {
-/*    frm *xml = new frm();
-    xml->show();*/
-    //creer une list de position ...
-    coord << "05" << "10" << "15";
-    coord << "25" << "30" << "35";
-    coord << "45" << "50" << "55";
-    coord << "65" << "70" << "75";
     frm *h = new frm();
-    // boucle de lecture de la list
-            //utiliser la fonction ajout
     int i = 0;
     while (i < coord.length()) {
         QString v1,v2,v3;
@@ -169,10 +225,48 @@ void Form::on_pushButton_2_clicked()
         i+= 3;
     }
     h->show();
-
 }
 
 void Form::on_btnEnvoyer_clicked()
 {
+    /*à tester*/
+    QString andwser;
+     s->ecrit("ENV;"+QString::number(id)+";");
+
+     s->setTaille(55);
+     andwser = s->getMsg();
+     qDebug()<<andwser;
+     andwser =andwser.mid(andwser.indexOf("OK;"),andwser.indexOf("EOF;"));
+
+     int i = 0;
+
+     while(andwser != "NO;" && i < coord.size())
+     {
+        s->ecrit("ENV;"+coord[i]+";"+coord[i+1]+";"+coord[i+2]+";");
+        andwser = s->getMsg();
+        andwser =andwser.mid(andwser.indexOf("NO;"),andwser.indexOf("EOF;"));
+        i+=3;
+     }
+     s->ecrit("ENV;FIN;");
+}
+
+void Form::on_tableWidget_cellEntered(int row, int column)
+{
 
 }
+
+void Form::on_tableWidget_cellChanged(int row, int column)
+{
+    QTableWidgetItem *monItem;
+    monItem =  m_ui->tableWidget->item(row,column);
+    QString text;
+    text = monItem->text();
+    coord[row*3+column] = text;
+}
+
+void Form::resizeEvent(QResizeEvent *event)
+{
+    m_ui->tableWidget->horizontalHeader()->resizeSections(QHeaderView::Stretch);
+    m_ui->tableWidget->verticalHeader()->resizeSections(QHeaderView::Stretch);
+}
+
