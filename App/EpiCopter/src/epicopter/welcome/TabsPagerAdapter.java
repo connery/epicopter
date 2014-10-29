@@ -18,14 +18,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int index) {
 		switch (index) {
 		case 0:
-			Log.e("CAS 0", "GOOGLE MAP CREATED");
 			return new GoogleMapsFragment();
 		case 1:
-			Log.e("CAS 1", "HOME FRAGMENTS CREATED");
 			return new HomeFragment();
 		case 2:
-			Log.e("CAS 2", "POINTSFRAGMENTS CREATED");
-			return new PointsFragment();
+			return new ValiderFragment();
 		}
 		return null;
 	}

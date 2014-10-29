@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -23,7 +22,6 @@ import epicopter.interfaces.LoginInterface;
 import epicopter.main.R;
 import epicopter.utils.SessionManager;
 import epicopter.welcome.MainFragmentActivity;
-import epicopter.welcome.WelcomeGoogleMapsActivity;
 
 public class LoginSuccessFragment extends Fragment implements LoginInterface, DataBaseInterface, TaskCallback {
 
