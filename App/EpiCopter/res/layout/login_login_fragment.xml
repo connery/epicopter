@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- Email input text -->
+
+    <EditText
+        android:id="@+id/editTextLoginEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
+
+    <!-- Password input text -->
+
+    <EditText
+        android:id="@+id/editTextLoginPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:hint="@string/password"
+        android:inputType="numberPassword"
+        android:singleLine="true" />
+
+    <!-- Login button -->
+
+    <Button
+        android:id="@+id/btnMyLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login" />
+
+    <!-- Login facebook button -->
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/login_buttonFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp" />
+
+    <!-- Inscription button -->
+
+    <Button
+        android:id="@+id/buttonInscripton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:text="@string/Inscription" />
+
+    <!-- Message oublié text -->
+
+    <TextView
+        android:id="@+id/textViewForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dip"
+        android:clickable="true"
+        android:text="@string/forgot_password" />
+
+</LinearLayout>
