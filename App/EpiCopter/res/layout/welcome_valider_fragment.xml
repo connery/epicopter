@@ -6,11 +6,20 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="Design Valider Screen"
         android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/WelcomeValiderButtonValider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:text="Valider" />
 
 </RelativeLayout>

@@ -55,11 +55,6 @@ public class MainFragmentActivity extends FragmentActivity implements ActionBar.
 
 	}
 
-	//
-	// public GoogleMap getGoogleMap() {
-	// return ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-	// }
-
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
 		viewPager.setCurrentItem(tab.getPosition());

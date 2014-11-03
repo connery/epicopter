@@ -12,17 +12,22 @@ import android.database.sqlite.SQLiteDatabase;
 public class PointsDBAdapter {
 
 	// Databse fields
-	public static final String	TABLE_POINTS		= "points";
-	public static final String	COLUMN_ID			= "_id";
-	public static final String	COLUMN_ID_VOL		= "_id_vol";
-	public static final String	COLUMN_ALTITUDE		= "_altitude";
-	public static final String	COLUMN_LONGITUDE	= "_longitude";
-	public static final String	COLUMN_HAUTEUR		= "_hauteur";
+	public static final String	TABLE_POINTS			= "points";
+	public static final String	COLUMN_ID				= "_id";
+	public static final int		NUM_COLUMN_ID			= 0;
+	public static final String	COLUMN_ID_VOL			= "_id_vol";
+	public static final int		NUM_COLUMN_ID_VOL		= 1;
+	public static final String	COLUMN_LATITUDE			= "_altitude";
+	public static final int		NUM_COLUMN_LATITUDE		= 2;
+	public static final String	COLUMN_LONGITUDE		= "_longitude";
+	public static final int		NUM_COLUMN_LONGITUDE	= 3;
+	public static final String	COLUMN_HAUTEUR			= "_hauteur";
+	public static final int		NUM_COLUMN_HAUTEUR		= 4;
 
 	// Database fields
 	private SQLiteDatabase		db;
 	private SQLiteManager		dbManager;
-	private String[]			allColumns			= { COLUMN_ID, COLUMN_ID_VOL, COLUMN_ALTITUDE, COLUMN_LONGITUDE, COLUMN_HAUTEUR };
+	private String[]			allColumns				= { COLUMN_ID, COLUMN_ID_VOL, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_HAUTEUR };
 
 	public PointsDBAdapter(Context context) {
 		dbManager = new SQLiteManager(context);
@@ -36,10 +41,10 @@ public class PointsDBAdapter {
 		dbManager.close();
 	}
 
-	public Point createPoint(double id_vol, double altitude, double longitude, double hauteur) {
+	public Point insertPoint(double id_vol, double altitude, double longitude, double hauteur) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_ID_VOL, id_vol);
-		values.put(COLUMN_ALTITUDE, altitude);
+		values.put(COLUMN_LATITUDE, altitude);
 		values.put(COLUMN_LONGITUDE, longitude);
 		values.put(COLUMN_HAUTEUR, hauteur);
 
@@ -51,16 +56,38 @@ public class PointsDBAdapter {
 		return newPoint;
 	}
 
+	public Point updatePoint(double id, double id_vol, double altitude, double longitude, double hauteur) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_ID_VOL, id_vol);
+		values.put(COLUMN_LATITUDE, altitude);
+		values.put(COLUMN_LONGITUDE, longitude);
+		values.put(COLUMN_HAUTEUR, hauteur);
+
+		db.update(TABLE_POINTS, values, COLUMN_ID + " = " + id, null);
+		Cursor cursor = db.query(TABLE_POINTS, allColumns, COLUMN_ID + " = " + id, null, null, null, null);
+		cursor.moveToFirst();
+		Point newPoint = cursorToPoint(cursor);
+		cursor.close();
+		return newPoint;
+	}
+
+	public Point updatePoint(double id, double hauteur) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_HAUTEUR, hauteur);
+
+		db.update(TABLE_POINTS, values, COLUMN_ID + " = " + id, null);
+		Cursor cursor = db.query(TABLE_POINTS, allColumns, COLUMN_ID + " = " + id, null, null, null, null);
+		cursor.moveToFirst();
+		Point newPoint = cursorToPoint(cursor);
+		cursor.close();
+		return newPoint;
+	}
+
 	public void deletePoint(Point point) {
 		long id = point.getId();
 		db.delete(TABLE_POINTS, COLUMN_ID + " = " + id, null);
 
 		System.out.println("Point deleted with id: " + id);
-	}
-
-	public Point getByVolId(double id_vol) {
-		Cursor cursor = db.query(TABLE_POINTS, allColumns, COLUMN_ID_VOL + " = " + id_vol, null, null, null, null);
-		return cursorToPoint(cursor);
 	}
 
 	public List<Point> getAllPoints() {
@@ -77,14 +104,29 @@ public class PointsDBAdapter {
 		cursor.close();
 		return points;
 	}
+	
+	public List<Point> getPointsByVolId(double id_vol) {
+		List<Point> points = new ArrayList<Point>();
+
+		Cursor cursor = db.query(TABLE_POINTS, allColumns, COLUMN_ID_VOL + " = " + id_vol, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Point point = cursorToPoint(cursor);
+			points.add(point);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return points;
+	}
 
 	private Point cursorToPoint(Cursor cursor) {
 		Point point = new Point();
-		point.setId(cursor.getLong(0));
-		point.setId_vol(cursor.getLong(1));
-		point.setAltitude(cursor.getDouble(2));
-		point.setLongitude(cursor.getDouble(3));
-		point.setHauteur(cursor.getDouble(4));
+		point.setId(cursor.getLong(NUM_COLUMN_ID));
+		point.setId_vol(cursor.getLong(NUM_COLUMN_ID_VOL));
+		point.setAltitude(cursor.getDouble(NUM_COLUMN_LATITUDE));
+		point.setLongitude(cursor.getDouble(NUM_COLUMN_LONGITUDE));
+		point.setHauteur(cursor.getDouble(NUM_COLUMN_HAUTEUR));
 		return point;
 	}
 

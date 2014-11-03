@@ -14,7 +14,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 			"CREATE TABLE " + PointsDBAdapter.TABLE_POINTS	+ "(" 
 					+ PointsDBAdapter.COLUMN_ID				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 					+ PointsDBAdapter.COLUMN_ID_VOL			+ " INTEGER NOT NULL, "
-					+ PointsDBAdapter.COLUMN_ALTITUDE		+ " DOUBLE NOT NULL, "
+					+ PointsDBAdapter.COLUMN_LATITUDE		+ " DOUBLE NOT NULL, "
 					+ PointsDBAdapter.COLUMN_LONGITUDE		+ " DOUBLE NOT NULL, "
 					+ PointsDBAdapter.COLUMN_HAUTEUR		+ " DOUBLE NOT NULL);";
 

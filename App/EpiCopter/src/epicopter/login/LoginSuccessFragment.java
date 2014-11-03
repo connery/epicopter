@@ -21,7 +21,7 @@ import epicopter.database.TaskCallback;
 import epicopter.interfaces.LoginInterface;
 import epicopter.main.R;
 import epicopter.utils.SessionManager;
-import epicopter.welcome.MainFragmentActivity;
+import epicopter.welcome.WelcomeChooseTripActivity;
 
 public class LoginSuccessFragment extends Fragment implements LoginInterface, DataBaseInterface, TaskCallback {
 
@@ -79,7 +79,7 @@ public class LoginSuccessFragment extends Fragment implements LoginInterface, Da
 					Log.i("onHiddenChanged", " Is a NORMAL connection!!!");
 					// Intent i = new Intent(view.getContext(), epicopter.welcome.MainFragmentActivity.class);
 					// Intent i = new Intent(view.getContext(), WelcomeGoogleMapsActivity.class);
-					Intent i = new Intent(view.getContext(), MainFragmentActivity.class);
+					Intent i = new Intent(view.getContext(), WelcomeChooseTripActivity.class);
 					getActivity().finish();
 					startActivity(i);
 				}
@@ -92,7 +92,7 @@ public class LoginSuccessFragment extends Fragment implements LoginInterface, Da
 		if (isOK == true) {
 			// Intent i = new Intent(view.getContext(), epicopter.welcome.MainFragmentActivity.class);
 			// Intent i = new Intent(view.getContext(), WelcomeGoogleMapsActivity.class);
-			Intent i = new Intent(view.getContext(), MainFragmentActivity.class);
+			Intent i = new Intent(view.getContext(), WelcomeChooseTripActivity.class);
 			getActivity().finish();
 			startActivity(i);
 		}

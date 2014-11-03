@@ -2,10 +2,12 @@ package epicopter.welcome;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,19 +27,32 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import epicopter.database.local.Point;
+import epicopter.database.local.PointsDBAdapter;
+import epicopter.database.local.Vol;
+import epicopter.database.local.VolsDBAdapter;
 import epicopter.main.R;
 
 public class GoogleMapsFragment extends Fragment {
 	// Google Map
-	private MapView						mapView		= null;
-	private GoogleMap					googleMap	= null;
-	private PolygonOptions				polygonOpt	= null;
-	private ArrayList<MarkerOptions>	points		= null;
-	private View						view		= null;
+	private MapView							mapView		= null;
+	private GoogleMap						googleMap	= null;
+	private PolygonOptions					polygonOpt	= null;
+	private static ArrayList<MarkerOptions>	points		= null;
+	private static View						view		= null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.welcome_maps_fragment, container, false);
+
+		PointsDBAdapter pointsSource = new PointsDBAdapter(view.getContext());
+		pointsSource.open();
+		pointsSource.insertPoint(3, 12.55, 12.46, 2.5);
+		pointsSource.insertPoint(3, 12.8, 12.46, 2.5);
+		pointsSource.insertPoint(3, 12.6, 12.0, 2.5);
+		pointsSource.insertPoint(3, 113, 11.6, 2.5);
+		VolsDBAdapter volsSource = new VolsDBAdapter(view.getContext());
+		volsSource.open();
 
 		// Gets the MapView from the XML layout and creates it
 		mapView = (MapView) view.findViewById(R.id.map);
@@ -104,24 +119,46 @@ public class GoogleMapsFragment extends Fragment {
 			public void onMarkerDrag(Marker arg0) {
 			}
 		});
-
+		if (getActivity().getIntent().getBooleanExtra("loadOldTrip", false)) {
+			loadOldTrip();
+		}
 		refreshMap();
-		createCircle(new LatLng(48.6972012, 6.1673514), 5000);
 
 		return view;
 	}
 
-	// /**
-	// * function to load map. If map is not created it will create it for you
-	// * */
-	// private void initilizeMap() {
-	// if (googleMap == null) {
-	// googleMap = ((epicopter.welcome.MainFragmentActivity) getActivity()).getGoogleMap();
-	// if (googleMap == null) {
-	// Toast.makeText(view.getContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-	// }
-	// }
-	// }
+	/**
+	 * Function to save all points in local BDD
+	 */
+	public static void saveToLocalDB() {
+		// STEP 1 : Create trip
+		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
+		volsDB.open();
+		Vol myNewVol = volsDB.insertVol(1, 1);
+		// STEP 2 : Add all points inside DB with this vol id
+		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
+		pointsDB.open();
+		for (MarkerOptions point : points) {
+			pointsDB.insertPoint(myNewVol.getId(), point.getPosition().latitude, point.getPosition().longitude, 2);
+		}
+		Log.i("MY INFO!!!", "Tout est enregistrer dans la BDD local");
+	}
+
+	/**
+	 * Function to load the last trip saved in local BDD
+	 */
+	private void loadOldTrip() {
+		// STEP 1 : Get the last trip in local BDD
+		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
+		volsDB.open();
+		Vol myVol = volsDB.getLastVol();
+		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
+		pointsDB.open();
+		List<Point> points = pointsDB.getPointsByVolId(myVol.getId());
+		for (Point point : points) {
+			addPoint(new LatLng(point.getAltitude(), point.getLongitude()));
+		}
+	}
 
 	/**
 	 * Function to refresh th map (after add or remove a checkPoint)

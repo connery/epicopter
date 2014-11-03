@@ -590,8 +590,9 @@ containing a value of this type.
         public static final int success=0x7f020041;
     }
     public static final class id {
+        public static final int WelcomeValiderButtonValider=0x7f090045;
         public static final int book_now=0x7f09000e;
-        public static final int btnLogout=0x7f090040;
+        public static final int btnLogout=0x7f090042;
         public static final int btnMyLogin=0x7f090033;
         public static final int button1=0x7f09003e;
         public static final int buttonForgotPasswordSend=0x7f09002d;
@@ -631,19 +632,19 @@ containing a value of this type.
         public static final int holo_light=0x7f090006;
         public static final int hybrid=0x7f090000;
         public static final int large=0x7f090014;
-        public static final int lblEmail=0x7f09003f;
+        public static final int lblEmail=0x7f090041;
         public static final int lblName=0x7f09003c;
         public static final int loginForgotPasswordFragment=0x7f090039;
         public static final int loginInscriptionFragment=0x7f090038;
         public static final int loginLoginFragment=0x7f090037;
         public static final int loginSuccessFragment=0x7f09003a;
         public static final int login_buttonFacebook=0x7f090034;
-        public static final int map=0x7f090042;
+        public static final int map=0x7f090044;
         public static final int match_parent=0x7f09000c;
         public static final int monochrome=0x7f090013;
         public static final int none=0x7f090001;
         public static final int normal=0x7f090002;
-        public static final int pager=0x7f090041;
+        public static final int pager=0x7f090043;
         public static final int picker_subtitle=0x7f090027;
         public static final int production=0x7f090007;
         public static final int progressBar1=0x7f09003d;
@@ -656,6 +657,8 @@ containing a value of this type.
         public static final int terrain=0x7f090004;
         public static final int textView1=0x7f09002b;
         public static final int textViewForgotPassword=0x7f090036;
+        public static final int welcomeChooseTripButtonNewTrip=0x7f09003f;
+        public static final int welcomeChooseTripButtonResumeTrip=0x7f090040;
         public static final int wrap_content=0x7f09000d;
     }
     public static final class integer {
@@ -680,12 +683,13 @@ containing a value of this type.
         public static final int login_login_fragment=0x7f03000f;
         public static final int login_management=0x7f030010;
         public static final int login_success=0x7f030011;
-        public static final int welcome_google_maps=0x7f030012;
-        public static final int welcome_home_fragment=0x7f030013;
-        public static final int welcome_management=0x7f030014;
-        public static final int welcome_maps_fragment=0x7f030015;
-        public static final int welcome_points_fragment=0x7f030016;
-        public static final int welcome_valider_fragment=0x7f030017;
+        public static final int welcome_choose_trip=0x7f030012;
+        public static final int welcome_google_maps=0x7f030013;
+        public static final int welcome_home_fragment=0x7f030014;
+        public static final int welcome_management=0x7f030015;
+        public static final int welcome_maps_fragment=0x7f030016;
+        public static final int welcome_points_fragment=0x7f030017;
+        public static final int welcome_valider_fragment=0x7f030018;
     }
     public static final class string {
         public static final int Inscription=0x7f050046;
