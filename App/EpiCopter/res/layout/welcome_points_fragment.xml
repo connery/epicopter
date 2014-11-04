@@ -5,12 +5,9 @@
     android:background="#ff8400"
     android:orientation="vertical" >
 
-    <TextView
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="Design Points Screen"
-        android:textSize="20dp" />
+        android:layout_height="fill_parent" />
 
 </RelativeLayout>

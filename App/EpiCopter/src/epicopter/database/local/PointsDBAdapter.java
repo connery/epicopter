@@ -41,10 +41,10 @@ public class PointsDBAdapter {
 		dbManager.close();
 	}
 
-	public Point insertPoint(double id_vol, double altitude, double longitude, double hauteur) {
+	public Point insertPoint(long id_vol, double latitude, double longitude, double hauteur) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_ID_VOL, id_vol);
-		values.put(COLUMN_LATITUDE, altitude);
+		values.put(COLUMN_LATITUDE, latitude);
 		values.put(COLUMN_LONGITUDE, longitude);
 		values.put(COLUMN_HAUTEUR, hauteur);
 
@@ -56,10 +56,10 @@ public class PointsDBAdapter {
 		return newPoint;
 	}
 
-	public Point updatePoint(double id, double id_vol, double altitude, double longitude, double hauteur) {
+	public Point updatePoint(long id, double id_vol, double latitude, double longitude, double hauteur) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_ID_VOL, id_vol);
-		values.put(COLUMN_LATITUDE, altitude);
+		values.put(COLUMN_LATITUDE, latitude);
 		values.put(COLUMN_LONGITUDE, longitude);
 		values.put(COLUMN_HAUTEUR, hauteur);
 
@@ -124,7 +124,7 @@ public class PointsDBAdapter {
 		Point point = new Point();
 		point.setId(cursor.getLong(NUM_COLUMN_ID));
 		point.setId_vol(cursor.getLong(NUM_COLUMN_ID_VOL));
-		point.setAltitude(cursor.getDouble(NUM_COLUMN_LATITUDE));
+		point.setLatitude(cursor.getDouble(NUM_COLUMN_LATITUDE));
 		point.setLongitude(cursor.getDouble(NUM_COLUMN_LONGITUDE));
 		point.setHauteur(cursor.getDouble(NUM_COLUMN_HAUTEUR));
 		return point;

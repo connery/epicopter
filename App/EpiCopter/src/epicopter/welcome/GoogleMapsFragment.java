@@ -7,10 +7,10 @@ import java.util.List;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,24 +35,18 @@ import epicopter.main.R;
 
 public class GoogleMapsFragment extends Fragment {
 	// Google Map
-	private MapView							mapView		= null;
-	private GoogleMap						googleMap	= null;
-	private PolygonOptions					polygonOpt	= null;
-	private static ArrayList<MarkerOptions>	points		= null;
-	private static View						view		= null;
+	private MapView						mapView			= null;
+	private GoogleMap					googleMap		= null;
+	private PolygonOptions				polygonOpt		= null;
+	private ArrayList<MarkerOptions>	markers			= null;
+	private static ArrayList<Point>		points			= null;
+	private static View					view			= null;
+
+	private static final double			DEFAULT_HEIGHT	= 2.1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.welcome_maps_fragment, container, false);
-
-		PointsDBAdapter pointsSource = new PointsDBAdapter(view.getContext());
-		pointsSource.open();
-		pointsSource.insertPoint(3, 12.55, 12.46, 2.5);
-		pointsSource.insertPoint(3, 12.8, 12.46, 2.5);
-		pointsSource.insertPoint(3, 12.6, 12.0, 2.5);
-		pointsSource.insertPoint(3, 113, 11.6, 2.5);
-		VolsDBAdapter volsSource = new VolsDBAdapter(view.getContext());
-		volsSource.open();
 
 		// Gets the MapView from the XML layout and creates it
 		mapView = (MapView) view.findViewById(R.id.map);
@@ -61,57 +55,63 @@ public class GoogleMapsFragment extends Fragment {
 		googleMap = mapView.getMap();
 
 		try {
-			// initilizeMap();
+			// Initialize map
 			MapsInitializer.initialize(this.getActivity());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// Set map type
 		setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		// Set current locatio button
+		// Set current location button
 		setShowingCurrentLocationButton(true);
-		// Set current location point on map
+		// Set current location on map
 		setShowingCurrentLocation(true);
-		// Set zoom controle button
+		// Set zoom control button
 		setShowingZoomControlButton(true);
-		// Create the polygone
+		// Create the polygon
 		initializePolygone();
-		// create the list of points
-		points = new ArrayList<MarkerOptions>();
-		// Add one point (in the list and in the polygone
-		addPoint(new LatLng(48.6972012, 6.1673514));
+		// Create marker's list
+		markers = new ArrayList<MarkerOptions>();
+		// Create point's list
+		points = new ArrayList<Point>();
+		// Add one coordinate in marker's list, point's list and polygon
+		addMarker(new LatLng(48.6972012, 6.1673514));
+		// Move the camera
 		moveCameraTo(new LatLng(48.6972012, 6.1673514), 12);
-
+		// Set action click on map
 		googleMap.setOnMapClickListener(new OnMapClickListener() {
 			@Override
-			public void onMapClick(LatLng arg0) {
-				LatLng pnt = new LatLng(arg0.latitude, arg0.longitude);
-				addPoint(pnt);
+			public void onMapClick(LatLng coordinateClickled) {
+				addMarker(coordinateClickled);
 				refreshMap();
 			}
 		});
+		// Set long click action on marker
 		googleMap.setOnMarkerDragListener(new OnMarkerDragListener() {
-			int	pos;
+			int	markerPositionInMyMarkerList;
 
 			@Override
-			public void onMarkerDragStart(Marker arg0) {
-				pos = -1;
-				for (Iterator<MarkerOptions> i = points.iterator(); i.hasNext();) {
-					++pos;
-					MarkerOptions pointTmp = i.next();
-					if (pointTmp.getTitle().equals(arg0.getTitle())) {
+			public void onMarkerDragStart(Marker markerClicked) {
+				markerPositionInMyMarkerList = -1;
+				for (Iterator<MarkerOptions> i = markers.iterator(); i.hasNext();) {
+					++markerPositionInMyMarkerList;
+					MarkerOptions markerTmp = i.next();
+					if (markerTmp.getTitle().equals(markerClicked.getTitle())) {
 						break;
 					}
 				}
 			}
 
 			@Override
-			public void onMarkerDragEnd(Marker arg0) {
-				if (pos != -1) {
-					points.get(pos).position(new LatLng(arg0.getPosition().latitude, arg0.getPosition().longitude));
+			public void onMarkerDragEnd(Marker markerClicked) {
+				if (markerPositionInMyMarkerList != -1) {
+					// Change marker's position in marker's list
+					markers.get(markerPositionInMyMarkerList).position(markerClicked.getPosition());
+					// Change point's position in point's list
+					points.get(markerPositionInMyMarkerList).setLatitude(markerClicked.getPosition().latitude);
+					points.get(markerPositionInMyMarkerList).setLongitude(markerClicked.getPosition().longitude);
 					refreshPolygone();
 					refreshMap();
-					// addPoint(arg0.getPosition());
 				}
 			}
 
@@ -119,69 +119,83 @@ public class GoogleMapsFragment extends Fragment {
 			public void onMarkerDrag(Marker arg0) {
 			}
 		});
-		if (getActivity().getIntent().getBooleanExtra("loadOldTrip", false)) {
-			loadOldTrip();
+
+		// Get information to know if it will be a new trip or not
+		if (!getActivity().getIntent().getBooleanExtra("isNewTrip", true)) {
+			loadLastTrip();
 		}
+		// Draw the map
 		refreshMap();
 
 		return view;
 	}
 
 	/**
-	 * Function to save all points in local BDD
+	 * Function to save all points in local DB
 	 */
-	public static void saveToLocalDB() {
-		// STEP 1 : Create trip
+	public static void saveToLocalDB(int takePicture, int takeVideo) {
+		// STEP 1 : Open vol DB
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
-		Vol myNewVol = volsDB.insertVol(1, 1);
-		// STEP 2 : Add all points inside DB with this vol id
+		// STEP 2 : Create Vol
+		Vol myNewVol = volsDB.insertVol(takePicture, takeVideo);
+		// STEP 3 : Open points DB
 		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
 		pointsDB.open();
-		for (MarkerOptions point : points) {
-			pointsDB.insertPoint(myNewVol.getId(), point.getPosition().latitude, point.getPosition().longitude, 2);
+		// STEP 4 : Insert every point in DB with this vol id
+		for (Point pnt : points) {
+			pointsDB.insertPoint(myNewVol.getId(), pnt.getLatitude(), pnt.getLongitude(), DEFAULT_HEIGHT);
 		}
-		Log.i("MY INFO!!!", "Tout est enregistrer dans la BDD local");
+		// STEP 5 : Close vol DB
+		volsDB.close();
+		// STEP 6 : Close points DB
+		pointsDB.close();
+		Toast.makeText(view.getContext(), "Sauvegarde du parcours réussi!", Toast.LENGTH_LONG).show();
 	}
 
 	/**
-	 * Function to load the last trip saved in local BDD
+	 * Function to load the last trip saved in local DB
 	 */
-	private void loadOldTrip() {
+	private void loadLastTrip() {
 		// STEP 1 : Get the last trip in local BDD
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
 		Vol myVol = volsDB.getLastVol();
+		// STEP 2 : Get every points on this trip
 		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
 		pointsDB.open();
-		List<Point> points = pointsDB.getPointsByVolId(myVol.getId());
-		for (Point point : points) {
-			addPoint(new LatLng(point.getAltitude(), point.getLongitude()));
+		List<Point> allOldPoints = pointsDB.getPointsByVolId(myVol.getId());
+		// STEP 3 : Add every point as marker in marker's list and in point's list
+		for (Point pnt : allOldPoints) {
+			points.add(pnt);
+			addMarker(new LatLng(pnt.getLatitude(), pnt.getLongitude()));
 		}
+		volsDB.close();
+		pointsDB.close();
 	}
 
 	/**
-	 * Function to refresh th map (after add or remove a checkPoint)
+	 * Function to refresh the map (after add or remove a marker)
 	 */
 	private void refreshMap() {
 		// Clear the map
 		googleMap.clear();
-		// Add the polygone on the map
+		// Add polygon on the map
 		googleMap.addPolygon(polygonOpt);
-		// Add all marker
-		for (int i = 0; i < points.size(); i++) {
-			putMarker(points.get(i).title(String.valueOf(i)));
+		// Add every marker
+		for (int i = 0; i < markers.size(); i++) {
+			putMarker(markers.get(i).title(String.valueOf(i)));
 		}
 	}
 
 	/**
-	 * Function to put a marker
+	 * Function to put a marker on googleMap
 	 * 
 	 * @param latitude
 	 * @param longitude
 	 */
-	private void putMarker(MarkerOptions point) {
-		googleMap.addMarker(point);
+	private void putMarker(MarkerOptions marker) {
+		googleMap.addMarker(marker);
 	}
 
 	/**
@@ -191,8 +205,8 @@ public class GoogleMapsFragment extends Fragment {
 	 * @param lng
 	 * @param zoom
 	 */
-	private void moveCameraTo(LatLng point, int zoom) {
-		CameraPosition cameraPosition = new CameraPosition.Builder().target(point).zoom(zoom).build();
+	private void moveCameraTo(LatLng coordonnee, int zoom) {
+		CameraPosition cameraPosition = new CameraPosition.Builder().target(coordonnee).zoom(zoom).build();
 		googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 	}
 
@@ -233,45 +247,47 @@ public class GoogleMapsFragment extends Fragment {
 	}
 
 	/**
-	 * Function to create a polyline arround a point
+	 * Function to create a polyline arround a coordinate
 	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unused")
-	private void createPolylineArroundPoint(double lat, double lng, double size) {
+	private void createPolylineArroundCoordinate(double lat, double lng, double size) {
 		PolylineOptions rectOptions = new PolylineOptions().add(new LatLng(lat - size, lng - size)).add(new LatLng(lat + size, lng - size))
 				.add(new LatLng(lat + size, lng + size)).add(new LatLng(lat - size, lng + size)).add(new LatLng(lat - size, lng - size));
-		/* Polyline polyline = */googleMap.addPolyline(rectOptions);
+		googleMap.addPolyline(rectOptions);
 	}
 
 	/**
-	 * Function to add one point inside ArrayList of point and inside the polygone
+	 * Function to add one marker inside ArrayList of marker and inside the polygone
 	 * 
-	 * @param point
+	 * @param coordinate
 	 */
-	private void addPoint(LatLng point) {
-		// Add this point in the ArrayList
-		MarkerOptions marker = new MarkerOptions().position(point).title("").draggable(true);
+	private void addMarker(LatLng coordinate) {
+		// STEP 1 : Add coordinate to point's list
+		points.add(new Point(coordinate.latitude, coordinate.longitude));
+		// STEP 2 : Add coordinate to marker's list
+		MarkerOptions marker = new MarkerOptions().position(coordinate).title("").draggable(true);
 		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-		points.add(marker);
-		// Add the same point in the polygone
-		addPointToPolygone(point);
+		markers.add(marker);
+		// STEP 3 : Add coordinate to polygon
+		addCoordinateToPolygone(coordinate);
 	}
 
 	/**
-	 * Function to add one point inside the polygone
+	 * Function to add one coordinate inside the polygone
 	 * 
-	 * @param point
+	 * @param coordinate
 	 */
-	private void addPointToPolygone(LatLng point) {
-		// Add the point in the polygone
-		polygonOpt.add(point);
+	private void addCoordinateToPolygone(LatLng coordinate) {
+		// Add the coordinate in the polygone
+		polygonOpt.add(coordinate);
 	}
 
 	/**
 	 * Function to initialize the polygone
 	 * 
-	 * @param points
+	 * @param markers
 	 */
 	private void initializePolygone() {
 		if (polygonOpt == null) {
@@ -287,23 +303,24 @@ public class GoogleMapsFragment extends Fragment {
 	}
 
 	/**
-	 * Function to refresh the polygone (after drag point or delete one point)
+	 * Function to refresh the polygon (after drag coordinate or delete one coordinate)
 	 */
 	private void refreshPolygone() {
 		createPolygone();
-		for (int i = 0; i < points.size(); i++) {
-			addPointToPolygone(points.get(i).getPosition());
+		for (int i = 0; i < markers.size(); i++) {
+			addCoordinateToPolygone(markers.get(i).getPosition());
 		}
 	}
 
 	/**
 	 * Function to create a circle
 	 * 
-	 * @param point
+	 * @param coordinate
 	 * @param sizeMeter
 	 */
-	private void createCircle(LatLng point, int sizeMeter) {
-		CircleOptions circleOptions = new CircleOptions().center(point).radius(sizeMeter);
+	@SuppressWarnings("unused")
+	private void createCircle(LatLng coordinate, int sizeMeter) {
+		CircleOptions circleOptions = new CircleOptions().center(coordinate).radius(sizeMeter);
 		googleMap.addCircle(circleOptions);
 	}
 

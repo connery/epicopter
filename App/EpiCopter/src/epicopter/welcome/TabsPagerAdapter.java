@@ -19,7 +19,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		case 0:
 			return new GoogleMapsFragment();
 		case 1:
-			return new HomeFragment();
+			return new PointsFragment();
 		case 2:
 			return new ValiderFragment();
 		}

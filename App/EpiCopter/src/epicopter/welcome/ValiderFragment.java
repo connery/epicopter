@@ -9,19 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import epicopter.main.R;
 
-public class ValiderFragment extends Fragment {
+public class ValiderFragment extends Fragment implements OnClickListener {
+
+	private View	view	= null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.welcome_valider_fragment, container, false);
+		view = inflater.inflate(R.layout.welcome_valider_fragment, container, false);
 
-		Button btnValider = (Button) rootView.findViewById(R.id.WelcomeValiderButtonValider);
-		btnValider.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				GoogleMapsFragment.saveToLocalDB();
-			}
-		});
+		Button btnValider = (Button) view.findViewById(R.id.WelcomeValiderButtonValider);
+		btnValider.setOnClickListener(this);
 
 		// PointsDBAdapter pointsSource = new PointsDBAdapter(rootView.getContext());
 		// VolsDBAdapter volsSource = new VolsDBAdapter(rootView.getContext());
@@ -44,7 +41,18 @@ public class ValiderFragment extends Fragment {
 		// myVols = volsSource.getAllVols();
 		// Log.i("2. MY INFO!!!", myVols.get(0).toString());
 
-		return rootView;
+		return view;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.WelcomeValiderButtonValider:
+			GoogleMapsFragment.saveToLocalDB(1, 1);
+			break;
+		default:
+			break;
+		}
 	}
 
 }

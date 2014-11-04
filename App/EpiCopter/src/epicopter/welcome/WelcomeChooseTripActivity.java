@@ -27,11 +27,11 @@ public class WelcomeChooseTripActivity extends Activity implements OnClickListen
 
 		switch (v.getId()) {
 		case R.id.welcomeChooseTripButtonNewTrip:
-			i.putExtra("loadOldTrip", false);
+			i.putExtra("isNewTrip", true);
 			startActivity(i);
 			break;
 		case R.id.welcomeChooseTripButtonResumeTrip:
-			i.putExtra("loadOldTrip", true);
+			i.putExtra("isNewTrip", false);
 			startActivity(i);
 			break;
 		default:

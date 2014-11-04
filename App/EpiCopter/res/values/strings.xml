@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Epicopter</string>
     <string name="settings">Paramètres</string>
     <string name="app_id_facebook">1606058759621757</string>
     <string name="app_id_google_maps">AIzaSyCliFGRCw_GHHgrMc6VXq6m9UJDhmTtnlI</string>
     <string name="error_no_internet_connection">Aucune connexion internet disponible!</string>
-    <string name="download_your_data">Chargement de vos données...</string>
+    <string name="download_your_data" tools:ignore="TypographyEllipsis">Chargement de vos données...</string>
     <string name="validate">Valider</string>
     <string name="password">Mot de passe</string>
     <string name="email">Email</string>
@@ -16,6 +16,9 @@
     <string name="inscription_page">Page d\'inscription</string>
     <string name="forgot_password_page">Page mot de passe oublié</string>
     <string name="send">Envoyer</string>
-    <string name="waiting">Veuillez patienter...</string>
+    <string name="waiting" tools:ignore="TypographyEllipsis">Veuillez patienter...</string>
+    <string name="my_trips">Mes parcours</string>
+    <string name="resume">Reprendre</string>
+    <string name="new_">Nouveau</string>
 
 </resources>

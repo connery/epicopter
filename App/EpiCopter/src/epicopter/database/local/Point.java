@@ -4,9 +4,25 @@ public class Point {
 
 	private long	id;
 	private long	id_vol;
-	private double	altitude;
+	private double	latitude;
 	private double	longitude;
 	private double	hauteur;
+
+	public Point() {
+		this.id = -1;
+		this.id_vol = -1;
+		this.latitude = -1;
+		this.longitude = -1;
+		this.hauteur = -1;
+	}
+
+	public Point(double latitude, double longitude) {
+		this.id = -1;
+		this.id_vol = -1;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.hauteur = -1;
+	}
 
 	public long getId() {
 		return id;
@@ -24,12 +40,12 @@ public class Point {
 		this.id_vol = id_vol;
 	}
 
-	public double getAltitude() {
-		return altitude;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 	public double getLongitude() {
@@ -50,6 +66,6 @@ public class Point {
 
 	// Will be used by the ArrauAdapter in the Listview
 	public String toString() {
-		return "-- id:" + id + "- -id_vol:" + id_vol + "- -altitude:" + altitude + "- -longitude:" + longitude + "- -hauteur:" + hauteur + "--";
+		return "-- id:" + id + "- -id_vol:" + id_vol + "- -altitude:" + latitude + "- -longitude:" + longitude + "- -hauteur:" + hauteur + "--";
 	}
 }
