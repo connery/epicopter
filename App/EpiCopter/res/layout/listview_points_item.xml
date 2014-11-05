@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:contentDescription="description de l\'icone"
+            android:contentDescription="description de l\&apos;icone"
             android:padding="5dp"
             android:scaleType="fitXY" />
         <!-- the container view for the title and description -->
@@ -36,18 +36,60 @@
             <!-- the title view -->
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/tvLatitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/latitude"
                 android:textAppearance="@android:style/TextAppearance.Medium" />
             <!-- the description view -->
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/tvLongitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvTitle"
-                android:textAppearance="@android:style/TextAppearance.Small" />
+                android:layout_below="@id/tvLatitude"
+                android:text="@string/longitude"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <TextView
+                android:id="@+id/tvHeightUseless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvLongitude"
+                android:text="@string/height"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvHeightUseless"
+                android:layout_centerHorizontal="true"
+                android:descendantFocusability="blocksDescendants"
+                android:weightSum="10" >
+
+                <Button
+                    android:id="@+id/btnMinus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/tvHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:gravity="center"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                <Button
+                    android:id="@+id/btnPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="+" />
+
+            </TableRow>
         </RelativeLayout>
     </RelativeLayout>
 

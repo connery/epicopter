@@ -39,10 +39,11 @@ public class GoogleMapsFragment extends Fragment {
 	private GoogleMap					googleMap		= null;
 	private PolygonOptions				polygonOpt		= null;
 	private ArrayList<MarkerOptions>	markers			= null;
-	private static ArrayList<Point>		points			= null;
+	public static ArrayList<Point>		points			= null;
 	private static View					view			= null;
 
 	private static final double			DEFAULT_HEIGHT	= 2.1;
+	private static final int			DEFAULT_ZOOM	= 12;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,10 +75,7 @@ public class GoogleMapsFragment extends Fragment {
 		markers = new ArrayList<MarkerOptions>();
 		// Create point's list
 		points = new ArrayList<Point>();
-		// Add one coordinate in marker's list, point's list and polygon
-		addMarker(new LatLng(48.6972012, 6.1673514));
-		// Move the camera
-		moveCameraTo(new LatLng(48.6972012, 6.1673514), 12);
+
 		// Set action click on map
 		googleMap.setOnMapClickListener(new OnMapClickListener() {
 			@Override
@@ -123,6 +121,8 @@ public class GoogleMapsFragment extends Fragment {
 		// Get information to know if it will be a new trip or not
 		if (!getActivity().getIntent().getBooleanExtra("isNewTrip", true)) {
 			loadLastTrip();
+		} else {
+			putBaseLocation(48.6972012, 6.1673514);
 		}
 		// Draw the map
 		refreshMap();
@@ -165,11 +165,12 @@ public class GoogleMapsFragment extends Fragment {
 		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
 		pointsDB.open();
 		List<Point> allOldPoints = pointsDB.getPointsByVolId(myVol.getId());
-		// STEP 3 : Add every point as marker in marker's list and in point's list
+		// STEP 3 : Add every point as marker in marker's list
 		for (Point pnt : allOldPoints) {
-			points.add(pnt);
 			addMarker(new LatLng(pnt.getLatitude(), pnt.getLongitude()));
 		}
+		Point lastPoint = allOldPoints.get(allOldPoints.size() - 1);
+		moveCameraTo(new LatLng(lastPoint.getLatitude(), lastPoint.getLongitude()), DEFAULT_ZOOM);
 		volsDB.close();
 		pointsDB.close();
 	}
@@ -186,6 +187,19 @@ public class GoogleMapsFragment extends Fragment {
 		for (int i = 0; i < markers.size(); i++) {
 			putMarker(markers.get(i).title(String.valueOf(i)));
 		}
+	}
+
+	/**
+	 * Define and zoom above the base location
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 */
+	private void putBaseLocation(double latitude, double longitude) {
+		// Add one coordinate in marker's list, point's list and polygon
+		addMarker(new LatLng(latitude, longitude));
+		// Move the camera
+		moveCameraTo(new LatLng(latitude, longitude), DEFAULT_ZOOM);
 	}
 
 	/**

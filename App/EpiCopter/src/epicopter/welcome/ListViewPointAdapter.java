@@ -27,8 +27,9 @@ public class ListViewPointAdapter extends ArrayAdapter<ListViewPoint> {
 			// initialize the view holder
 			viewHolder = new ViewHolder();
 			viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.ivIcon);
-			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-			viewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
+			viewHolder.tvLatitude = (TextView) convertView.findViewById(R.id.tvLatitude);
+			viewHolder.tvLongitude = (TextView) convertView.findViewById(R.id.tvLongitude);
+			viewHolder.tvHeight = (TextView) convertView.findViewById(R.id.tvHeight);;
 			convertView.setTag(viewHolder);
 		} else {
 			// recycle the already inflated view
@@ -37,8 +38,9 @@ public class ListViewPointAdapter extends ArrayAdapter<ListViewPoint> {
 		// update the item view
 		ListViewPoint item = getItem(position);
 		viewHolder.ivIcon.setImageDrawable(item.icon);
-		viewHolder.tvTitle.setText(item.title);
-		viewHolder.tvDescription.setText(item.description);
+		viewHolder.tvLatitude.setText(viewHolder.tvLatitude.getText() + item.latitude);
+		viewHolder.tvLongitude.setText(viewHolder.tvLongitude.getText() + item.longitude);
+		viewHolder.tvHeight.setText(viewHolder.tvHeight.getText() + item.height);
 		return convertView;
 	}
 
@@ -49,7 +51,8 @@ public class ListViewPointAdapter extends ArrayAdapter<ListViewPoint> {
 	 */
 	private static class ViewHolder {
 		ImageView	ivIcon;
-		TextView	tvTitle;
-		TextView	tvDescription;
+		TextView	tvLatitude;
+		TextView	tvLongitude;
+		TextView	tvHeight;
 	}
 }

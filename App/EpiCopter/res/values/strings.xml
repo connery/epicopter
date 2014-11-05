@@ -20,5 +20,8 @@
     <string name="my_trips">Mes parcours</string>
     <string name="resume">Reprendre</string>
     <string name="new_">Nouveau</string>
+    <string name="latitude">latitude : </string>
+    <string name="longitude">longitude : </string>
+    <string name="height">Hauteur : </string>
 
 </resources>

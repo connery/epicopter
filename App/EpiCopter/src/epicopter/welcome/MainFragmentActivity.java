@@ -2,6 +2,7 @@ package epicopter.welcome;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -52,11 +53,16 @@ public class MainFragmentActivity extends FragmentActivity implements ActionBar.
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+		if (tab.getPosition() == 1) { // case 1 in TabsPagerAdapter
+//			PointsFragment.setListItem();
+			Intent intent = new Intent();
+			intent.setAction("testAction");
+			sendBroadcast(intent);
+		}
 		viewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -66,6 +72,12 @@ public class MainFragmentActivity extends FragmentActivity implements ActionBar.
 
 	@Override
 	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
+		if (tab.getPosition() == 1) { // case 1 in TabsPagerAdapter
+//			PointsFragment.setListItem();
+			Intent intent = new Intent();
+			intent.setAction("testAction");
+			sendBroadcast(intent);
+		}
 		viewPager.setCurrentItem(tab.getPosition());
 	}
 }
