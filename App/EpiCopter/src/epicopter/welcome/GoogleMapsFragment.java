@@ -42,7 +42,6 @@ public class GoogleMapsFragment extends Fragment {
 	public static ArrayList<Point>		points			= null;
 	private static View					view			= null;
 
-	private static final double			DEFAULT_HEIGHT	= 2.1;
 	private static final int			DEFAULT_ZOOM	= 12;
 
 	@Override
@@ -133,18 +132,18 @@ public class GoogleMapsFragment extends Fragment {
 	/**
 	 * Function to save all points in local DB
 	 */
-	public static void saveToLocalDB(int takePicture, int takeVideo) {
+	public static void saveToLocalDB(String name, int takePicture, int takeVideo) {
 		// STEP 1 : Open vol DB
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
 		// STEP 2 : Create Vol
-		Vol myNewVol = volsDB.insertVol(takePicture, takeVideo);
+		Vol myNewVol = volsDB.insertVol(name, takePicture, takeVideo);
 		// STEP 3 : Open points DB
 		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
 		pointsDB.open();
 		// STEP 4 : Insert every point in DB with this vol id
 		for (Point pnt : points) {
-			pointsDB.insertPoint(myNewVol.getId(), pnt.getLatitude(), pnt.getLongitude(), DEFAULT_HEIGHT);
+			pointsDB.insertPoint(myNewVol.getId(), pnt.getLatitude(), pnt.getLongitude(), pnt.getHauteur());
 		}
 		// STEP 5 : Close vol DB
 		volsDB.close();
@@ -154,25 +153,51 @@ public class GoogleMapsFragment extends Fragment {
 	}
 
 	/**
+	 * Update my points's list (used in ListViewPointAdapter after click on '+' or '-' button)
+	 * 
+	 * @param lat
+	 * @param lng
+	 * @param height
+	 */
+	public static void updateListOfPoint(double lat, double lng, double height) {
+		for (int i = 0; i < points.size(); i++) {
+			if (points.get(i).getLatitude() == lat && points.get(i).getLongitude() == lng) {
+				points.get(i).setHauteur(height);
+				Toast.makeText(view.getContext(), "list updated!!", Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+
+	/**
 	 * Function to load the last trip saved in local DB
 	 */
 	private void loadLastTrip() {
 		// STEP 1 : Get the last trip in local BDD
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
-		Vol myVol = volsDB.getLastVol();
-		// STEP 2 : Get every points on this trip
-		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
-		pointsDB.open();
-		List<Point> allOldPoints = pointsDB.getPointsByVolId(myVol.getId());
-		// STEP 3 : Add every point as marker in marker's list
-		for (Point pnt : allOldPoints) {
-			addMarker(new LatLng(pnt.getLatitude(), pnt.getLongitude()));
+		Vol myVol = null;
+		if (getActivity().getIntent().getDoubleExtra("volId", -1.) != -1) {
+			myVol = volsDB.getVolById(getActivity().getIntent().getLongExtra("volId", -1));
+		} else {
+			myVol = volsDB.getLastVol();
 		}
-		Point lastPoint = allOldPoints.get(allOldPoints.size() - 1);
-		moveCameraTo(new LatLng(lastPoint.getLatitude(), lastPoint.getLongitude()), DEFAULT_ZOOM);
-		volsDB.close();
-		pointsDB.close();
+		// Is there a past trip
+		if (myVol == null) { // No past trip
+			putBaseLocation(48.6972012, 6.1673514);
+		} else {
+			// STEP 2 : Get every points on this trip
+			PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
+			pointsDB.open();
+			List<Point> allOldPoints = pointsDB.getPointsByVolId(myVol.getId());
+			// STEP 3 : Add every point as marker in marker's list
+			for (Point pnt : allOldPoints) {
+				addMarker(new LatLng(pnt.getLatitude(), pnt.getLongitude()), pnt.getHauteur());
+			}
+			Point lastPoint = allOldPoints.get(allOldPoints.size() - 1);
+			moveCameraTo(new LatLng(lastPoint.getLatitude(), lastPoint.getLongitude()), DEFAULT_ZOOM);
+			volsDB.close();
+			pointsDB.close();
+		}
 	}
 
 	/**
@@ -273,13 +298,29 @@ public class GoogleMapsFragment extends Fragment {
 	}
 
 	/**
-	 * Function to add one marker inside ArrayList of marker and inside the polygone
+	 * Function to add one marker inside marker's list, points'ts list (WITHOUT height) and inside the polygone
 	 * 
 	 * @param coordinate
 	 */
 	private void addMarker(LatLng coordinate) {
 		// STEP 1 : Add coordinate to point's list
 		points.add(new Point(coordinate.latitude, coordinate.longitude));
+		// STEP 2 : Add coordinate to marker's list
+		MarkerOptions marker = new MarkerOptions().position(coordinate).title("").draggable(true);
+		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+		markers.add(marker);
+		// STEP 3 : Add coordinate to polygon
+		addCoordinateToPolygone(coordinate);
+	}
+
+	/**
+	 * Function to add one marker inside marker's list, points'ts list (WITH height) and inside the polygone
+	 * 
+	 * @param coordinate
+	 */
+	private void addMarker(LatLng coordinate, double height) {
+		// STEP 1 : Add coordinate to point's list
+		points.add(new Point(coordinate.latitude, coordinate.longitude, height));
 		// STEP 2 : Add coordinate to marker's list
 		MarkerOptions marker = new MarkerOptions().position(coordinate).title("").draggable(true);
 		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));

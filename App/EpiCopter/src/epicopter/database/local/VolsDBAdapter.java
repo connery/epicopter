@@ -15,15 +15,17 @@ public class VolsDBAdapter {
 	public static final String	TABLE_VOLS			= "vols";
 	public static final String	COLUMN_ID			= "_id";
 	public static final int		NUM_COLUMN_ID		= 0;
+	public static final String	COLUMN_NAME			= "_name";
+	public static final int		NUM_COLUMN_NAME		= 1;
 	public static final String	COLUMN_PICTURE		= "_picture";
-	public static final int		NUM_COLUMN_PICTURE	= 1;
+	public static final int		NUM_COLUMN_PICTURE	= 2;
 	public static final String	COLUMN_VIDEO		= "_video";
-	public static final int		NUM_COLUMN_VIDEO	= 2;
+	public static final int		NUM_COLUMN_VIDEO	= 3;
 
 	// Database fields
 	private SQLiteDatabase		db;
 	private SQLiteManager		dbManager;
-	private String[]			allColumns			= { COLUMN_ID, COLUMN_PICTURE, COLUMN_VIDEO };
+	private String[]			allColumns			= { COLUMN_ID, COLUMN_NAME, COLUMN_PICTURE, COLUMN_VIDEO };
 
 	public VolsDBAdapter(Context context) {
 		dbManager = new SQLiteManager(context);
@@ -45,8 +47,9 @@ public class VolsDBAdapter {
 	 *            1 to take video alse 0
 	 * @return
 	 */
-	public Vol insertVol(int picture, int video) {
+	public Vol insertVol(String name, int picture, int video) {
 		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME, name);
 		values.put(COLUMN_PICTURE, picture);
 		values.put(COLUMN_VIDEO, video);
 
@@ -86,6 +89,16 @@ public class VolsDBAdapter {
 		return vols;
 	}
 
+	public Vol getVolById(long id) {
+		Cursor cursor = db.query(TABLE_VOLS, allColumns, COLUMN_ID + " = " + id, null, null, null, null);
+
+		cursor.moveToFirst();
+		Vol vol = cursorToVol(cursor);
+		cursor.close();
+
+		return vol;
+	}
+	
 	public Vol getLastVol() {
 		Cursor cursor = db.query(TABLE_VOLS, allColumns, null, null, null, null, COLUMN_ID + " DESC LIMIT 1");
 
@@ -97,10 +110,14 @@ public class VolsDBAdapter {
 	}
 
 	private Vol cursorToVol(Cursor cursor) {
-		Vol vol = new Vol();
-		vol.setId(cursor.getLong(NUM_COLUMN_ID));
-		vol.setPicture(cursor.getInt(NUM_COLUMN_PICTURE));
-		vol.setVideo(cursor.getInt(NUM_COLUMN_VIDEO));
-		return vol;
+		if (cursor.getCount() != 0) {
+			Vol vol = new Vol();
+			vol.setId(cursor.getLong(NUM_COLUMN_ID));
+			vol.setName(cursor.getString(NUM_COLUMN_NAME));
+			vol.setPicture(cursor.getInt(NUM_COLUMN_PICTURE));
+			vol.setVideo(cursor.getInt(NUM_COLUMN_VIDEO));
+			return vol;
+		}
+		return null;
 	}
 }

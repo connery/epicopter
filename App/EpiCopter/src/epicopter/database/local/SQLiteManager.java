@@ -8,20 +8,21 @@ import android.util.Log;
 public class SQLiteManager extends SQLiteOpenHelper {
 
 	private static final String	DATABASE_NAME		= "epicopter.db";
-	private static final int	DATABASE_VERSION	= 2;
+	private static final int	DATABASE_VERSION	= 3;
 
 	private static final String	CREATE_TABLE_POINTS	= 
 			"CREATE TABLE " + PointsDBAdapter.TABLE_POINTS	+ "(" 
-					+ PointsDBAdapter.COLUMN_ID				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-					+ PointsDBAdapter.COLUMN_ID_VOL			+ " INTEGER NOT NULL, "
-					+ PointsDBAdapter.COLUMN_LATITUDE		+ " DOUBLE NOT NULL, "
-					+ PointsDBAdapter.COLUMN_LONGITUDE		+ " DOUBLE NOT NULL, "
+					+ PointsDBAdapter.COLUMN_ID				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "  
+					+ PointsDBAdapter.COLUMN_ID_VOL			+ " INTEGER NOT NULL, " 
+					+ PointsDBAdapter.COLUMN_LATITUDE		+ " DOUBLE NOT NULL, " 
+					+ PointsDBAdapter.COLUMN_LONGITUDE		+ " DOUBLE NOT NULL, " 
 					+ PointsDBAdapter.COLUMN_HAUTEUR		+ " DOUBLE NOT NULL);";
 
 	private static final String CREATE_TABLE_VOLS = 
 			"CREATE TABLE " + VolsDBAdapter.TABLE_VOLS		+ "(" 
-					+ VolsDBAdapter.COLUMN_ID				+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ VolsDBAdapter.COLUMN_PICTURE			+ " INTEGER NOT NULL, "
+					+ VolsDBAdapter.COLUMN_ID				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " 
+					+ VolsDBAdapter.COLUMN_NAME				+ " TEXT NOT NULL, "
+					+ VolsDBAdapter.COLUMN_PICTURE			+ " INTEGER NOT NULL, " 
 					+ VolsDBAdapter.COLUMN_VIDEO			+ " INTEGER NOT NULL);";
 
 	public SQLiteManager(Context context) {

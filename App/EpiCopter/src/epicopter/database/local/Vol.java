@@ -3,6 +3,7 @@ package epicopter.database.local;
 public class Vol {
 
 	private long	id;
+	private String	name;
 	private int		picture;
 	private int		video;
 
@@ -12,6 +13,14 @@ public class Vol {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getPicture() {
@@ -32,6 +41,6 @@ public class Vol {
 
 	@Override
 	public String toString() {
-		return "--id:" + id + "- -picture:" + picture + "- -video:" + video + "--";
+		return "--id:" + id + "- -name:" + name + "- -picture:" + picture + "- -video:" + video + "--";
 	}
 }

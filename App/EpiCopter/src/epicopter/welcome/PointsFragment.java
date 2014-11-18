@@ -12,21 +12,17 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 import epicopter.database.local.Point;
 import epicopter.main.R;
 
-public class PointsFragment extends ListFragment implements OnClickListener {
+public class PointsFragment extends ListFragment /* implements OnClickListener */{
 
 	private List<ListViewPoint>	mItems				= null;
 	private View				view				= null;
-	private Button				btnMinus			= null;
-	private Button				btnPlus				= null;
-	private ListViewPoint		itemClicked			= null;
+	// private Button btnMinus = null;
+	// private Button btnPlus = null;
+	// private ListViewPoint itemClicked = null;
 
 	// RECEIVER
 	protected BroadcastReceiver	broadcastReceiver	= new BroadcastReceiver() {
@@ -38,7 +34,7 @@ public class PointsFragment extends ListFragment implements OnClickListener {
 															Resources resources = getResources();
 															for (Point point : points) {
 																mItems.add(new ListViewPoint(resources.getDrawable(R.drawable.ic_launcher), String.valueOf(point
-																		.getLongitude()), String.valueOf(point.getLongitude()), String.valueOf(point.getHauteur())));
+																		.getLatitude()), String.valueOf(point.getLongitude()), String.valueOf(point.getHauteur())));
 															}
 															setListAdapter(new ListViewPointAdapter(getActivity(), mItems));
 														}
@@ -63,16 +59,17 @@ public class PointsFragment extends ListFragment implements OnClickListener {
 		getListView().setDivider(null);
 	}
 
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		// retrieve theListView item
-		itemClicked = mItems.get(position);
-		btnMinus = (Button) v.findViewById(R.id.btnMinus);
-		btnPlus = (Button) v.findViewById(R.id.btnPlus);
-		btnMinus.setOnClickListener(this);
-		btnPlus.setOnClickListener(this);
-		Toast.makeText(getActivity(), itemClicked.latitude, Toast.LENGTH_SHORT).show();
-	}
+	// @Override
+	// public void onListItemClick(ListView l, View v, int position, long id) {
+	// // retrieve theListView item
+	// itemClicked = mItems.get(position);
+	// // btnMinus = (Button) v.findViewById(R.id.btnMinus);
+	// // btnPlus = (Button) v.findViewById(R.id.btnPlus);
+	// // btnMinus.setOnClickListener(this);
+	// // btnPlus.setOnClickListener(this);
+	// // Toast.makeText(getActivity(), "isActivated:" + btnPlus.isActivated() + "isPressed:" + btnPlus.isPressed(), Toast.LENGTH_SHORT).show();
+	// Toast.makeText(getActivity(), itemClicked.latitude, Toast.LENGTH_SHORT).show();
+	// }
 
 	@Override
 	public void onResume() {
@@ -90,17 +87,17 @@ public class PointsFragment extends ListFragment implements OnClickListener {
 		view.getContext().unregisterReceiver(this.broadcastReceiver);
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.btnMinus:
-			Toast.makeText(v.getContext(), "Bouton - sur " + itemClicked.longitude, Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.btnPlus:
-			Toast.makeText(v.getContext(), "Bouton + sur " + itemClicked.latitude, Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			break;
-		}
-	}
+	// @Override
+	// public void onClick(View v) {
+	// switch (v.getId()) {
+	// case R.id.btnMinus:
+	// Toast.makeText(v.getContext(), "Bouton - sur " + itemClicked.longitude, Toast.LENGTH_SHORT).show();
+	// break;
+	// case R.id.btnPlus:
+	// Toast.makeText(v.getContext(), "Bouton + sur " + itemClicked.latitude, Toast.LENGTH_SHORT).show();
+	// break;
+	// default:
+	// break;
+	// }
+	// }
 }

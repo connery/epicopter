@@ -23,5 +23,7 @@
     <string name="latitude">latitude : </string>
     <string name="longitude">longitude : </string>
     <string name="height">Hauteur : </string>
+    <string name="trip_name">nom du parcours</string>
+    <string name="historic">Historique</string>
 
 </resources>

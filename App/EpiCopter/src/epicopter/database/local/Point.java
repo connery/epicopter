@@ -24,6 +24,14 @@ public class Point {
 		this.hauteur = -1;
 	}
 
+	public Point(double latitude, double longitude, double hauteur) {
+		this.id = -1;
+		this.id_vol = -1;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.hauteur = hauteur;
+	}
+
 	public long getId() {
 		return id;
 	}
