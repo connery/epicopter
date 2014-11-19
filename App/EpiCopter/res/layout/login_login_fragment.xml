@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical" >
 
     <!-- Email input text -->
@@ -10,6 +11,9 @@
         android:id="@+id/editTextLoginEmail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="10dip"
         android:layout_marginBottom="10dip"
         android:hint="@string/email"
         android:inputType="textEmailAddress" />
@@ -20,7 +24,9 @@
         android:id="@+id/editTextLoginPassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginBottom="40dip"
         android:hint="@string/password"
         android:inputType="numberPassword"
         android:singleLine="true" />
@@ -29,8 +35,8 @@
 
     <Button
         android:id="@+id/btnMyLogin"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:background="@drawable/blue_button"
+        style="@style/button_text"
         android:text="@string/login" />
 
     <!-- Login facebook button -->
@@ -47,9 +53,8 @@
 
     <Button
         android:id="@+id/buttonInscripton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
+        android:background="@drawable/blue_button"
+        style="@style/button_text"
         android:text="@string/Inscription" />
 
     <!-- Message oublié text -->
@@ -59,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dip"
         android:layout_marginBottom="20dip"
         android:clickable="true"
         android:text="@string/forgot_password" />
