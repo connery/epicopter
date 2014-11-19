@@ -1,14 +1,12 @@
 package epicopter.utils;
 
-
 import java.util.HashMap;
-
-import epicopter.login.MainFragmentActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import epicopter.login.MainFragmentActivity;
 
 public class SessionManager {
 
@@ -19,18 +17,20 @@ public class SessionManager {
 	// Context
 	Context						_context;
 	// Shared preferences mode
-	int							PRIVATE_MODE		= 0;
+	int							PRIVATE_MODE			= 0;
 	// Shared preferences file name
-	private static final String	PREF_NAME			= "EpicopterSharedPreferences";
+	private static final String	PREF_NAME				= "EpicopterSharedPreferences";
 	// All Shared Preferences Keys
-	private static final String	IS_LOGIN			= "IsLoggedIn";
+	private static final String	IS_LOGIN				= "IsLoggedIn";
 
 	// User name (make variable public to access from outside)
-	public static final String	KEY_NAME			= "name";
+	public static final String	KEY_NAME				= "name";
 	// Email address (make variable public to access from outside)
-	public static final String	KEY_EMAIL			= "email";
+	public static final String	KEY_EMAIL				= "email";
 	// Is a facebook conection or not (make variable public to access from outside)
-	public static final String	KEY_FB_CONNECTION	= "facebookConnection";
+	public static final String	KEY_FB_CONNECTION		= "facebookConnection";
+	// Id of the last trip opened
+	public static final String	KEY_ID_LAST_TRIP_USED	= "lastTripUsed";
 
 	// Constructor
 	public SessionManager(Context context) {
@@ -116,7 +116,7 @@ public class SessionManager {
 
 		// Add new Flag to start new Activity
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				
+
 		// Staring Login Activity
 		_context.startActivity(i);
 	}
@@ -137,4 +137,17 @@ public class SessionManager {
 		else
 			return false;
 	}
+
+	/* ************************ PART OF TRIP GESTURE ************************ */
+	public void setIdCurrentTrip(Long id) {
+		// Storing id of current trip
+		editor.putLong(KEY_ID_LAST_TRIP_USED, id);
+		// commit changes
+		editor.commit();
+	}
+
+	public Long getIdLastTripUsed() {
+		return pref.getLong(KEY_ID_LAST_TRIP_USED, -1);
+	}
+	/* ********************************************************************** */
 }

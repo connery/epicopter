@@ -27,13 +27,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import epicopter.database.DataBaseInterface;
+import epicopter.database.SendDataToDB;
 import epicopter.database.local.Point;
 import epicopter.database.local.PointsDBAdapter;
 import epicopter.database.local.Vol;
 import epicopter.database.local.VolsDBAdapter;
 import epicopter.main.R;
+import epicopter.utils.SessionManager;
 
-public class GoogleMapsFragment extends Fragment {
+public class GoogleMapsFragment extends Fragment implements DataBaseInterface {
 	// Google Map
 	private MapView						mapView			= null;
 	private GoogleMap					googleMap		= null;
@@ -41,6 +44,7 @@ public class GoogleMapsFragment extends Fragment {
 	private ArrayList<MarkerOptions>	markers			= null;
 	public static ArrayList<Point>		points			= null;
 	private static View					view			= null;
+	private static SessionManager		mySession		= null;
 
 	private static final int			DEFAULT_ZOOM	= 12;
 
@@ -53,6 +57,7 @@ public class GoogleMapsFragment extends Fragment {
 		mapView.onCreate(savedInstanceState);
 		// Gets to GoogleMap from the MapView and does initialization stuff
 		googleMap = mapView.getMap();
+		mySession = new SessionManager(view.getContext());
 
 		try {
 			// Initialize map
@@ -138,18 +143,42 @@ public class GoogleMapsFragment extends Fragment {
 		volsDB.open();
 		// STEP 2 : Create Vol
 		Vol myNewVol = volsDB.insertVol(name, takePicture, takeVideo);
-		// STEP 3 : Open points DB
+		// STEP 3 : Save id in local DB as the current trip
+		mySession.setIdCurrentTrip(myNewVol.getId());
+		// STEP 4 : Open points DB
 		PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
 		pointsDB.open();
-		// STEP 4 : Insert every point in DB with this vol id
+		// STEP 5 : Insert every point in DB with this vol id
 		for (Point pnt : points) {
 			pointsDB.insertPoint(myNewVol.getId(), pnt.getLatitude(), pnt.getLongitude(), pnt.getHauteur());
 		}
-		// STEP 5 : Close vol DB
+		// STEP 6 : Close vol DB
 		volsDB.close();
-		// STEP 6 : Close points DB
+		// STEP 7 : Close points DB
 		pointsDB.close();
 		Toast.makeText(view.getContext(), "Sauvegarde du parcours réussi!", Toast.LENGTH_LONG).show();
+	}
+
+	/**
+	 * Function to send data to external Database
+	 */
+	public static void sendDataToExternalDB() {
+		long idLastTripUsed = mySession.getIdLastTripUsed();
+		if (idLastTripUsed != -1) {
+			// STEP 1 : Open vol DB
+			VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
+			volsDB.open();
+			// STEP 2 : Create Vol
+			Vol vol = volsDB.getVolById(idLastTripUsed);
+			// STEP 3 : Close vol's DB
+			volsDB.close();
+			// STEP 4 : Send data to external DB
+			new SendDataToDB(view.getContext(), null, false, URL_SEND_TRIP, "tripName", vol.getName(), "takePicture", String.valueOf(vol.getPicture()), "takeVideo",
+					String.valueOf(vol.getVideo()), "points", points.toString());
+		} else {
+			// Send every point to external DB
+			new SendDataToDB(view.getContext(), null, false, URL_SEND_TRIP, "tripName", "trip", "takePicture", "0", "takeVideo", "0", "points", points.toString());
+		}
 	}
 
 	/**
@@ -163,7 +192,6 @@ public class GoogleMapsFragment extends Fragment {
 		for (int i = 0; i < points.size(); i++) {
 			if (points.get(i).getLatitude() == lat && points.get(i).getLongitude() == lng) {
 				points.get(i).setHauteur(height);
-				Toast.makeText(view.getContext(), "list updated!!", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -172,32 +200,41 @@ public class GoogleMapsFragment extends Fragment {
 	 * Function to load the last trip saved in local DB
 	 */
 	private void loadLastTrip() {
-		// STEP 1 : Get the last trip in local BDD
+		// STEP 1 : Open the Vol's DB
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
+		// STEP 2 : Get the last trip or the trip come from historicActivity click
 		Vol myVol = null;
-		if (getActivity().getIntent().getDoubleExtra("volId", -1.) != -1) {
+		if (getActivity().getIntent().getLongExtra("volId", -1) != -1) {
 			myVol = volsDB.getVolById(getActivity().getIntent().getLongExtra("volId", -1));
+		} else if (mySession.getIdLastTripUsed() != -1) {
+			myVol = volsDB.getVolById(mySession.getIdLastTripUsed());
 		} else {
 			myVol = volsDB.getLastVol();
 		}
-		// Is there a past trip
+		// STEP 3 : Is there a past trip
 		if (myVol == null) { // No past trip
 			putBaseLocation(48.6972012, 6.1673514);
 		} else {
-			// STEP 2 : Get every points on this trip
+			// STEP 4 : Save the trip's id in sharedPreference as the current trip
+			mySession.setIdCurrentTrip(myVol.getId());
+			// STEP 5 : Open the Points's DB
 			PointsDBAdapter pointsDB = new PointsDBAdapter(view.getContext());
 			pointsDB.open();
+			// STEP 6 : Get every point on this trip
 			List<Point> allOldPoints = pointsDB.getPointsByVolId(myVol.getId());
-			// STEP 3 : Add every point as marker in marker's list
+			// STEP 7 : Add every point as marker in marker's list
 			for (Point pnt : allOldPoints) {
 				addMarker(new LatLng(pnt.getLatitude(), pnt.getLongitude()), pnt.getHauteur());
 			}
+			// STEP 8 (optional) : Move the camera to the last point
 			Point lastPoint = allOldPoints.get(allOldPoints.size() - 1);
 			moveCameraTo(new LatLng(lastPoint.getLatitude(), lastPoint.getLongitude()), DEFAULT_ZOOM);
-			volsDB.close();
+			// Close points's DB
 			pointsDB.close();
 		}
+		// Close vol's DB
+		volsDB.close();
 	}
 
 	/**

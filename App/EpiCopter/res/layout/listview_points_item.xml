@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/frame_background"
+    android:background="@color/background"
     android:gravity="center_vertical"
     android:padding="5dp" >
 
@@ -21,8 +21,8 @@
             android:id="@+id/ivIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:contentDescription="description de l\&apos;icone"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/logo"
             android:padding="5dp"
             android:scaleType="fitXY" />
         <!-- the container view for the title and description -->
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ivIcon" >
+            android:layout_toEndOf="@id/ivIcon" >
 
             <!-- the title view -->
 
@@ -69,9 +69,10 @@
 
                 <Button
                     android:id="@+id/btnMinus"
+                    style="@style/button_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/blue_button"
                     android:text="-" />
 
                 <TextView
@@ -84,11 +85,11 @@
 
                 <Button
                     android:id="@+id/btnPlus"
+                    style="@style/button_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/blue_button"
                     android:text="+" />
-
             </TableRow>
         </RelativeLayout>
     </RelativeLayout>

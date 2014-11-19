@@ -8,7 +8,4 @@ public interface LoginInterface {
 	static final int	SUCCESS			= 3;
 	static final int	SETTINGS		= 4;
 	static final int	FRAGMENT_COUNT	= SETTINGS + 1;
-
-	static final String	TRUE			= "1";
-	static final String	FALSE			= "0";
 }

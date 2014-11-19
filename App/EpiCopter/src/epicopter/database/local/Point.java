@@ -72,8 +72,11 @@ public class Point {
 		this.hauteur = hauteur;
 	}
 
-	// Will be used by the ArrauAdapter in the Listview
 	public String toString() {
+		return latitude + ";" + longitude + ";" + hauteur;
+	}
+
+	public String toStringPerso() {
 		return "-- id:" + id + "- -id_vol:" + id_vol + "- -altitude:" + latitude + "- -longitude:" + longitude + "- -hauteur:" + hauteur + "--";
 	}
 }

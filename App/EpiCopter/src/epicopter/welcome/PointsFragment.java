@@ -20,9 +20,6 @@ public class PointsFragment extends ListFragment /* implements OnClickListener *
 
 	private List<ListViewPoint>	mItems				= null;
 	private View				view				= null;
-	// private Button btnMinus = null;
-	// private Button btnPlus = null;
-	// private ListViewPoint itemClicked = null;
 
 	// RECEIVER
 	protected BroadcastReceiver	broadcastReceiver	= new BroadcastReceiver() {
@@ -59,18 +56,6 @@ public class PointsFragment extends ListFragment /* implements OnClickListener *
 		getListView().setDivider(null);
 	}
 
-	// @Override
-	// public void onListItemClick(ListView l, View v, int position, long id) {
-	// // retrieve theListView item
-	// itemClicked = mItems.get(position);
-	// // btnMinus = (Button) v.findViewById(R.id.btnMinus);
-	// // btnPlus = (Button) v.findViewById(R.id.btnPlus);
-	// // btnMinus.setOnClickListener(this);
-	// // btnPlus.setOnClickListener(this);
-	// // Toast.makeText(getActivity(), "isActivated:" + btnPlus.isActivated() + "isPressed:" + btnPlus.isPressed(), Toast.LENGTH_SHORT).show();
-	// Toast.makeText(getActivity(), itemClicked.latitude, Toast.LENGTH_SHORT).show();
-	// }
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -87,17 +72,4 @@ public class PointsFragment extends ListFragment /* implements OnClickListener *
 		view.getContext().unregisterReceiver(this.broadcastReceiver);
 	}
 
-	// @Override
-	// public void onClick(View v) {
-	// switch (v.getId()) {
-	// case R.id.btnMinus:
-	// Toast.makeText(v.getContext(), "Bouton - sur " + itemClicked.longitude, Toast.LENGTH_SHORT).show();
-	// break;
-	// case R.id.btnPlus:
-	// Toast.makeText(v.getContext(), "Bouton + sur " + itemClicked.latitude, Toast.LENGTH_SHORT).show();
-	// break;
-	// default:
-	// break;
-	// }
-	// }
 }
