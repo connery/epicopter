@@ -1,5 +1,7 @@
 package epicopter.welcome;
 
+import com.facebook.Session;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import epicopter.historic.HistoricActivity;
 import epicopter.main.R;
+import epicopter.utils.SessionManager;
 
 public class WelcomeChooseTripActivity extends Activity implements OnClickListener {
 
@@ -22,6 +25,11 @@ public class WelcomeChooseTripActivity extends Activity implements OnClickListen
 		btnNewTrip.setOnClickListener(this);
 		btnHistoricTrip.setOnClickListener(this);
 		btnOldTrip.setOnClickListener(this);
+		/**
+		 * Logout button click event
+		 * */
+		Button btnLogout = (Button) findViewById(R.id.welcomeChooseTripButtonLogout);
+		btnLogout.setOnClickListener(this);
 	}
 
 	@Override
@@ -40,6 +48,13 @@ public class WelcomeChooseTripActivity extends Activity implements OnClickListen
 		case R.id.welcomeChooseTripButtonResumeTrip:
 			i.putExtra("isNewTrip", false);
 			startActivity(i);
+			break;
+		case R.id.welcomeChooseTripButtonLogout:
+			Session sessionFb = Session.getActiveSession();
+			sessionFb.closeAndClearTokenInformation();
+			SessionManager session = new SessionManager(getApplicationContext());			
+			finish();
+			session.logoutUser();
 			break;
 		default:
 			break;

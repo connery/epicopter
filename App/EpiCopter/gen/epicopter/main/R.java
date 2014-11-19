@@ -598,7 +598,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int book_now=0x7f09000e;
-        public static final int btnLogout=0x7f09004b;
+        public static final int btnLogout=0x7f09004c;
         public static final int btnMinus=0x7f09002f;
         public static final int btnMyLogin=0x7f09003b;
         public static final int btnPlus=0x7f090031;
@@ -641,19 +641,19 @@ containing a value of this type.
         public static final int hybrid=0x7f090000;
         public static final int ivIcon=0x7f09002b;
         public static final int large=0x7f090014;
-        public static final int lblEmail=0x7f09004a;
+        public static final int lblEmail=0x7f09004b;
         public static final int lblName=0x7f090044;
         public static final int loginForgotPasswordFragment=0x7f090041;
         public static final int loginInscriptionFragment=0x7f090040;
         public static final int loginLoginFragment=0x7f09003f;
         public static final int loginSuccessFragment=0x7f090042;
         public static final int login_buttonFacebook=0x7f09003c;
-        public static final int map=0x7f09004d;
+        public static final int map=0x7f09004e;
         public static final int match_parent=0x7f09000c;
         public static final int monochrome=0x7f090013;
         public static final int none=0x7f090001;
         public static final int normal=0x7f090002;
-        public static final int pager=0x7f09004c;
+        public static final int pager=0x7f09004d;
         public static final int picker_subtitle=0x7f090027;
         public static final int production=0x7f090007;
         public static final int progressBar1=0x7f090045;
@@ -672,12 +672,13 @@ containing a value of this type.
         public static final int tvLatitude=0x7f09002c;
         public static final int tvLongitude=0x7f09002d;
         public static final int welcomeChooseTripButtonHistoricTrip=0x7f090048;
+        public static final int welcomeChooseTripButtonLogout=0x7f09004a;
         public static final int welcomeChooseTripButtonNewTrip=0x7f090047;
         public static final int welcomeChooseTripButtonResumeTrip=0x7f090049;
-        public static final int welcomeValiderButtonSave=0x7f090050;
-        public static final int welcomeValiderButtonSaveAndSend=0x7f090051;
-        public static final int welcomeValiderButtonSend=0x7f09004f;
-        public static final int welcomeValiderEditTextTripName=0x7f09004e;
+        public static final int welcomeValiderButtonSave=0x7f090051;
+        public static final int welcomeValiderButtonSaveAndSend=0x7f090052;
+        public static final int welcomeValiderButtonSend=0x7f090050;
+        public static final int welcomeValiderEditTextTripName=0x7f09004f;
         public static final int wrap_content=0x7f09000d;
     }
     public static final class integer {
@@ -858,6 +859,7 @@ containing a value of this type.
         public static final int latitude=0x7f05004f;
         public static final int login=0x7f050045;
         public static final int logo=0x7f050059;
+        public static final int logout=0x7f05005a;
         public static final int longitude=0x7f050050;
         public static final int my_trips=0x7f05004c;
         public static final int new_=0x7f05004e;

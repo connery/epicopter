@@ -31,5 +31,6 @@
     <string name="save">Sauvegarder</string>
     <string name="save_and_send">Sauvegarder et envoyer</string>
     <string name="logo">Logo</string>
+    <string name="logout">Déconnexion</string>
 
 </resources>

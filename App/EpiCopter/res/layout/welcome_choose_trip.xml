@@ -10,9 +10,9 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
-        android:layout_marginBottom="20dip"
         android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginBottom="20dip"
+        android:layout_marginTop="20dip"
         android:text="@string/my_trips" />
 
     <Button
@@ -32,5 +32,11 @@
         style="@style/button_text"
         android:background="@drawable/blue_button"
         android:text="@string/resume" />
+
+    <Button
+        android:id="@+id/welcomeChooseTripButtonLogout"
+        style="@style/button_text"
+        android:background="@drawable/blue_button"
+        android:text="@string/logout" />
 
 </LinearLayout>

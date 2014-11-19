@@ -32,25 +32,6 @@ public class LoginSuccessFragment extends Fragment implements LoginInterface, Da
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.login_success, container, false);
 		sessionFb = Session.getActiveSession();
-
-		Button btnDeco = (Button) view.findViewById(R.id.button1);
-		btnDeco.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				sessionFb = Session.getActiveSession();
-				// if (sessionFb != null && sessionFb.isOpened()) {
-				sessionFb.closeAndClearTokenInformation();
-				// Toast.makeText(view.getContext(), "User Login Status: " + sessionFb.isOpened(), Toast.LENGTH_LONG).show();
-				// }
-				SessionManager mySession = new SessionManager(view.getContext());
-				mySession.logoutUser();
-				// getActivity().finish();
-				// Session sessionFb = Session.getActiveSession();
-				// sessionFb.closeAndClearTokenInformation();
-				// getActivity().finish();
-				// session.logoutUser();
-			}
-		});
 		return view;
 	}
 
@@ -77,8 +58,6 @@ public class LoginSuccessFragment extends Fragment implements LoginInterface, Da
 					}).executeAsync();
 				} else if (mySession != null && !mySession.isFacebookConnection()) {
 					Log.i("onHiddenChanged", " Is a NORMAL connection!!!");
-					// Intent i = new Intent(view.getContext(), epicopter.welcome.MainFragmentActivity.class);
-					// Intent i = new Intent(view.getContext(), WelcomeGoogleMapsActivity.class);
 					Intent i = new Intent(view.getContext(), WelcomeChooseTripActivity.class);
 					getActivity().finish();
 					startActivity(i);
@@ -90,8 +69,6 @@ public class LoginSuccessFragment extends Fragment implements LoginInterface, Da
 	@Override
 	public void taskDone(boolean isOK) {
 		if (isOK == true) {
-			// Intent i = new Intent(view.getContext(), epicopter.welcome.MainFragmentActivity.class);
-			// Intent i = new Intent(view.getContext(), WelcomeGoogleMapsActivity.class);
 			Intent i = new Intent(view.getContext(), WelcomeChooseTripActivity.class);
 			getActivity().finish();
 			startActivity(i);
