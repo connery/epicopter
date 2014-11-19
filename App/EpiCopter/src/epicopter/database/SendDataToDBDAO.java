@@ -81,10 +81,11 @@ public class SendDataToDBDAO extends AsyncTask<String, String, String> implement
 		if (showPDialog && pDialog != null && pDialog.isShowing()) {
 			pDialog.cancel();
 		}
-		if (file_url.equals(TAG_SUCCESS))
-			taskCallback.taskDone(true);
-		else
-			taskCallback.taskDone(false);
+		if (taskCallback != null)
+			if (file_url.equals(TAG_SUCCESS))
+				taskCallback.taskDone(true);
+			else
+				taskCallback.taskDone(false);
 		Toast.makeText(context, "OnPostExecute 'SendDataToDAO' : " + file_url, Toast.LENGTH_SHORT).show();
 	}
 }
