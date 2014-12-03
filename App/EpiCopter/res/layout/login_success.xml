@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dip"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="40dip"
+        android:inputType="none"
+        android:singleLine="true"
+        android:text="Chargement de vos données ..." />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dip" />
+
+    <Button
+        android:id="@+id/button1"
+        style="@style/button_text"
+        android:background="@drawable/blue_button"
+        android:text="deconnexion" />
+
+</LinearLayout>

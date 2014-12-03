@@ -1,0 +1,4 @@
+# Ignorer les RemoteSystemsTempFiles eclipse
+App/RemoteSystemsTempFiles/*
+# Ignorer les metadata eclipse 
+App/.metadata/*

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Epicopter</string>
+    <string name="settings">Paramètres</string>
+    <string name="app_id_facebook">1606058759621757</string>
+    <string name="app_id_google_maps">AIzaSyCliFGRCw_GHHgrMc6VXq6m9UJDhmTtnlI</string>
+    <string name="error_no_internet_connection">Aucune connexion internet disponible!</string>
+    <string name="download_your_data" tools:ignore="TypographyEllipsis">Chargement de vos données...</string>
+    <string name="validate">Valider</string>
+    <string name="password">Mot de passe</string>
+    <string name="email">Email</string>
+    <string name="login">Connexion</string>
+    <string name="Inscription">Inscription</string>
+    <string name="forgot_password">Mot de passe oublié?</string>
+    <string name="inscription_page">Page d\'inscription</string>
+    <string name="forgot_password_page">Page mot de passe oublié</string>
+    <string name="send">Envoyer</string>
+    <string name="waiting" tools:ignore="TypographyEllipsis">Veuillez patienter...</string>
+    <string name="my_trips">Mes parcours</string>
+    <string name="resume">Reprendre</string>
+    <string name="new_">Nouveau</string>
+    <string name="latitude">latitude : </string>
+    <string name="longitude">longitude : </string>
+    <string name="height">Hauteur : </string>
+    <string name="trip_name">Nom du parcours</string>
+    <string name="historic">Historique</string>
+    <string name="delete">Supprimer</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="save">Sauvegarder</string>
+    <string name="save_and_send">Sauvegarder et envoyer</string>
+    <string name="logo">Logo</string>
+    <string name="logout">Déconnexion</string>
+
+</resources>
