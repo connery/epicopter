@@ -126,7 +126,7 @@ struct GeodeticPosition * del_waypointlist()
   next = waypointlist->next;
   free(waypointlist);
 
-  return (0);
+  return (struct GeodeticPosition *)(0);
 }
 
 struct GeodeticPosition * set_waypointlist_latitude(long latitude)
