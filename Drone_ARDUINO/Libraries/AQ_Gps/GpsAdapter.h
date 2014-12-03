@@ -84,123 +84,123 @@ void initializeGpsData()
   gpsData.fixtime = 0xFFFFFFFF;
 }
 
-struct gpsConfigEntry gpsConfigEntries[] = {
-#ifdef UseGPSMTK16
-  MTK_CONFIGS,
-#endif
-#ifdef UseGPSUBLOX
-  UBLOX_CONFIGS,
-#endif
-  { NULL, 0 }
-};
+/* struct gpsConfigEntry gpsConfigEntries[] = { */
+/* #ifdef UseGPSMTK16 */
+/*   MTK_CONFIGS, */
+/* #endif */
+/* #ifdef UseGPSUBLOX */
+/*   UBLOX_CONFIGS, */
+/* #endif */
+/*   { NULL, 0 } */
+/* }; */
 
-void gpsSendConfig() // Send initialization strings to GPS one by one, it supports both string and binary packets
-{
-  if (gpsConfigEntries[gpsConfigsSent].data) {
-    if (gpsConfigEntries[gpsConfigsSent].len) {
-      for (int i=0; i<gpsConfigEntries[gpsConfigsSent].len; i++) {
-        GPS_SERIAL.write(gpsConfigEntries[gpsConfigsSent].data[i]);
-      }
-      gpsConfigTimer=gpsConfigEntries[gpsConfigsSent].len;
-    }
-    else {
-      GPS_SERIAL.print((char*)gpsConfigEntries[gpsConfigsSent].data);
-      gpsConfigTimer=strlen((char*)gpsConfigEntries[gpsConfigsSent].data);
-    }
-    if (gpsConfigTimer<10) {
-      gpsConfigTimer=10;
-    }
-    gpsConfigsSent++;
-  }
-}
+/* void gpsSendConfig() // Send initialization strings to GPS one by one, it supports both string and binary packets */
+/* { */
+/*   if (gpsConfigEntries[gpsConfigsSent].data) { */
+/*     if (gpsConfigEntries[gpsConfigsSent].len) { */
+/*       for (int i=0; i<gpsConfigEntries[gpsConfigsSent].len; i++) { */
+/*         GPS_SERIAL.write(gpsConfigEntries[gpsConfigsSent].data[i]); */
+/*       } */
+/*       gpsConfigTimer=gpsConfigEntries[gpsConfigsSent].len; */
+/*     } */
+/*     else { */
+/*       GPS_SERIAL.print((char*)gpsConfigEntries[gpsConfigsSent].data); */
+/*       gpsConfigTimer=strlen((char*)gpsConfigEntries[gpsConfigsSent].data); */
+/*     } */
+/*     if (gpsConfigTimer<10) { */
+/*       gpsConfigTimer=10; */
+/*     } */
+/*     gpsConfigsSent++; */
+/*   } */
+/* } */
 
-void initializeGps() // Initialize GPS subsystem (called once after powerup)
-{
-    gpsData.baudrate = 0;
-    GPS_SERIAL.begin(gpsBaudRates[gpsData.baudrate]);
-    for (gpsData.type=0; (gpsData.type < GPS_NUMTYPES); gpsData.type++) {
-      gpsTypes[gpsData.type].init();
-    }
-    initializeGpsData();
- }
+/* void initializeGps() // Initialize GPS subsystem (called once after powerup) */
+/* { */
+/*     gpsData.baudrate = 0; */
+/*     GPS_SERIAL.begin(gpsBaudRates[gpsData.baudrate]); */
+/*     for (gpsData.type=0; (gpsData.type < GPS_NUMTYPES); gpsData.type++) { */
+/*       gpsTypes[gpsData.type].init(); */
+/*     } */
+/*     initializeGpsData(); */
+/*  } */
 
-void updateGps() // Read data from GPS, this should be called at 100Hz to make sure no data is lost due to overflowing serial input buffer
-{
-  gpsData.idlecount++;
+/* void updateGps() // Read data from GPS, this should be called at 100Hz to make sure no data is lost due to overflowing serial input buffer */
+/* { */
+/*   gpsData.idlecount++; */
 
-  while (GPS_SERIAL.available())
-    {
-      unsigned char c = GPS_SERIAL.read();
-      int ret=0;
+/*   while (GPS_SERIAL.available()) */
+/*     { */
+/*       unsigned char c = GPS_SERIAL.read(); */
+/*       int ret=0; */
 
-      if (gpsData.state == GPS_DETECTING) // If we are detecting run all parsers, stopping if any reports success
-  	{
-  	  for (gpsData.type=0; (gpsData.type < GPS_NUMTYPES); gpsData.type++)
-  	    {
-  	      ret = gpsTypes[gpsData.type].processData(c);
-  	      if (ret) // found GPS device start sending configuration
-  		{
-  		  gpsConfigsSent = 0;
-  		  gpsConfigTimer = 1;
-  		  break;
-  		}
-  	    }
-  	}
-      else // Normal operation just execute the detected parser
-  	{
-  	  ret = gpsTypes[gpsData.type].processData(c);
-  	}
+/*       if (gpsData.state == GPS_DETECTING) // If we are detecting run all parsers, stopping if any reports success */
+/*   	{ */
+/*   	  for (gpsData.type=0; (gpsData.type < GPS_NUMTYPES); gpsData.type++) */
+/*   	    { */
+/*   	      ret = gpsTypes[gpsData.type].processData(c); */
+/*   	      if (ret) // found GPS device start sending configuration */
+/*   		{ */
+/*   		  gpsConfigsSent = 0; */
+/*   		  gpsConfigTimer = 1; */
+/*   		  break; */
+/*   		} */
+/*   	    } */
+/*   	} */
+/*       else // Normal operation just execute the detected parser */
+/*   	{ */
+/*   	  ret = gpsTypes[gpsData.type].processData(c); */
+/*   	} */
       
-      if (ret) // Upon a successfully parsed sentence, zero the idlecounter and update position data
-	{
-	  if (gpsData.state == GPS_DETECTING)
-	    {
-	      gpsData.state = GPS_NOFIX; // make sure to lose detecting state (state may not have been updated by parser)
-	    }
+/*       if (ret) // Upon a successfully parsed sentence, zero the idlecounter and update position data */
+/* 	{ */
+/* 	  if (gpsData.state == GPS_DETECTING) */
+/* 	    { */
+/* 	      gpsData.state = GPS_NOFIX; // make sure to lose detecting state (state may not have been updated by parser) */
+/* 	    } */
 	  
-	  gpsData.idlecount=0;
+/* 	  gpsData.idlecount=0; */
 
 	  
-	  // LECTURE DES DONNEES DE POSITIONNEMENT
+/* 	  // LECTURE DES DONNEES DE POSITIONNEMENT */
 	  
-	  currentPosition.latitude = gpsData.lat;
-	  currentPosition.longitude = gpsData.lon;
-	  currentPosition.altitude = gpsData.height;
-	}
-    }
+/* 	  currentPosition.latitude = gpsData.lat; */
+/* 	  currentPosition.longitude = gpsData.lon; */
+/* 	  currentPosition.altitude = gpsData.height; */
+/* 	} */
+/*     } */
 
-  if (gpsConfigTimer) // Schedule confg sending if needed
-    {
-      if (gpsConfigTimer==1)
-  	{
-  	  gpsSendConfig();
-  	}
-      gpsConfigTimer--;
-    }
+/*   if (gpsConfigTimer) // Schedule confg sending if needed */
+/*     { */
+/*       if (gpsConfigTimer==1) */
+/*   	{ */
+/*   	  gpsSendConfig(); */
+/*   	} */
+/*       gpsConfigTimer--; */
+/*     } */
   
-  if (gpsData.idlecount > ((gpsData.state == GPS_DETECTING) ? GPS_MAXIDLE_DETECTING : GPS_MAXIDLE)) // Check for inactivity, we have two timeouts depending on scan status
-    {
-      gpsData.idlecount=0;
-      if (gpsData.state == GPS_DETECTING) // advance baudrate
-  	{
-  	  gpsData.baudrate++;
-  	  if (gpsData.baudrate >= GPS_NUMBAUDRATES)
-  	    {
-  	      gpsData.baudrate = 0;
-  	    }
-	  GPS_SERIAL.begin(gpsBaudRates[gpsData.baudrate]);
-	}
+/*   if (gpsData.idlecount > ((gpsData.state == GPS_DETECTING) ? GPS_MAXIDLE_DETECTING : GPS_MAXIDLE)) // Check for inactivity, we have two timeouts depending on scan status */
+/*     { */
+/*       gpsData.idlecount=0; */
+/*       if (gpsData.state == GPS_DETECTING) // advance baudrate */
+/*   	{ */
+/*   	  gpsData.baudrate++; */
+/*   	  if (gpsData.baudrate >= GPS_NUMBAUDRATES) */
+/*   	    { */
+/*   	      gpsData.baudrate = 0; */
+/*   	    } */
+/* 	  GPS_SERIAL.begin(gpsBaudRates[gpsData.baudrate]); */
+/* 	} */
       
-      gpsData.state = GPS_DETECTING; // ensure detection state (if we lost connection to GPS)
+/*       gpsData.state = GPS_DETECTING; // ensure detection state (if we lost connection to GPS) */
       
-      for (gpsData.type=0; (gpsData.type < GPS_NUMTYPES); gpsData.type++) //  reinitialize all parsers
-	{
-	  gpsTypes[gpsData.type].init();
-	}
+/*       for (gpsData.type=0; (gpsData.type < GPS_NUMTYPES); gpsData.type++) //  reinitialize all parsers */
+/* 	{ */
+/* 	  gpsTypes[gpsData.type].init(); */
+/* 	} */
       
-      initializeGpsData(); // zero GPS state
-    }
-}
+/*       initializeGpsData(); // zero GPS state */
+/*     } */
+/* } */
 
 boolean haveAGpsLock() // SI LE GPS EST ACTIF
 {
