@@ -77,6 +77,21 @@ void readSerialCommand()
       queryType = SERIAL_READ(); // Returns the first byte of incoming serial data available (or -1 if no data is available)
 
       switch (queryType) {
+
+      case '/': // Special instruction (EPICOPTER)
+	char[2] command;
+
+	command[0] = SERIAL_READ();
+	command[1] = SERIAL_READ();
+
+	if (command[0] == '0' && command[1] == '1') // delete waypointlist
+	  {
+	    del_waypointlist(waypointlist);
+	    waypointlist = 0;
+	    waypointlist_begin = 0;
+	  }
+	break;
+
       case 'A': // Receive roll and pitch rate mode PID
 	readSerialPID(RATE_XAXIS_PID_IDX);
 	readSerialPID(RATE_YAXIS_PID_IDX);

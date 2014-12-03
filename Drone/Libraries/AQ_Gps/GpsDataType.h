@@ -117,6 +117,18 @@ struct GeodeticPosition * show_waypointlist()
   return (waypointlist);
 }
 
+struct GeodeticPosition * del_waypointlist()
+{
+  int next = 0;
+
+  for ( next = waypointlist->next; waypointlist ; waypointlist = next);
+
+  next = waypointlist->next;
+  free(waypointlist);
+
+  return (0);
+}
+
 struct GeodeticPosition * set_waypointlist_latitude(long latitude)
 {
   waypointlist->latitude = latitude;

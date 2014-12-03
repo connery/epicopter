@@ -204,7 +204,6 @@ void measureCriticalSensors() // Measure critical sensors
 
 #define SERIAL_PORT Serial // SERIAL_PORT Serial USED
 
-
 // Include this last as it contains objects from above declarations ==>
 
 #include "AltitudeControlProcessor.h"
