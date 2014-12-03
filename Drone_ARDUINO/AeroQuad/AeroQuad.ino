@@ -317,7 +317,7 @@ void setup() /* Main setup function, called one time at bootup initialize all sy
   
 #if defined(UseGPS) // ACTIF
 
-    initializeGps();
+    //initializeGps();
 
 #endif 
 
@@ -381,7 +381,7 @@ void process100HzTask() // * 100Hz task
   
   #if defined(UseGPS) // ACTIF
   
-    updateGps();
+    //updateGps();
 
   #endif
   

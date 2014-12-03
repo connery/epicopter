@@ -119,7 +119,7 @@ struct GeodeticPosition * show_waypointlist()
 
 struct GeodeticPosition * del_waypointlist()
 {
-  int next = 0;
+  struct GeodeticPosition * next = 0;
 
   for ( next = waypointlist->next; waypointlist ; waypointlist = next);
 

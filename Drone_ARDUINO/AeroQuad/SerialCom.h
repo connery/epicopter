@@ -79,14 +79,14 @@ void readSerialCommand()
       switch (queryType) {
 
       case '/': // Special instruction (EPICOPTER)
-	char[2] command;
+	char command[2];
 
 	command[0] = SERIAL_READ();
 	command[1] = SERIAL_READ();
 
 	if (command[0] == '0' && command[1] == '1') // delete waypointlist
 	  {
-	    del_waypointlist(waypointlist);
+	    del_waypointlist();
 	    waypointlist = 0;
 	    waypointlist_begin = 0;
 	  }
@@ -1021,13 +1021,13 @@ void reportVehicleState() {
   printVehicleState("Camera Stability", CAMERASTABLE_ENABLED, "Enabled");
   printVehicleState("Range Detection", RANGE_ENABLED, "Enabled");
 #ifdef UseGPS
-  SERIAL_PRINT("GPS: ");
-  SERIAL_PRINT((gpsData.state==GPS_DETECTING)?"Scanning ":"Detected ");
-  if (gpsData.state != GPS_DETECTING) {
-    SERIAL_PRINT(gpsTypes[gpsData.type].name);
-  }
-  SERIAL_PRINT("@");
-  SERIAL_PRINTLN(gpsBaudRates[gpsData.baudrate]);
+  //SERIAL_PRINT("GPS: ");
+  //SERIAL_PRINT((gpsData.state==GPS_DETECTING)?"Scanning ":"Detected ");
+  //if (gpsData.state != GPS_DETECTING) {
+  //  SERIAL_PRINT(gpsTypes[gpsData.type].name);
+  //}
+  //SERIAL_PRINT("@");
+  //SERIAL_PRINTLN(gpsBaudRates[gpsData.baudrate]);
 #else
   SERIAL_PRINTLN("GPS: Not Enabled");
 #endif
