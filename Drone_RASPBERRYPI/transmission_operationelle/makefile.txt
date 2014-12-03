@@ -1,1 +1,0 @@
-sudo cc -o start_drone start_drone_communication.c linked_lists_lib/my_put_in_list.c shared_memory_double.c -std=c99

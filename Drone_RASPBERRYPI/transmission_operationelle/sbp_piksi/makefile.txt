@@ -1,1 +1,0 @@
-sudo cc -o gps_communication raspberry_uart_communication.c libswiftnav/src/edc.c libswiftnav/src/sbp.c ../shared_memory_double.c -std=c99
