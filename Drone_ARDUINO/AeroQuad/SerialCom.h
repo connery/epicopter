@@ -90,6 +90,18 @@ void readSerialCommand()
 	    waypointlist = 0;
 	    waypointlist_begin = 0;
 	  }
+	if (command[0] == '0' && command[1] == '2') // reception de coordonnees gps
+	  {
+#if defined (UseGPS)
+      
+	    gpsData.lat = (int32_t)readDoubleSerial(); 
+	    gpsData.lon = (int32_t)readDoubleSerial();
+	    gpsData.height = (int32_t)readDoubleSerial();
+	    gpsData.fixtime = (int32_t)readDoubleSerial();
+	    gpsData.sats = (int32_t)readIntegerSerial();
+      
+#endif    
+	  }
 	break;
 
       case 'A': // Receive roll and pitch rate mode PID
@@ -807,6 +819,32 @@ void readValueSerial(char *data, byte size)
   data[index] = '\0';
 }
 
+void readDoubleValueSerial(char *data, byte size)
+{
+  byte index = 0;
+  byte timeout = 0;
+  data[0] = '\0';
+
+  do {
+    if (SERIAL_AVAILABLE() == 0)
+      {
+	delay(1);
+	timeout++;
+      }
+    else
+      {
+	data[index] = SERIAL_READ();
+	timeout = 0;
+	if (data[index] != '.')
+	  {
+	    index++;
+	  }
+      }
+  } while ((index == 0 || data[index-1] != ';') && (timeout < 10) && (index < size-1));
+
+  data[index] = '\0';
+}
+
 
 // Used to read floating point values from the serial port
 float readFloatSerial() {
@@ -821,6 +859,14 @@ long readIntegerSerial() {
   char data[16] = "";
 
   readValueSerial(data, sizeof(data));
+  return atol(data);
+}
+
+long readDoubleSerial() // MULTIPLY BY 10000000000 AND CAST DOUBLE TO LONG INT 
+{
+  char data[32] = "";
+
+  readDoubleValueSerial(data, sizeof(data));
   return atol(data);
 }
 
