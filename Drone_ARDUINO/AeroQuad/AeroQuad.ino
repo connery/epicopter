@@ -317,7 +317,7 @@ void setup() /* Main setup function, called one time at bootup initialize all sy
   
 #if defined(UseGPS) // ACTIF
 
-    //initializeGps();
+    initializeGps(); // GpsAdapter.h
 
 #endif 
 
@@ -373,15 +373,15 @@ void process100HzTask() // * 100Hz task
   #if defined(BinaryWrite)
   
     if (fastTransfer == ON)
-      {  // write out fastTelemetry to Configurator or openLog
-	fastTelemetry();
+      {  
+	fastTelemetry(); // write out fastTelemetry to Configurator or openLog
       }
   
   #endif      
   
   #if defined(UseGPS) // ACTIF
   
-    //updateGps();
+    updateGps(); // GpsAdapter
 
   #endif
   
@@ -403,9 +403,14 @@ void process50HzTask() // 50Hz task
 
   #if defined(UseGPS) // ACTIF
 
-    if (haveAGpsLock() && !isHomeBaseInitialized())
+    // SI LA LOCALISATION DE LA BASE D'OPERATION N'EST PAS ENCORE REALISEE : on initialise avec la position courrente (a modifier)
+
+    if (haveAGpsLock() && !isHomeBaseInitialized()) // GpsNavigator.h
       {
-        initHomeBase();
+        initHomeBase(); // GpsNavigator.h
+
+	// SI LA NAVIGATION AUTOMATIQUE EST ACTIVE IL DEFINIT LA DISTANCE VERS LE PROCHAIN POINT A ATTEINDRE
+	// SINON IL PLACE COMME REFERENCE LA LOCALISATION DE LA BASE POUR LE RETOUR SUR BASE AUTOMATIQUE
       }
 
   #endif

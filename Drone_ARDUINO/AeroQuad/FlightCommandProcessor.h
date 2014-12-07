@@ -28,218 +28,248 @@
 
 
 #if defined (AltitudeHoldBaro) || defined (AltitudeHoldRangeFinder)
-  boolean isPositionHoldEnabledByUser() {
-    #if defined (UseGPSNavigator)
-      if ((receiverCommand[AUX1] < 1750) || (receiverCommand[AUX2] < 1750)) {
-        return true;
-      }
-      return false;
-    #else
-      if (receiverCommand[AUX1] < 1750) {
-        return true;
-      }
-      return false;
-    #endif
-  }
-#endif
-    
-#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
-    
-    void processAltitudeHoldStateFromReceiverCommand()
+
+boolean isPositionHoldEnabledByUser()
+{
+#if defined (UseGPSNavigator)
+
+  if ((receiverCommand[AUX1] < 1750) || (receiverCommand[AUX2] < 1750))
     {
-	if (isPositionHoldEnabledByUser())
+      return true;
+    }
+  
+  return false;
+
+#else
+  if (receiverCommand[AUX1] < 1750)
+    {
+      return true;
+    }
+
+  return false;
+#endif
+
+}
+
+#endif
+
+
+    
+#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder // OK
+    
+void	processAltitudeHoldStateFromReceiverCommand()
+{
+  if (isPositionHoldEnabledByUser()) // WILL DEPREDICATED
+    {
+      if (altitudeHoldState != ALTPANIC) // check for special condition with manditory override of Altitude hold
 	{
-		if (altitudeHoldState != ALTPANIC )
-		{  // check for special condition with manditory override of Altitude hold
-			if (!isAltitudeHoldInitialized)
-			{
-#if defined AltitudeHoldBaro
-				baroAltitudeToHoldTarget = getBaroAltitude();
-				PID[BARO_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
-				PID[BARO_ALTITUDE_HOLD_PID_IDX].lastError = baroAltitudeToHoldTarget;
+	  if (!isAltitudeHoldInitialized)
+	    {
+
+#if defined AltitudeHoldBaro // OK
+
+	      baroAltitudeToHoldTarget = getBaroAltitude();
+	      PID[BARO_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
+	      PID[BARO_ALTITUDE_HOLD_PID_IDX].lastError = baroAltitudeToHoldTarget;
+
 #endif
-#if defined AltitudeHoldRangeFinder
-				sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX];
-				PID[SONAR_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
-				PID[SONAR_ALTITUDE_HOLD_PID_IDX].lastError = sonarAltitudeToHoldTarget;
+#if defined AltitudeHoldRangeFinder // OFF NOW
+
+	      sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX];
+	      PID[SONAR_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
+	      PID[SONAR_ALTITUDE_HOLD_PID_IDX].lastError = sonarAltitudeToHoldTarget;
+
 #endif
-				altitudeHoldThrottle = receiverCommand[THROTTLE];
-				isAltitudeHoldInitialized = true;
-			}
-		altitudeHoldState = ON;
-		}
-	} 
-    else {
+	      altitudeHoldThrottle = receiverCommand[THROTTLE];
+	      isAltitudeHoldInitialized = true;
+	    }
+
+	  altitudeHoldState = ON;
+	}
+    } 
+  else
+    {
       isAltitudeHoldInitialized = false;
       altitudeHoldState = OFF;
     }
-  }
+}
+
 #endif
 
 
 #if defined (AutoLanding)
 
-  void processAutoLandingStateFromReceiverCommand()
-  {
-    if (receiverCommand[AUX3] < 1750)
-      {
-	if (altitudeHoldState != ALTPANIC )
-	  {  // check for special condition with manditory override of Altitude hold
-	    if (isAutoLandingInitialized)
-	      {
-		autoLandingState = BARO_AUTO_DESCENT_STATE;
+void	processAutoLandingStateFromReceiverCommand()
+{
+  if (receiverCommand[AUX3] < 1750)
+    {
+      if (altitudeHoldState != ALTPANIC) // check for special condition with manditory override of Altitude hold
+	{
+	  if (isAutoLandingInitialized)
+	    {
+	      autoLandingState = BARO_AUTO_DESCENT_STATE;
+
 #if defined AltitudeHoldBaro
-		baroAltitudeToHoldTarget = getBaroAltitude();
-		PID[BARO_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
-		PID[BARO_ALTITUDE_HOLD_PID_IDX].lastError = baroAltitudeToHoldTarget;
+
+	      baroAltitudeToHoldTarget = getBaroAltitude();
+	      PID[BARO_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
+	      PID[BARO_ALTITUDE_HOLD_PID_IDX].lastError = baroAltitudeToHoldTarget;
+
 #endif
 #if defined AltitudeHoldRangeFinder
-		sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX];
-		PID[SONAR_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
-		PID[SONAR_ALTITUDE_HOLD_PID_IDX].lastError = sonarAltitudeToHoldTarget;
+
+	      sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX];
+	      PID[SONAR_ALTITUDE_HOLD_PID_IDX].integratedError = 0;
+	      PID[SONAR_ALTITUDE_HOLD_PID_IDX].lastError = sonarAltitudeToHoldTarget;
+
 #endif
-		altitudeHoldThrottle = receiverCommand[THROTTLE];
-		isAutoLandingInitialized = true;
-	      }
-	    altitudeHoldState = ON;
-	  }
-      }
-    else {
+
+	      altitudeHoldThrottle = receiverCommand[THROTTLE];
+	      isAutoLandingInitialized = true;
+	    }
+	  altitudeHoldState = ON;
+	}
+    }
+  else
+    {
       autoLandingState = OFF;
       autoLandingThrottleCorrection = 0;
       isAutoLandingInitialized = false;
+
 #if defined (UseGPSNavigator)
-      if ((receiverCommand[AUX1] > 1750) && (receiverCommand[AUX2] > 1750)) {
-	altitudeHoldState = OFF;
-	isAltitudeHoldInitialized = false;
-      }
+
+      if ((receiverCommand[AUX1] > 1750) && (receiverCommand[AUX2] > 1750))
+	{
+	  altitudeHoldState = OFF;
+	  isAltitudeHoldInitialized = false;
+	}
+
 #else
+
       if (receiverCommand[AUX1] > 1750)
 	{
 	  altitudeHoldState = OFF;
           isAltitudeHoldInitialized = false;
         }
+
 #endif
     }
-  }
+}
 #endif
+
 
 
 #if defined (UseGPSNavigator)
-  void processGpsNavigationStateFromReceiverCommand() {
-    // Init home command
-    if (motorArmed == OFF && 
-        receiverCommand[THROTTLE] < MINCHECK && receiverCommand[ZAXIS] < MINCHECK &&
-        receiverCommand[YAXIS] > MAXCHECK && receiverCommand[XAXIS] > MAXCHECK &&
-        haveAGpsLock()) {
+
+void	processGpsNavigationStateFromReceiverCommand() // COMMANDES D'EXECUTION DE NAVIGATION AUTOMATIQUE ET MAINTIENT D'UNE POSITION
+{
+  // COMMANDE D'INNITIALISATION DE LA BASE D'OPERATION : A MODIFIER
   
+  if (motorArmed == OFF && receiverCommand[THROTTLE] < MINCHECK && receiverCommand[ZAXIS] < MINCHECK && receiverCommand[YAXIS] > MAXCHECK && receiverCommand[XAXIS] > MAXCHECK && haveAGpsLock())
+    {
       homePosition.latitude = currentPosition.latitude;
       homePosition.longitude = currentPosition.longitude;
       homePosition.altitude = DEFAULT_HOME_ALTITUDE;
     }
 
 
-    if (receiverCommand[AUX2] < 1750) {  // Enter in execute mission state, if none, go back home, override the position hold
-      if (!isGpsNavigationInitialized) {
-        gpsRollAxisCorrection = 0;
-        gpsPitchAxisCorrection = 0;
-        gpsYawAxisCorrection = 0;
-        isGpsNavigationInitialized = true;
-      }
+  if (receiverCommand[AUX2] < 1750) // Enter in execute mission state, if none, go back home, override the position hold // COMMANDE D'EXECUTION DE LA NAVIGATION AUTOMATIQUE 
+    {  
+      if (!isGpsNavigationInitialized)
+	{
+	  gpsRollAxisCorrection = 0;
+	  gpsPitchAxisCorrection = 0;
+	  gpsYawAxisCorrection = 0;
+	  isGpsNavigationInitialized = true;
+	}
   
       positionHoldState = OFF;         // disable the position hold while navigating
       isPositionHoldInitialized = false;
   
-      navigationState = ON;
+      navigationState = ON; // NAVIGATION AUTOMATIQUE ACTIVEE
     }
-    else if (receiverCommand[AUX1] < 1250) {  // Enter in position hold state
-      if (!isPositionHoldInitialized) {
-        gpsRollAxisCorrection = 0;
-        gpsPitchAxisCorrection = 0;
-        gpsYawAxisCorrection = 0;
+  else if (receiverCommand[AUX1] < 1250) // COMMANDE DE MAINTIENT DE LA POSITION ACTUELLE (A MODIFIER ET UTILISER POUR LA MOBILISATION SUR UN OBJECTIF DU PARCOURT)
+    {
+      if (!isPositionHoldInitialized)
+	{
+	  gpsRollAxisCorrection = 0;
+	  gpsPitchAxisCorrection = 0;
+	  gpsYawAxisCorrection = 0;
   
-        positionHoldPointToReach.latitude = currentPosition.latitude;
-        positionHoldPointToReach.longitude = currentPosition.longitude;
-        positionHoldPointToReach.altitude = getBaroAltitude();
-        isPositionHoldInitialized = true;
-      }
+	  positionHoldPointToReach.latitude = currentPosition.latitude;
+	  positionHoldPointToReach.longitude = currentPosition.longitude;
+	  positionHoldPointToReach.altitude = getBaroAltitude();
+	  isPositionHoldInitialized = true;
+	}
   
       isGpsNavigationInitialized = false;  // disable navigation
       navigationState = OFF;
   
       positionHoldState = ON;
     }
-    else {
-      // Navigation and position hold are disabled
+  else // Navigation and position hold are disabled
+    {
       positionHoldState = OFF;
       isPositionHoldInitialized = false;
   
       navigationState = OFF;
       isGpsNavigationInitialized = false;
-  
+      
       gpsRollAxisCorrection = 0;
       gpsPitchAxisCorrection = 0;
       gpsYawAxisCorrection = 0;
     }
-  }
+}
 #endif
 
 
 
 
-void processZeroThrottleFunctionFromReceiverCommand() {
-  // Disarm motors (left stick lower left corner)
-  if (receiverCommand[ZAXIS] < MINCHECK && motorArmed == ON) {
-    commandAllMotors(MINCOMMAND);
-    motorArmed = OFF;
-    inFlight = false;
+void	processZeroThrottleFunctionFromReceiverCommand() // ARMEMENT / DESARMEMENT MOTEUR
+{
+  
+  if (receiverCommand[ZAXIS] < MINCHECK && motorArmed == ON) // DESARMEMENT DES MOTEURS
+    {
+      commandAllMotors(MINCOMMAND);
+      motorArmed = OFF;
+      inFlight = false;
 
-    #ifdef OSD
-      notifyOSD(OSD_CENTER|OSD_WARN, "MOTORS UNARMED");
-    #endif
+#if defined BattMonitorAutoDescent
 
-    #if defined BattMonitorAutoDescent
       batteryMonitorAlarmCounter = 0;
       batteryMonitorStartThrottle = 0;
       batteyMonitorThrottleCorrection = 0.0;
-    #endif
-  }    
 
-  // Zero Gyro and Accel sensors (left stick lower left, right stick lower right corner)
-  if ((receiverCommand[ZAXIS] < MINCHECK) && (receiverCommand[XAXIS] > MAXCHECK) && (receiverCommand[YAXIS] < MINCHECK)) {
-    calibrateGyro();
-    computeAccelBias();
-    storeSensorsZeroToEEPROM();
-    calibrateKinematics();
-    zeroIntegralError();
-    pulseMotors(3);
-  }   
+#endif
+    }    
 
-  // Arm motors (left stick lower right corner)
-  if (receiverCommand[ZAXIS] > MAXCHECK && motorArmed == OFF && safetyCheck == ON) {
+  
+  if ((receiverCommand[ZAXIS] < MINCHECK) && (receiverCommand[XAXIS] > MAXCHECK) && (receiverCommand[YAXIS] < MINCHECK)) // Zero Gyro and Accel sensors (left stick lower left, right stick lower right corner)
+    {
+      calibrateGyro();
+      computeAccelBias();
+      storeSensorsZeroToEEPROM();
+      calibrateKinematics();
+      zeroIntegralError();
+      pulseMotors(3);
+    }   
 
-    #ifdef OSD_SYSTEM_MENU
-      if (menuOwnsSticks) {
-        return;
-      }
-    #endif
+  if (receiverCommand[ZAXIS] > MAXCHECK && motorArmed == OFF && safetyCheck == ON) // ARMEMENT DES MOTEURS (left stick lower right corner)
+    {
+      for (byte motor = 0; motor < LASTMOTOR; motor++) // ALLUMAGE DES MOTEURS
+	{
+	  motorCommand[motor] = MINTHROTTLE;
+	}
 
-    for (byte motor = 0; motor < LASTMOTOR; motor++) {
-      motorCommand[motor] = MINTHROTTLE;
+      motorArmed = ON; // MOTEURS ARMES
+
+      zeroIntegralError();
+  }
+  
+  if (receiverCommand[ZAXIS] > MINCHECK) // Prevents accidental arming of motor output if no transmitter command received
+    {
+      safetyCheck = ON; 
     }
-    motorArmed = ON;
-
-    #ifdef OSD
-      notifyOSD(OSD_CENTER|OSD_WARN, "!MOTORS ARMED!");
-    #endif  
-
-    zeroIntegralError();
-
-  }
-  // Prevents accidental arming of motor output if no transmitter command received
-  if (receiverCommand[ZAXIS] > MINCHECK) {
-    safetyCheck = ON; 
-  }
 }
 
 
@@ -284,53 +314,60 @@ void readPilotCommands()
 
   // FIN D'AFFICHAGE
 
-  /* if (receiverCommand[AUX1] < 1500) // EN POSITION 0 SUR TELECOMMANDE */
-  /*   { */
-  /*     SERIAL_PRINTLN("Pilote automatique actif"); */
-  /*   } */
-
   // FIN CODE DEVELOPPEMENT
   
-  if (receiverCommand[THROTTLE] < MINCHECK) // MINCHECK 1100
+  if (receiverCommand[THROTTLE] < MINCHECK) // MINCHECK 1100 // SI LE JOYSTICK DE GAUCHE EST EN BAS
     {
-      processZeroThrottleFunctionFromReceiverCommand();
+      processZeroThrottleFunctionFromReceiverCommand(); // ARMEMENT / DESARMENT DES MOTEURS
     }
 
-  if (!inFlight)
+  if (!inFlight && motorArmed == ON && receiverCommand[THROTTLE] > minArmedThrottle) // minArmedThrottle = 1150 // SI LE JOYSTICK DE GAUCHE EST UN PETIT PEU AU DESSUS DE LA POSITION BASSE
     {
-      if (motorArmed == ON && receiverCommand[THROTTLE] > minArmedThrottle)
-	{
-	  inFlight = true;
-	}
+      inFlight = true;
     }
 
-    // Check Mode switch for Acro or Stable
-    if (receiverCommand[MODE] > 1500)
-      {
-        flightMode = ATTITUDE_FLIGHT_MODE;
-      }
-    else
-      {
-        flightMode = RATE_FLIGHT_MODE;
-      }
+  /* if (receiverCommand[MODE] > 1500) // SWITCH MODE */
+  /*   { */
+  
+  flightMode = ATTITUDE_FLIGHT_MODE;
+  
+  /*   } */
+  /* else */
+  /*   { */
+  /*     /\* flightMode = RATE_FLIGHT_MODE; *\/ // NE PAS UTILISER CE MODE : DESACTIVE */
+  /*   } */
     
-    if (previousFlightMode != flightMode)
-      {
-	zeroIntegralError();
-	previousFlightMode = flightMode;
-      }
+  /* if (previousFlightMode != flightMode) // DEPENDANT DU CODE CI-DESSUS */
+  /*   { */
+  /*     /\* zeroIntegralError(); *\/ */
+  /*     /\* previousFlightMode = flightMode; *\/ */
+  /*   } */
 
 
-#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
-    processAltitudeHoldStateFromReceiverCommand();
+  // !!! NOUVEAU CODE !!! //
+
+  // DEVELOPPEMENT : EXECUTION FROM RADIO CONTROL
+
+  // receiverCommand[AUX2] < 1750 // ACTIVATION DE LA NAVIGATION AUTOMATIQUE
+  
+  // receiverCommand[AUX1] < 1250 // ACTIVATION MAINTIENT DE POSITION
+
+#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder // OK
+
+  /* processAltitudeHoldStateFromReceiverCommand(); */
+
 #endif
   
-#if defined (AutoLanding)
-    processAutoLandingStateFromReceiverCommand();
+#if defined (AutoLanding) // OFF
+
+  /* processAutoLandingStateFromReceiverCommand(); */
+
 #endif
 
-#if defined (UseGPSNavigator)
-    processGpsNavigationStateFromReceiverCommand();
+#if defined (UseGPSNavigator) // OK
+
+  processGpsNavigationStateFromReceiverCommand(); // COMMANDES D'EXECUTION DE NAVIGATION AUTOMATIQUE ET MAINTIENT D'UNE POSITION (A UTILISER / MODIFIER)
+
 #endif
 }
 

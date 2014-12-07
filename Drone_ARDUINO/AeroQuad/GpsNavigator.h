@@ -25,18 +25,18 @@
 #ifndef _AQ_Navigator_H_
 #define _AQ_Navigator_H_
 
-// little wait to have a more precise fix of the current position since it's called after the first gps fix
-#define MIN_NB_GPS_READ_TO_INIT_HOME 15  
+
+#define MIN_NB_GPS_READ_TO_INIT_HOME 15 // DEPRECATED WITH NEW GPS SYSTEM  
 byte countToInitHome = 0;
 
 unsigned long previousFixTime = 0;
 
-boolean haveNewGpsPosition() // _ haveAGpsLock() _ gpsData.state > 1 et nbr de sattelite(s) actif(s) : definit a la valeur 0 dans le fichier GpsAdapter.h 
+boolean	haveNewGpsPosition() // _ haveAGpsLock() _ gpsData.state > 1 et nbr de sattelite(s) actif(s) : definit a la valeur 0 dans le fichier GpsAdapter.h 
 {
   return (haveAGpsLock() && (previousFixTime != getGpsFixTime())); // SI LE GPS EST ACTIF ET QU'ON A RECU UNE NOUVELLE COORDONNE DE POSITION : RENVOIE 1
 }
 
-void clearNewGpsPosition()
+void	clearNewGpsPosition()
 {
   previousFixTime = getGpsFixTime();
 }
@@ -46,7 +46,7 @@ boolean isHomeBaseInitialized()
   return homePosition.latitude != GPS_INVALID_ANGLE; // homePosition defined in Aeroquad.h
 }
 
-void initHomeBase()
+void	initHomeBase() // A MODIFIER
 {
   if (haveNewGpsPosition())
     {
@@ -127,19 +127,19 @@ void initHomeBase()
   #endif
 
 
-  /** 
-   * @return true if there is a mission to execute
-   */
-  boolean haveMission()
+/** 
+ * @return true if there is a mission to execute
+ */
+boolean	haveMission()
   {
     return missionNbPoint != 0;
   }
 
 
-  /**
-   * Evalutate the position to reach depending of the state of the mission 
-   */
-  void evaluateMissionPositionToReach()
+/**
+ * Evalutate the position to reach depending of the state of the mission 
+ */
+void	evaluateMissionPositionToReach()
   {
 
     if (waypointIndex == -1) // if mission have not been started
@@ -181,7 +181,7 @@ void initHomeBase()
   }
 
 
-  void computeNewPosition()
+void	computeNewPosition()
   {
     
     unsigned long time = micros(); // RECUPERATION DU TEMPS ACTUEL
@@ -205,7 +205,7 @@ void initHomeBase()
     estimatedPosition.altitude  = currentPosition.altitude;
   }
   
-  void computeEstimatedPosition()
+void	computeEstimatedPosition()
   {  
     unsigned long time = micros();
     estimatedDelay = time - previousEstimationTime; // DELAI ENTRE L'EXECUTION DE CETTE FONCTION
@@ -220,22 +220,22 @@ void initHomeBase()
 
 
 
-  /** 
-   * Compute the distance to the destination, point to reach
-   * @result is distanceToDestination
-   */
-  void computeDistanceToDestination(GeodeticPosition destination)
-  {  
+/** 
+ * Compute the distance to the destination, point to reach
+ * @result is distanceToDestination
+ */
+void	computeDistanceToDestination(GeodeticPosition destination)
+{  
     distanceToDestinationX = (float)(destination.longitude - estimatedPosition.longitude) * cosLatitude * 1.113195;
     distanceToDestinationY = (float)(destination.latitude  - estimatedPosition.latitude) * 1.113195;
     distanceToDestination  = sqrt(sq(distanceToDestinationY) + sq(distanceToDestinationX));
-  }
+}
 
-  /**
-   * Compute the current craft speed in cm per sec
-   * @result are currentSpeedPitch and currentSpeedRoll
-   */
-  void computeCurrentSpeed()
+/**
+ * Compute the current craft speed in cm per sec
+ * @result are currentSpeedPitch and currentSpeedRoll
+ */
+void	computeCurrentSpeed()
   {
     float currentSpeedX = (float)(estimatedPosition.longitude - estimatedPreviousPosition.longitude) * cosLatitude * 1.113195;
     float currentSpeedY = (float)(estimatedPosition.latitude - estimatedPreviousPosition.latitude) * 1.113195;
@@ -255,19 +255,21 @@ void initHomeBase()
     currentSpeedRoll = (sin(courseRads-trueNorthHeading)*currentSpeed); 
     currentSpeedPitch = (cos(courseRads-trueNorthHeading)*currentSpeed);
   }
-    
-  /**
-   * compute craft angle in roll/pitch to adopt to navigate to the point to reach
-   * @result are gpsRollAxisCorrection and gpsPitchAxisCorrection use in flight control processor
-   */
-  void computeRollPitchCraftAxisCorrection()
+
+/**
+ * compute craft angle in roll/pitch to adopt to navigate to the point to reach
+ * @result are gpsRollAxisCorrection and gpsPitchAxisCorrection use in flight control processor
+ */
+void	computeRollPitchCraftAxisCorrection()
   {  
     angleToWaypoint = atan2(distanceToDestinationX, distanceToDestinationY)-trueNorthHeading;
+
     float tmpsin = sin(angleToWaypoint);
     float tmpcos = cos(angleToWaypoint);
     
     float rollSpeedDesired = ((maxSpeedToDestination*tmpsin)*(float)distanceToDestination)/1000; 
     float pitchSpeedDesired = ((maxSpeedToDestination*tmpcos)*(float)distanceToDestination)/1000;
+
     rollSpeedDesired = constrain(rollSpeedDesired, -maxSpeedToDestination, maxSpeedToDestination);
     pitchSpeedDesired = constrain(pitchSpeedDesired, -maxSpeedToDestination, maxSpeedToDestination);
     
@@ -302,44 +304,20 @@ void initHomeBase()
   }
   
   
-  /**
-   * Evaluate altitude to reach, if we use the range finder, we use it as altitude proximity alert
-   * to increase the current point to reach altitude
-   */
-  void evaluateAltitudeCorrection()
+/**
+ * Evaluate altitude to reach, if we use the range finder, we use it as altitude proximity alert
+ * to increase the current point to reach altitude
+ */
+void	evaluateAltitudeCorrection()
   {
-//    #if defined AltitudeHoldRangeFinder
-//      // if this is true, we are too near the ground to perform navigation, then, make current alt hold target +25m
-//      if (sonarAltitudeToHoldTarget != INVALID_RANGE) { 
-//        if (!altitudeProximityAlert) {
-//          sonarAltitudeToHoldTarget += 2;
-//          missionPositionToReach.altitude += 2;
-//          altitudeProximityAlert = true;
-//        }
-//      }
-//
-//      if (altitudeProximityAlert && altitudeProximityAlertSecurityCounter <= 10) {
-//        altitudeProximityAlertSecurityCounter++;
-//      }
-//      else {
-//        altitudeProximityAlertSecurityCounter = 0;
-//        altitudeProximityAlert = false;
-//      }
-//
-//    #endif
-//    #if defined AltitudeHoldRangeFinder
-//      if (isOnRangerRange(rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX])) {
-//        sonarAltitudeToHoldTarget += 0.05;
-//      }
-//    #endif
     baroAltitudeToHoldTarget = missionPositionToReach.altitude;
   }
   
-  /**
-   * In navigation mode, we want the craft headed to the target, so this will 
-   * compute the heading correction to have
-   */
-  void computeHeadingCorrection()
+/**
+ * In navigation mode, we want the craft headed to the target, so this will 
+ * compute the heading correction to have
+ */
+void	computeHeadingCorrection()
   {
     
     float correctionAngle = angleToWaypoint;
@@ -352,10 +330,10 @@ void initHomeBase()
     gpsYawAxisCorrection = constrain(gpsYawAxisCorrection, -MAX_YAW_AXIS_CORRECTION, MAX_YAW_AXIS_CORRECTION);
   }
 
-  /**
-   * Process position hold
-   */
-  void processPositionHold() // Maintient de la position  // EFFECTUE DES CALCULS ET REMPLIES LES VARIABLES GLOABLES
+/**
+ * Process position hold
+ */
+void	processPositionHold() // Maintient de la position  // EFFECTUE DES CALCULS ET REMPLIES LES VARIABLES GLOABLES
   {
     
     if (haveNewGpsPosition()) // SI LA POSITION A ETE MISE A JOUR ET QUE CETTE POSITION EST DIFFERENTE DE LA POSITION PRECEDENTE
@@ -372,7 +350,7 @@ void initHomeBase()
     
     computeDistanceToDestination(positionHoldPointToReach); // CALCULE DE LA DISTANCE QU'IL RESTE JUSQU'A LA PROCHAINE DESTINATION
     
-    // evaluate the flight behavior to adopt
+
     maxSpeedToDestination = POSITION_HOLD_SPEED;
     maxCraftAngleCorrection = MAX_POSITION_HOLD_CRAFT_ANGLE_CORRECTION;
 
@@ -382,10 +360,10 @@ void initHomeBase()
     gpsYawAxisCorrection = 0;  
   }
   
-    /** 
-   * Process navigation
-   */
-void processNavigation() // EFFECTUE DES CALCULS ET REMPLIES LES VARIABLES GLOABLES
+/** 
+ * Process navigation
+ */
+void	processNavigation() // EFFECTUE DES CALCULS ET REMPLIES LES VARIABLES GLOABLES
   {
     
     if (distanceToDestination < MIN_DISTANCE_TO_REACHED) // CONDITION : SI ON A ATTEIND LE POINT DE DESTINATION
@@ -409,37 +387,34 @@ void processNavigation() // EFFECTUE DES CALCULS ET REMPLIES LES VARIABLES GLOAB
     // evaluate if we need to switch to another mission possition point
     evaluateMissionPositionToReach();
     
-    computeDistanceToDestination(missionPositionToReach);
+    computeDistanceToDestination(missionPositionToReach); // CALCULE DE LA DISTANCE QU'IL RESTE JUSQU'A LA PROCHAINE DESTINATION
 
     maxSpeedToDestination = NAVIGATION_SPEED;
     maxCraftAngleCorrection = MAX_NAVIGATION_ANGLE_CORRECTION;
 
-    computeRollPitchCraftAxisCorrection(); // PILOTAGE AUTOMATIQUE  (gpsRollAxisCorrection, gpsPitchAxisCorrection)
+    computeRollPitchCraftAxisCorrection(); // PILOTAGE AUTOMATIQUE : CALCULS DE NAVIGATION  (gpsRollAxisCorrection, gpsPitchAxisCorrection)
     
-    evaluateAltitudeCorrection(); 
+    evaluateAltitudeCorrection(); // CODE : baroAltitudeToHoldTarget = missionPositionToReach.altitude 
 
     computeHeadingCorrection();
   }
 
   
-  /**
-   * Compute everything need to make adjustment to the craft attitude to go to the point to reach
-   */
-  void processGpsNavigation()
+/**
+ * Compute everything need to make adjustment to the craft attitude to go to the point to reach
+ */
+void	processGpsNavigation()
   {
-
-    if (haveAGpsLock()) // GpsAdapter.h -> si le GPS est actif
+    if (haveAGpsLock() && navigationState == ON) // NAVIGATION AUTOMATIQUE
       {
-	if (navigationState == ON)
-	  {
-	    processNavigation(); // EFFECTUE DES CALCULS (POSITION, DEPLACEMENT, DISTANCE A PARCOURIR VERS LE PROCHAIN POINT) ET REMPLIE LES VARABLES GLOBALES
-	  }
-	else if (positionHoldState == ON ) // Maintien de la position
-	  {
-	    processPositionHold(); // EFFECTUE DES CALCULS (POSITION, DEPLACEMENT, DISTANCE A PARCOURIR VERS LE PROCHAIN POINT) ET REMPLIE LES VARABLES GLOBALES
-	  }
+	processNavigation(); // EFFECTUE DES CALCULS (POSITION, DEPLACEMENT, DISTANCE A PARCOURIR VERS LE PROCHAIN POINT) ET REMPLIE LES VARABLES GLOBALES
+      }
+    else if (haveAGpsLock() && positionHoldState == ON ) // MAINTIENT DE LA POSITION // USE "positionHoldPointToReach"
+      {
+	processPositionHold(); // EFFECTUE DES CALCULS (POSITION, DEPLACEMENT, DISTANCE A PARCOURIR VERS LE PROCHAIN POINT) ET REMPLIE LES VARABLES GLOBALES
       }
   }
+
 #endif  // #define UseGPSNavigator
 
 

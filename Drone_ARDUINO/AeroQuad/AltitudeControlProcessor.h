@@ -28,7 +28,7 @@
 #define _AQ_ALTITUDE_CONTROL_PROCESSOR_H_
 
 
-#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
+#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder // OK
 
 #define INVALID_THROTTLE_CORRECTION -1000
 #define ALTITUDE_BUMP_SPEED 0.01
@@ -41,90 +41,112 @@
  * This function is responsible to process the throttle correction 
  * to keep the current altitude if selected by the user 
  */
-void processAltitudeHold()
+void	processAltitudeHold() // DEFINITION DE LA VARIABLE Throttle AVEC CORRECTION ASSISTEE
 {
-  // ****************************** Altitude Adjust *************************
-  // Thanks to Honk for his work with altitude hold
-  // http://aeroquad.com/showthread.php?792-Problems-with-BMP085-I2C-barometer
-  // Thanks to Sherbakov for his work in Z Axis dampening
-  // http://aeroquad.com/showthread.php?359-Stable-flight-logic...&p=10325&viewfull=1#post10325
-
-  if (altitudeHoldState == ON) // AeroQuad.h (defined) -- AltitudeControlProcessor.h -- FlightCommandProcessor.h
+  if (altitudeHoldState == ON) // FlightCommandProcessor.h // MAINTIENT D'ALTITUDE
     {
       int altitudeHoldThrottleCorrection = INVALID_THROTTLE_CORRECTION;
-      // computer altitude error!
-#if defined AltitudeHoldRangeFinder // UserConfiguration.h // Si la correction automatique de l'altitude est activee 
-      if (isOnRangerRange(rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX])) // AQ_RangerFinder/RangeFinder.h // fonction qui retourne 1 si au dessus du plancher et en dessou du plafond
-	{
-	  if (sonarAltitudeToHoldTarget == INVALID_RANGE) // AeroQuad.h (defined) // Si l'objectif d'altitude est invalide on reinitialise l'objectif
-	    {
-	      sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX];
-	    }
 
-	  altitudeHoldThrottleCorrection = updatePID(sonarAltitudeToHoldTarget, rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX], &PID[SONAR_ALTITUDE_HOLD_PID_IDX]); // PID.h // function(target, position actuelle, struct)
-	  altitudeHoldThrottleCorrection = constrain(altitudeHoldThrottleCorrection, minThrottleAdjust, maxThrottleAdjust); // fonction system arduino
-	}
+
+#if defined AltitudeHoldRangeFinder // UserConfiguration.h // STABILISATION PAR TELEMETRE LASER // NOW OFF // A IMPLEMETER PLUS TARD
+ 
+      /* if (isOnRangerRange(rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX])) // AQ_RangerFinder/RangeFinder.h // fonction qui retourne 1 si au dessus du plancher et en dessou du plafond */
+      /* 	{ */
+      /* 	  if (sonarAltitudeToHoldTarget == INVALID_RANGE) // AeroQuad.h (defined) // Si l'objectif d'altitude est invalide on reinitialise l'objectif */
+      /* 	    { */
+      /* 	      sonarAltitudeToHoldTarget = rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX]; */
+      /* 	    } */
+
+      /* 	  altitudeHoldThrottleCorrection = updatePID(sonarAltitudeToHoldTarget, rangeFinderRange[ALTITUDE_RANGE_FINDER_INDEX], &PID[SONAR_ALTITUDE_HOLD_PID_IDX]); // PID.h // function(target, position actuelle, struct) */
+      /* 	  altitudeHoldThrottleCorrection = constrain(altitudeHoldThrottleCorrection, minThrottleAdjust, maxThrottleAdjust); // fonction system arduino */
+      /* 	} */
+
 #endif
-#if defined AltitudeHoldBaro // UserConfiguration.h // Si le barometre est actif
+
+
+#if defined AltitudeHoldBaro // OK // UserConfiguration.h // STABILISATION PAR BAROMETRE
+
       if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION) // Si la correction automatique de l'altitude n'est pas activee ou altitude hors plancher/plafond 
 	{
 	  altitudeHoldThrottleCorrection = updatePID(baroAltitudeToHoldTarget, getBaroAltitude(), &PID[BARO_ALTITUDE_HOLD_PID_IDX]); // target definie par baroAltitudeToHoldTarget
 	  altitudeHoldThrottleCorrection = constrain(altitudeHoldThrottleCorrection, minThrottleAdjust, maxThrottleAdjust);
 	}
+
 #endif        
-      if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION) // Si pas d'instruments pas de correction
+
+
+      if (altitudeHoldThrottleCorrection == INVALID_THROTTLE_CORRECTION) // SI PAS D'INSTRUMENTS PAS DE CORRECTION // WILL DEPRECIATE
 	{
 	  throttle = receiverCommand[THROTTLE];
 	  return;
 	}
       
-      // ZDAMPENING COMPUTATIONS
-#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder
+
+      
+#if defined AltitudeHoldBaro || defined AltitudeHoldRangeFinder // OK
+
       float zDampeningThrottleCorrection = -updatePID(0.0, estimatedZVelocity, &PID[ZDAMPENING_PID_IDX]); // estimatedZVelocity defined in AeroQuad.h // valeur 0.0 ... 
-      zDampeningThrottleCorrection = constrain(zDampeningThrottleCorrection, minThrottleAdjust, maxThrottleAdjust);
+
+      zDampeningThrottleCorrection = constrain(zDampeningThrottleCorrection, minThrottleAdjust, maxThrottleAdjust); // ???
+
 #endif
       
     
-      if (abs(altitudeHoldThrottle - receiverCommand[THROTTLE]) > altitudeHoldPanicStickMovement)
-	{
-	  altitudeHoldState = ALTPANIC; // too rapid of stick movement so PANIC out of ALTHOLD
-	} 
-      else
-	{
+      /* if (abs(altitudeHoldThrottle - receiverCommand[THROTTLE]) > altitudeHoldPanicStickMovement) // WILL DEPRECIATE */
+      /* 	{ */
+      /* 	  altitudeHoldState = ALTPANIC; // too rapid of stick movement so PANIC out of ALTHOLD */
+      /* 	}  */
+      /* else // APRES MODIFICATION ON ENTRE TOUJOURS DANS CETTE CONDITION */
+      /* 	{ */
 	  
-	  if (receiverCommand[THROTTLE] > (altitudeHoldThrottle + altitudeHoldBump))
-	    { // AKA changed to use holdThrottle + ALTBUMP - (was MAXCHECK) above 1900
-#if defined AltitudeHoldBaro
-	      baroAltitudeToHoldTarget += ALTITUDE_BUMP_SPEED;
-#endif
-#if defined AltitudeHoldRangeFinder
-	      float newalt = sonarAltitudeToHoldTarget + ALTITUDE_BUMP_SPEED;
-	      if (isOnRangerRange(newalt))
-		{
-		  sonarAltitudeToHoldTarget = newalt;
-		}
-#endif
-	    }
+
+
+	 /*  if (receiverCommand[THROTTLE] > (altitudeHoldThrottle + altitudeHoldBump)) // AKA changed to use holdThrottle + ALTBUMP - (was MAXCHECK) above 1900 */
+/* 	    { */
+/* #if defined AltitudeHoldBaro */
+
+/* 	      baroAltitudeToHoldTarget += ALTITUDE_BUMP_SPEED; */
+
+/* #endif */
+/* #if defined AltitudeHoldRangeFinder */
+
+/* 	      float newalt = sonarAltitudeToHoldTarget + ALTITUDE_BUMP_SPEED; */
+
+/* 	      if (isOnRangerRange(newalt)) */
+/* 		{ */
+/* 		  sonarAltitudeToHoldTarget = newalt; */
+/* 		} */
+
+/* #endif */
+/* 	    } */
 	  
-	  if (receiverCommand[THROTTLE] < (altitudeHoldThrottle - altitudeHoldBump)) // AKA change to use holdThorrle - ALTBUMP - (was MINCHECK) below 1100
-	    {
-#if defined AltitudeHoldBaro
-	      baroAltitudeToHoldTarget -= ALTITUDE_BUMP_SPEED;
-#endif
-#if defined AltitudeHoldRangeFinder
-	      float newalt = sonarAltitudeToHoldTarget - ALTITUDE_BUMP_SPEED;
-	      if (isOnRangerRange(newalt))
-		{
-		  sonarAltitudeToHoldTarget = newalt;
-		}
-#endif
-	    }
-	}
-      throttle = altitudeHoldThrottle + altitudeHoldThrottleCorrection + zDampeningThrottleCorrection;
+/* 	  if (receiverCommand[THROTTLE] < (altitudeHoldThrottle - altitudeHoldBump)) // AKA change to use holdThorrle - ALTBUMP - (was MINCHECK) below 1100 */
+/* 	    { */
+/* #if defined AltitudeHoldBaro */
+
+/* 	      baroAltitudeToHoldTarget -= ALTITUDE_BUMP_SPEED; */
+
+/* #endif */
+/* #if defined AltitudeHoldRangeFinder */
+
+/* 	      float newalt = sonarAltitudeToHoldTarget - ALTITUDE_BUMP_SPEED; */
+
+/* 	      if (isOnRangerRange(newalt)) */
+/* 		{ */
+/* 		  sonarAltitudeToHoldTarget = newalt; */
+/* 		} */
+
+/* #endif */
+/* 	    } */
+
+
+	/* } */
+
+      throttle = altitudeHoldThrottle + altitudeHoldThrottleCorrection + zDampeningThrottleCorrection; // MAIN CODE
     }
   else
     {
-      throttle = receiverCommand[THROTTLE];
+      /* throttle = receiverCommand[THROTTLE]; */
     }
 }
 

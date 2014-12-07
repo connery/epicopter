@@ -27,27 +27,8 @@
 /****************************************************************************
  ************************* Hardware Configuration ***************************
  ****************************************************************************/
-// Select which hardware you wish to use with the AeroQuad Flight Software
 
-// 328p processor
-//#define AeroQuad_v1         // Arduino Uno with AeroQuad Shield v1.7 and below
-//#define AeroQuad_v1_IDG     // Arduino Uno with AeroQuad Shield v1.7 and below using IDG yaw gyro
-//#define AeroQuad_v18        // Arduino Uno with AeroQuad Shield v1.8 or 1.9
-//#define AeroQuad_Mini       // Arduino Pro Mini with AeroQuad Mini Shield v1.0
-//#define AeroQuad_Wii        // Arduino Uno with Wii Sensors and AeroQuad Shield v1.x
-//#define AeroQuad_Paris_v3   // Define along with either AeroQuad_Wii to include specific changes for MultiWiiCopter Paris v3.0 board
-
-// Mega processor
-//#define AeroQuadMega_v1     // Arduino Mega with AeroQuad Shield v1.7 and below
-//#define AeroQuadMega_v2     // Arduino Mega with AeroQuad Shield v2.0
 #define AeroQuadMega_v21	// Arduino Mega with AeroQuad Shield v2.1
-//#define AeroQuadMega_Wii    // Arduino Mega with Wii Sensors and AeroQuad Shield v2.x
-//#define ArduCopter          // ArduPilot Mega (APM) with Oilpan Sensor Board
-//#define AeroQuadMega_CHR6DM // Clean Arduino Mega with CHR6DM as IMU/heading ref.
-//#define APM_OP_CHR6DM       // ArduPilot Mega with CHR6DM as IMU/heading ref., Oilpan for barometer (just uncomment AltitudeHoldBaro for baro), and voltage divider
-
-// STM32 processor
-//#define AeroQuadSTM32        // Baloo board
 
 
 /****************************************************************************
@@ -92,7 +73,7 @@
 // *******************************************************************************************************************************
 #define HeadingMagHold				// Enables Magnetometer, gets automatically selected if CHR6DM is defined
 #define AltitudeHoldBaro			// Enables Barometer
-//#define AltitudeHoldRangeFinder	// Enables Altitude Hold with range finder, not displayed on the configurator (yet)
+//#define AltitudeHoldRangeFinder	        // Enables Altitude Hold with range finder, not displayed on the configurator (yet)
 //#define AutoLanding				// Enables auto landing on channel AUX3 of the remote, NEEDS AltitudeHoldBaro AND AltitudeHoldRangeFinder to be defined
 
 //
@@ -101,9 +82,6 @@
 // *******************************************************************************************************************************
 #define UseGPS		        // Enables GPS (for mega v2.0/v2.1 on Serial1 & AeroQuad32 on Serial2)
 #define UseGPSNavigator
-
-// Device specific settings
-//#define UseGPSMTKBINARY   // Set MTK devices to binary protocol (only DiyDrones MTK1.6 protocol supported)
 
 //
 // *******************************************************************************************************************************
