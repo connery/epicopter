@@ -20,9 +20,9 @@ void err(char *s)
 int main(int argc, char** argv)
 {
   struct sockaddr_in serv_addr;
-  int sockfd, i, slen=sizeof(serv_addr), singleton = 0;
+  int sockfd, i, slen=sizeof(serv_addr), singleton = 1;
   char buf[BUFLEN];
-  int state = 0;
+  int state = 4;
 
   if ((sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
     err("socket");
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	      printf("MED\n");
 	      ini.code = MED;
 	      ini.ID = 0;
-	      liste = generateListFromImage("image.jpg");//rendre dynamique
+	      liste = (node *) generateListFromImage("image.jpg"); //rendre dynamique
 	      ini.datalen = liste->p.datalen;
 	      printf("MED END, datalen :%i\n", ini.datalen);
 	      state = 4;
@@ -93,22 +93,24 @@ int main(int argc, char** argv)
       if (sendto(sockfd,&ini, BUFLEN, 0,(struct sockaddr*)&serv_addr, slen)==-1)
 	err("sendto()");
       printf("avant recv\n");
+      getInfo(liste2);
       if (recvfrom(sockfd,&ini, BUFLEN, 0, (struct sockaddr*)&serv_addr, &slen)==-1)
 	{
-	 err("revc()");
+	  err("revc()");
 	}
       else
 	{
 	  /*	  if (ini.nbckp > 0 )
-	    {
-	      printf("nombre: %i\n",ini.nbckp);
-	    }
-	  else
-	  printf("ID: %i\n",ini.ID);*/
+		  {
+		  printf("nombre: %i\n",ini.nbckp);
+		  }
+		  else
+		  printf("ID: %i\n",ini.ID);*/
 	  add_end(liste2, ini);
+	  show(liste2);	
 	}
     }
-  
+  show(liste2);
   close(sockfd);
   return 0;
 }

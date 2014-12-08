@@ -243,7 +243,7 @@ int     client_output(int * file_descriptor_tab, t_mylist ** pointer)
 
   printf("Read on exit pipe client\n");
 
-  while (read(file_descriptor_tab[5], &buf, 1) > 0)
+  while (read(file_descriptor_tab[4], &buf, 1) > 0)
     {
       write(file_descriptor_tab[1], &buf, 1); // transmission des donnees recues depuis le client vers la carte arduino
 
@@ -314,9 +314,9 @@ int     loop_process(void * shared_memory, struct data_navigation_container * da
   FD_SET(file_descriptor_tab[1], &writefds); // Add input pipe arduino file_descriptor_tab[1] : flux de communication arduino ouvert en ecriture
 
 
-  if (select(file_descriptor_tab[1] + 1, NULL, &writefds, NULL, NULL) == -1) { if (errno != 0) { (void)fprintf(stderr, "Select error, %s\n", strerror(errno)); } exit(1); }
+  if (select(file_descriptor_tab[4] + 1, NULL, &writefds, NULL, NULL) == -1) { if (errno != 0) { (void)fprintf(stderr, "Select error, %s\n", strerror(errno)); } exit(1); }
 
-  if (FD_ISSET(file_descriptor_tab[1], &writefds))
+  if (FD_ISSET(file_descriptor_tab[4], &writefds))
     {
 
       //char	cmd[1024] = "#XaXbXcXdXeXfXgXhXiXjXkXlXmXnXoXpXqXrXsXtXuX";
@@ -325,29 +325,27 @@ int     loop_process(void * shared_memory, struct data_navigation_container * da
       char	cmd[1024] = "";
 
 
-      strcat(communication_command_line, "/02"); // Balise d'emission de coordonnees GPS
+      strcat(cmd, "/02"); // Balise d'emission de coordonnees GPS
 
-      sprintf(string_nb, "%.10f", data_navigation->drone_latitude);
-      strcat(communication_command_line, ";");
+      sprintf(cmd, "%.10f", data_navigation->drone_latitude);
+      strcat(cmd, ";");
 
-      sprintf(string_nb, "%.10f", data_navigation->drone_longitude);
-      strcat(communication_command_line, ";");
+      sprintf(cmd, "%.10f", data_navigation->drone_longitude);
+      strcat(cmd, ";");
 
-      sprintf(string_nb, "%.10f", data_navigation->drone_height);
-      strcat(communication_command_line, ";");
+      sprintf(cmd, "%.10f", data_navigation->drone_height);
+      strcat(cmd, ";");
 
-      sprintf(string_nb, "%.10f", data_navigation->drone_time);
-      strcat(communication_command_line, ";");
+      sprintf(cmd, "%.10f", data_navigation->drone_time);
+      strcat(cmd, ";");
 
-      sprintf(string_nb, "%d", data_navigation->drone_n_sats);
-      strcat(communication_command_line, ";");
+      sprintf(cmd, "%d", data_navigation->drone_n_sats);
+      strcat(cmd, ";");
 
+      write(file_descriptor_tab[5], cmd, strlen(cmd));
 
-
-
-
-      write(file_descriptor_tab[1], cmd, strlen(cmd));
-
+      // EXEC le code à gaetan avec parametre file_descriptor_tab[5]
+      system("../client_drone/magellanExec");
 
       //sleep(1); // FOR TEST STAGE
     }

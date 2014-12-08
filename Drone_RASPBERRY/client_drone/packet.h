@@ -17,7 +17,6 @@ typedef struct
   int ID;
 } Checkpoints;
 
-
 typedef struct
 {
   int nbckp;
