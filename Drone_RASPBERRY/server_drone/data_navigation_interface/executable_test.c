@@ -29,25 +29,37 @@ struct data_navigation_container *init()
   return test;
 }
 
-int main (int argc, char * argv[])
+int	main (int argc, char * argv[])
 {
-  int     fd[2];
-  pid_t pid;
+  int		fd[2];
+  pid_t		pid;
+
   struct data_navigation_container *data = init();
- 
+
   pipe(fd);
 
-  if ( (pid = fork()) < 0 )
+  if ((pid = fork()) < 0)
     { 
       fprintf (stderr,"Il y a une erreur \n"); 
+
       exit(EXIT_FAILURE); 
     } 
+
   else if (pid == 0)
     {
       close(fd[0]);
 
-      printf("FILS: mon pid est: %d, celui de mon père: %d \n", getpid(), getppid());
-      write(fd[1], data, sizeof(*data));
+      while (1)
+	{
+	  data->drone_latitude = data->drone_latitude + 1.0;
+	  data->drone_time = data->drone_time + 1.0;
+
+	  
+
+	  write(fd[1], data, sizeof(*data));
+	  sleep(1);
+	}
+
       exit(EXIT_SUCCESS);
     } 
   else
@@ -55,15 +67,11 @@ int main (int argc, char * argv[])
       close(fd[1]);
 
       char str[1024];
-      sprintf(str, "./test %i", fd[0]);
-      /* strcpy(str, "./test 3"); */
+      sprintf(str, "./data_navigation_interface %i", fd[0]);
       system(str);
 
-      printf("PÈRE: Je suis le père, mon pid est: %d, celui de mon fils: %d \n", getpid(), pid);
-      printf("fd[0], fd du fils %i\n", fd[0]);
-      printf("fd[1], fd du papa %i\n", fd[1]);
       int fin = wait(0);
-      printf ("PÈRE: Mon fils se termine: son pid %d \n", fin);
+
       exit (EXIT_SUCCESS);
     }
 }

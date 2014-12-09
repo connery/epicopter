@@ -1,0 +1,1 @@
+sudo cc -o data_navigation_interface data_navigation_interface.c -lncurses
