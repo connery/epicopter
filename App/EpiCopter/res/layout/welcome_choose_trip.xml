@@ -13,7 +13,9 @@
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginBottom="20dip"
         android:layout_marginTop="20dip"
-        android:text="@string/my_trips" />
+        android:text="@string/my_trips"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/welcomeChooseTripButtonNewTrip"

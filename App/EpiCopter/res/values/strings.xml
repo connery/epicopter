@@ -32,5 +32,7 @@
     <string name="save_and_send">Sauvegarder et envoyer</string>
     <string name="logo">Logo</string>
     <string name="logout">Déconnexion</string>
+    <string name="take_picture">Prendre des photos</string>
+    <string name="take_video">Prendre un vidéo</string>
 
 </resources>

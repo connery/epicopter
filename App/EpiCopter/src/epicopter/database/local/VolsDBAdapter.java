@@ -12,20 +12,22 @@ import android.database.sqlite.SQLiteDatabase;
 public class VolsDBAdapter {
 
 	// Database fields
-	public static final String	TABLE_VOLS			= "vols";
-	public static final String	COLUMN_ID			= "_id";
-	public static final int		NUM_COLUMN_ID		= 0;
-	public static final String	COLUMN_NAME			= "_name";
-	public static final int		NUM_COLUMN_NAME		= 1;
-	public static final String	COLUMN_PICTURE		= "_picture";
-	public static final int		NUM_COLUMN_PICTURE	= 2;
-	public static final String	COLUMN_VIDEO		= "_video";
-	public static final int		NUM_COLUMN_VIDEO	= 3;
+	public static final String	TABLE_VOLS				= "vols";
+	public static final String	COLUMN_ID				= "_id";
+	public static final int		NUM_COLUMN_ID			= 0;
+	public static final String	COLUMN_NAME				= "_name";
+	public static final int		NUM_COLUMN_NAME			= 1;
+	public static final String	COLUMN_USER_NAME		= "_username";
+	public static final int		NUM_COLUMN_USER_NAME	= 2;
+	public static final String	COLUMN_PICTURE			= "_picture";
+	public static final int		NUM_COLUMN_PICTURE		= 3;
+	public static final String	COLUMN_VIDEO			= "_video";
+	public static final int		NUM_COLUMN_VIDEO		= 4;
 
 	// Database fields
 	private SQLiteDatabase		db;
 	private SQLiteManager		dbManager;
-	private String[]			allColumns			= { COLUMN_ID, COLUMN_NAME, COLUMN_PICTURE, COLUMN_VIDEO };
+	private String[]			allColumns				= { COLUMN_ID, COLUMN_NAME, COLUMN_USER_NAME, COLUMN_PICTURE, COLUMN_VIDEO };
 
 	public VolsDBAdapter(Context context) {
 		dbManager = new SQLiteManager(context);
@@ -47,9 +49,10 @@ public class VolsDBAdapter {
 	 *            1 to take video alse 0
 	 * @return
 	 */
-	public Vol insertVol(String name, int picture, int video) {
+	public Vol insertVol(String name, String userName, int picture, int video) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, name);
+		values.put(COLUMN_USER_NAME, userName);
 		values.put(COLUMN_PICTURE, picture);
 		values.put(COLUMN_VIDEO, video);
 
@@ -74,10 +77,10 @@ public class VolsDBAdapter {
 		System.out.println("Vol deleted with id: " + idVol);
 	}
 
-	public List<Vol> getAllVols() {
+	public List<Vol> getAllVols(String userName) {
 		List<Vol> vols = new ArrayList<Vol>();
 
-		Cursor cursor = db.query(TABLE_VOLS, allColumns, null, null, null, null, null);
+		Cursor cursor = db.query(TABLE_VOLS, allColumns, COLUMN_USER_NAME + " = '" + userName + "'", null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -98,9 +101,9 @@ public class VolsDBAdapter {
 
 		return vol;
 	}
-	
-	public Vol getLastVol() {
-		Cursor cursor = db.query(TABLE_VOLS, allColumns, null, null, null, null, COLUMN_ID + " DESC LIMIT 1");
+
+	public Vol getLastVol(String userName) {
+		Cursor cursor = db.query(TABLE_VOLS, allColumns, COLUMN_USER_NAME + " = '" + userName + "'", null, null, null, COLUMN_ID + " DESC LIMIT 1");
 
 		cursor.moveToFirst();
 		Vol vol = cursorToVol(cursor);
@@ -114,6 +117,7 @@ public class VolsDBAdapter {
 			Vol vol = new Vol();
 			vol.setId(cursor.getLong(NUM_COLUMN_ID));
 			vol.setName(cursor.getString(NUM_COLUMN_NAME));
+			vol.setUserName(cursor.getString(NUM_COLUMN_USER_NAME));
 			vol.setPicture(cursor.getInt(NUM_COLUMN_PICTURE));
 			vol.setVideo(cursor.getInt(NUM_COLUMN_VIDEO));
 			return vol;

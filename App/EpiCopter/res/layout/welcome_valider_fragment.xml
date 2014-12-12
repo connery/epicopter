@@ -6,11 +6,28 @@
     android:gravity="center_vertical"
     android:orientation="vertical" >
 
+    <CheckBox
+        android:id="@+id/checkBoxVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        android:text="@string/take_video" />
+
+    <CheckBox
+        android:id="@+id/checkBoxPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxVideo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        android:text="@string/take_picture" />
+
     <EditText
         android:id="@+id/welcomeValiderEditTextTripName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
+        android:layout_below="@+id/checkBoxPicture"
         android:gravity="center"
         android:hint="@string/trip_name"
         android:textSize="25sp" />

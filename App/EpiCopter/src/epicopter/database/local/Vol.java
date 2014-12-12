@@ -4,6 +4,7 @@ public class Vol {
 
 	private long	id;
 	private String	name;
+	private String	userName;
 	private int		picture;
 	private int		video;
 
@@ -21,6 +22,14 @@ public class Vol {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public int getPicture() {

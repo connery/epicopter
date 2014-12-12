@@ -49,10 +49,11 @@ int attr uiZoomGestures 0x7f01000e
 int attr useViewLifecycle 0x7f01000f
 int attr zOrderOnTop 0x7f010010
 int color background 0x7f06001c
-int color black 0x7f06001d
-int color blue_dark 0x7f060020
-int color blue_light 0x7f06001e
-int color blue_medium 0x7f06001f
+int color background_dusky 0x7f06001d
+int color black 0x7f06001e
+int color blue_dark 0x7f060021
+int color blue_light 0x7f06001f
+int color blue_medium 0x7f060020
 int color com_facebook_blue 0x7f060017
 int color com_facebook_loginview_text_color 0x7f06001b
 int color com_facebook_usersettingsfragment_connected_shadow_color 0x7f060019
@@ -68,8 +69,9 @@ int color common_signin_btn_light_text_default 0x7f060004
 int color common_signin_btn_light_text_disabled 0x7f060006
 int color common_signin_btn_light_text_focused 0x7f060007
 int color common_signin_btn_light_text_pressed 0x7f060005
-int color common_signin_btn_text_dark 0x7f060021
-int color common_signin_btn_text_light 0x7f060022
+int color common_signin_btn_text_dark 0x7f060023
+int color common_signin_btn_text_light 0x7f060024
+int color gray 0x7f060022
 int color wallet_bright_foreground_disabled_holo_light 0x7f06000f
 int color wallet_bright_foreground_holo_dark 0x7f06000a
 int color wallet_bright_foreground_holo_light 0x7f060010
@@ -83,8 +85,8 @@ int color wallet_hint_foreground_holo_dark 0x7f060012
 int color wallet_hint_foreground_holo_light 0x7f060011
 int color wallet_holo_blue_light 0x7f060015
 int color wallet_link_text_light 0x7f060016
-int color wallet_primary_text_holo_light 0x7f060023
-int color wallet_secondary_text_holo_dark 0x7f060024
+int color wallet_primary_text_holo_light 0x7f060025
+int color wallet_secondary_text_holo_dark 0x7f060026
 int dimen com_facebook_loginview_height 0x7f080007
 int dimen com_facebook_loginview_padding_bottom 0x7f080005
 int dimen com_facebook_loginview_padding_left 0x7f080002
@@ -177,6 +179,8 @@ int id buttonInscripton 0x7f09003d
 int id buyButton 0x7f09000a
 int id buy_now 0x7f09000f
 int id buy_with_google 0x7f090010
+int id checkBoxPicture 0x7f090050
+int id checkBoxVideo 0x7f09004f
 int id classic 0x7f090011
 int id comFacebookWidgetUserSettingsFragment 0x7f090043
 int id com_facebook_login_activity_progress_bar 0x7f090018
@@ -243,10 +247,10 @@ int id welcomeChooseTripButtonHistoricTrip 0x7f090048
 int id welcomeChooseTripButtonLogout 0x7f09004a
 int id welcomeChooseTripButtonNewTrip 0x7f090047
 int id welcomeChooseTripButtonResumeTrip 0x7f090049
-int id welcomeValiderButtonSave 0x7f090051
-int id welcomeValiderButtonSaveAndSend 0x7f090052
-int id welcomeValiderButtonSend 0x7f090050
-int id welcomeValiderEditTextTripName 0x7f09004f
+int id welcomeValiderButtonSave 0x7f090053
+int id welcomeValiderButtonSaveAndSend 0x7f090054
+int id welcomeValiderButtonSend 0x7f090052
+int id welcomeValiderEditTextTripName 0x7f090051
 int id wrap_content 0x7f09000d
 int integer google_play_services_version 0x7f070000
 int layout com_facebook_friendpickerfragment 0x7f030000
@@ -363,6 +367,8 @@ int string send 0x7f05004a
 int string settings 0x7f05003d
 int string store_picture_message 0x7f050001
 int string store_picture_title 0x7f050000
+int string take_picture 0x7f05005b
+int string take_video 0x7f05005c
 int string trip_name 0x7f050052
 int string validate 0x7f050042
 int string waiting 0x7f05004b
@@ -370,12 +376,13 @@ int string wallet_buy_button_place_holder 0x7f050022
 int string yes 0x7f050055
 int style AppBaseTheme 0x7f040007
 int style AppTheme 0x7f040008
+int style MyActionBar 0x7f040009
 int style Theme_IAPTheme 0x7f040000
 int style WalletFragmentDefaultButtonTextAppearance 0x7f040003
 int style WalletFragmentDefaultDetailsHeaderTextAppearance 0x7f040002
 int style WalletFragmentDefaultDetailsTextAppearance 0x7f040001
 int style WalletFragmentDefaultStyle 0x7f040004
-int style button_text 0x7f040009
+int style button_text 0x7f04000a
 int style com_facebook_loginview_default_style 0x7f040005
 int style com_facebook_loginview_silver_style 0x7f040006
 int[] styleable AdsAttrs { 0x7f010000, 0x7f010001, 0x7f010002 }

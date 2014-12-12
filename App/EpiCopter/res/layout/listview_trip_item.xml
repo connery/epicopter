@@ -1,12 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/background"
+    android:gravity="center_vertical"
+    android:padding="5dp" >
 
-    <TextView
-        android:id="@+id/tripInformation"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:text="Description" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/frames"
+        android:padding="6dip" >
 
-</RelativeLayout> 
+        <TextView
+            android:id="@+id/tripInformation"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_dusky"
+            android:text="Description"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

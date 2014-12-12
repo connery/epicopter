@@ -15,21 +15,24 @@ import android.widget.Toast;
 import epicopter.database.local.Vol;
 import epicopter.database.local.VolsDBAdapter;
 import epicopter.main.R;
+import epicopter.utils.SessionManager;
 import epicopter.welcome.MainFragmentActivity;
 
 public class HistoricActivity extends ListActivity implements OnItemLongClickListener {
 
-	private HistoricArrayAdapter	adapter	= null;
-	private List<Vol>				myVol	= null;
+	private HistoricArrayAdapter	adapter		= null;
+	private List<Vol>				myVol		= null;
+	private static SessionManager	mySession	= null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		mySession = new SessionManager(this);
 		// STEP 1 : Get the last trip in local BDD
 		VolsDBAdapter volsDB = new VolsDBAdapter(this);
 		volsDB.open();
-		myVol = volsDB.getAllVols();
+		myVol = volsDB.getAllVols(mySession.getUserDetails().get(SessionManager.KEY_EMAIL));
 		volsDB.close();
 		// Is there a past trip
 		adapter = new HistoricArrayAdapter(this, myVol);

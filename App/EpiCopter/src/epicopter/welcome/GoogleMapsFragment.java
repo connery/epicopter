@@ -142,7 +142,7 @@ public class GoogleMapsFragment extends Fragment implements DataBaseInterface {
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
 		// STEP 2 : Create Vol
-		Vol myNewVol = volsDB.insertVol(name, takePicture, takeVideo);
+		Vol myNewVol = volsDB.insertVol(name, mySession.getUserDetails().get(SessionManager.KEY_EMAIL), takePicture, takeVideo);
 		// STEP 3 : Save id in local DB as the current trip
 		mySession.setIdCurrentTrip(myNewVol.getId());
 		// STEP 4 : Open points DB
@@ -210,7 +210,7 @@ public class GoogleMapsFragment extends Fragment implements DataBaseInterface {
 		} else if (mySession.getIdLastTripUsed() != -1) {
 			myVol = volsDB.getVolById(mySession.getIdLastTripUsed());
 		} else {
-			myVol = volsDB.getLastVol();
+			myVol = volsDB.getLastVol(mySession.getUserDetails().get(SessionManager.KEY_EMAIL));
 		}
 		// STEP 3 : Is there a past trip
 		if (myVol == null) { // No past trip
