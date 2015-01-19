@@ -290,27 +290,27 @@ void readPilotCommands()
 
   // DEBUT D'AFFICHAGE
 
-  /* SERIAL_PRINT("ReceiverCommand[XAXIS] : "); */
-  /* SERIAL_PRINT(receiverCommand[XAXIS]); */
-  /* SERIAL_PRINT(" [YAXIS] : "); */
-  /* SERIAL_PRINT(receiverCommand[YAXIS]); */
-  /* SERIAL_PRINT(" [ZAXIS] : "); */
-  /* SERIAL_PRINT(receiverCommand[ZAXIS]); */
+  SERIAL_PRINT("ReceiverCommand[XAXIS] : ");
+  SERIAL_PRINT(receiverCommand[XAXIS]);
+  SERIAL_PRINT(" [YAXIS] : ");
+  SERIAL_PRINT(receiverCommand[YAXIS]);
+  SERIAL_PRINT(" [ZAXIS] : ");
+  SERIAL_PRINT(receiverCommand[ZAXIS]);
 
-  /* SERIAL_PRINT(" [THROTTLE] : "); */
-  /* SERIAL_PRINT(receiverCommand[THROTTLE]); */
-  /* SERIAL_PRINT(" [MODE] : "); */
-  /* SERIAL_PRINT(receiverCommand[MODE]); */
-  /* SERIAL_PRINT(" [AUX1] : "); */
-  /* SERIAL_PRINT(receiverCommand[AUX1]); */
-  /* SERIAL_PRINT(" [AUX2] : "); */
-  /* SERIAL_PRINT(receiverCommand[AUX2]); */
-  /* SERIAL_PRINT(" [AUX3] : "); */
-  /* SERIAL_PRINT(receiverCommand[AUX3]); */
-  /* SERIAL_PRINT(" [AUX4] : "); */
-  /* SERIAL_PRINT(receiverCommand[AUX4]); */
-  /* SERIAL_PRINT(" [AUX5] : "); */
-  /* SERIAL_PRINTLN(receiverCommand[AUX5]); */
+  SERIAL_PRINT(" [THROTTLE] : ");
+  SERIAL_PRINT(receiverCommand[THROTTLE]);
+  SERIAL_PRINT(" [MODE] : ");
+  SERIAL_PRINT(receiverCommand[MODE]);
+  SERIAL_PRINT(" [AUX1] : ");
+  SERIAL_PRINT(receiverCommand[AUX1]);
+  SERIAL_PRINT(" [AUX2] : ");
+  SERIAL_PRINT(receiverCommand[AUX2]);
+  SERIAL_PRINT(" [AUX3] : ");
+  SERIAL_PRINT(receiverCommand[AUX3]);
+  SERIAL_PRINT(" [AUX4] : ");
+  SERIAL_PRINT(receiverCommand[AUX4]);
+  SERIAL_PRINT(" [AUX5] : ");
+  SERIAL_PRINTLN(receiverCommand[AUX5]);
 
   // FIN D'AFFICHAGE
 
@@ -319,30 +319,17 @@ void readPilotCommands()
   if (receiverCommand[THROTTLE] < MINCHECK) // MINCHECK 1100 // SI LE JOYSTICK DE GAUCHE EST EN BAS
     {
       processZeroThrottleFunctionFromReceiverCommand(); // ARMEMENT / DESARMENT DES MOTEURS
+    
+      // COMMENT : apres armement ( -> motorArmed = ON, BOUCLE x4 / -> motorCommand[motor] = MINTHROTTLE;)
     }
 
   if (!inFlight && motorArmed == ON && receiverCommand[THROTTLE] > minArmedThrottle) // minArmedThrottle = 1150 // SI LE JOYSTICK DE GAUCHE EST UN PETIT PEU AU DESSUS DE LA POSITION BASSE
     {
-      inFlight = true;
+      inFlight = true; // COMMENT : En phase de vol
     }
 
-  /* if (receiverCommand[MODE] > 1500) // SWITCH MODE */
-  /*   { */
+  flightMode = ATTITUDE_FLIGHT_MODE; // TOUJOURS DANS CE MODE
   
-  flightMode = ATTITUDE_FLIGHT_MODE;
-  
-  /*   } */
-  /* else */
-  /*   { */
-  /*     /\* flightMode = RATE_FLIGHT_MODE; *\/ // NE PAS UTILISER CE MODE : DESACTIVE */
-  /*   } */
-    
-  /* if (previousFlightMode != flightMode) // DEPENDANT DU CODE CI-DESSUS */
-  /*   { */
-  /*     /\* zeroIntegralError(); *\/ */
-  /*     /\* previousFlightMode = flightMode; *\/ */
-  /*   } */
-
 
   // !!! NOUVEAU CODE !!! //
 
