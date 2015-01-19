@@ -31,7 +31,9 @@
 
 char queryType = 'X';
 
+long readDoubleSerial();
 void initCommunication() {} // do nothing here for now
+
 
 //********************************** Serial Commands ************************************************
 
