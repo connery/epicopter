@@ -105,17 +105,36 @@ void readSerialCommand()
 	    gpsData.sats = (int32_t)readIntegerSerial();
 
 
+	    // TEST 1
+
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINT(SERIAL_READ());
+	    SERIAL_PRINTLN(SERIAL_READ());
+
+
+
 	    // TEST                                                                                                                                          
 
-	    SERIAL_PRINT("currentPosition.latitude : ");
+	    SERIAL_PRINT("latitude : ");
 	    SERIAL_PRINT(gpsData.lat);
 	    SERIAL_PRINT("\n");
 
-	    SERIAL_PRINT("currentPosition.longitude : ");
+	    SERIAL_PRINT("longitude : ");
 	    SERIAL_PRINT(gpsData.lon);
 	    SERIAL_PRINT("\n");
 
-	    SERIAL_PRINT("DEFAULT_HOME_ALTITUDE : ");
+	    SERIAL_PRINT("hauteur");
 	    SERIAL_PRINT(gpsData.height);
 	    SERIAL_PRINT("\n");
 
