@@ -94,6 +94,8 @@ void readSerialCommand()
 	  }
 	if (command[0] == '0' && command[1] == '2') // reception de coordonnees gps
 	  {
+	    SERIAL_PRINTLN("Serial test");
+
 #if defined (UseGPS)
       
 	    gpsData.lat = (int32_t)readDoubleSerial(); 
