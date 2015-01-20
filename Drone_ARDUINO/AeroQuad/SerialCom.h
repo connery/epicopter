@@ -98,9 +98,9 @@ void readSerialCommand()
 
 #if defined (UseGPS)
       
-	    int32_t lat;
+	    float lat;
 
-	    lat = readIntegerSerial(); 
+	    lat = readFloatSerial(); 
 	    gpsData.lon = (int32_t)readDoubleSerial();
 	    gpsData.height = (int32_t)readDoubleSerial();
 	    gpsData.fixtime = (int32_t)readDoubleSerial();
@@ -110,7 +110,7 @@ void readSerialCommand()
 	    // TEST                                                                                                                                          
 
 	    SERIAL_PRINT("latitude TEST: ");
-	    SERIAL_PRINT(lat);
+	    PrintValueComma(lat);
 	    SERIAL_PRINT("\n");
 
 	    SERIAL_PRINT("longitude : ");
