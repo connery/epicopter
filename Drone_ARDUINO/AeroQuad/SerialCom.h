@@ -101,6 +101,24 @@ void readSerialCommand()
 	    gpsData.height = (int32_t)readDoubleSerial();
 	    gpsData.fixtime = (int32_t)readDoubleSerial();
 	    gpsData.sats = (int32_t)readIntegerSerial();
+
+
+	    // TEST                                                                                                                                          
+
+	    SERIAL_PRINT("currentPosition.latitude : ");
+	    SERIAL_PRINT(gpsData.lat);
+	    SERIAL_PRINT("\n");
+
+	    SERIAL_PRINT("currentPosition.longitude : ");
+	    SERIAL_PRINT(gpsData.lon);
+	    SERIAL_PRINT("\n");
+
+	    SERIAL_PRINT("DEFAULT_HOME_ALTITUDE : ");
+	    SERIAL_PRINT(gpsData.height);
+	    SERIAL_PRINT("\n");
+
+
+
       
 #endif    
 	  }

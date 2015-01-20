@@ -173,17 +173,17 @@ void	processGpsNavigationStateFromReceiverCommand() // COMMANDES D'EXECUTION DE 
 
       // TEST
 
-      SERIAL_PRINT("currentPosition.latitude : ");
-      SERIAL_PRINT(currentPosition.latitude);
-      SERIAL_PRINT("\n");
+      /* SERIAL_PRINT("currentPosition.latitude : "); */
+      /* SERIAL_PRINT(currentPosition.latitude); */
+      /* SERIAL_PRINT("\n"); */
 
-      SERIAL_PRINT("currentPosition.longitude : ");
-      SERIAL_PRINT(currentPosition.longitude);
-      SERIAL_PRINT("\n");
+      /* SERIAL_PRINT("currentPosition.longitude : "); */
+      /* SERIAL_PRINT(currentPosition.longitude); */
+      /* SERIAL_PRINT("\n"); */
 
-      SERIAL_PRINT("DEFAULT_HOME_ALTITUDE : ");
-      SERIAL_PRINT(DEFAULT_HOME_ALTITUDE);
-      SERIAL_PRINT("\n");
+      /* SERIAL_PRINT("DEFAULT_HOME_ALTITUDE : "); */
+      /* SERIAL_PRINT(DEFAULT_HOME_ALTITUDE); */
+      /* SERIAL_PRINT("\n"); */
     }
 
 
