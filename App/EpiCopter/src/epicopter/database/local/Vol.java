@@ -4,8 +4,11 @@ public class Vol {
 
 	private long	id;
 	private String	name;
+	private String	userName;
 	private int		picture;
 	private int		video;
+	private long	millisecond;
+	private int		numberOfTrip;
 
 	public long getId() {
 		return id;
@@ -21,6 +24,14 @@ public class Vol {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public int getPicture() {
@@ -39,8 +50,25 @@ public class Vol {
 		this.video = video;
 	}
 
+	public long getMillisecond() {
+		return millisecond;
+	}
+
+	public void setMillisecond(long millisecond) {
+		this.millisecond = millisecond;
+	}
+
+	public int getNumberOfTrip() {
+		return numberOfTrip;
+	}
+
+	public void setNumberOfTrip(int numberOfTrip) {
+		this.numberOfTrip = numberOfTrip;
+	}
+
 	@Override
 	public String toString() {
-		return "--id:" + id + "- -name:" + name + "- -picture:" + picture + "- -video:" + video + "--";
+		return "--id:" + id + "- -name:" + name + "- -picture:" + picture + "- -video:" + video + "- -millisecond:" + millisecond + "- -numberOfTrip:" + numberOfTrip
+				+ "--";
 	}
 }

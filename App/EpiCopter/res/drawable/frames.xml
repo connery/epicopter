@@ -11,6 +11,6 @@
         android:width="1dp"
         android:color="@color/black" />
 
-    <solid android:color="@color/background" />
+    <solid android:color="@color/background_dusky" />
 
 </shape>

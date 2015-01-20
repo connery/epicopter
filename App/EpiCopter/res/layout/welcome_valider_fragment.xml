@@ -6,11 +6,97 @@
     android:gravity="center_vertical"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/date_and_time_trip"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <TableRow
+        android:id="@+id/tablerow1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview1"
+        android:weightSum="5" >
+
+        <CheckBox
+            android:id="@+id/checkBoxImmediatly"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:checked="true"
+            android:text="@string/immediatly" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/or"
+            android:textAppearance="?android:attr/textAppearance" />
+
+        <TextView
+            android:id="@+id/textViewClickableDateAndTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:text="@string/date_and_time"
+            android:textAppearance="?android:attr/textAppearance" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tablerow2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tablerow1"
+        android:layout_marginTop="5dp"
+        android:weightSum="5" >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/number_of_repetition"
+            android:textAppearance="?android:attr/textAppearance" />
+
+        <EditText
+            android:id="@+id/editTextNumberOfTrip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:inputType="number"
+            android:text="1" >
+        </EditText>
+    </TableRow>
+
+    <CheckBox
+        android:id="@+id/checkBoxVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tablerow2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="@string/take_video" />
+
+    <CheckBox
+        android:id="@+id/checkBoxPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxVideo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="@string/take_picture" />
+
     <EditText
         android:id="@+id/welcomeValiderEditTextTripName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
+        android:layout_below="@+id/checkBoxPicture"
         android:gravity="center"
         android:hint="@string/trip_name"
         android:textSize="25sp" />

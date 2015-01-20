@@ -4,9 +4,12 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import epicopter.main.R;
+import epicopter.utils.TimePickerFragment;
 
 public class MainFragmentActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -58,7 +61,7 @@ public class MainFragmentActivity extends FragmentActivity implements ActionBar.
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
 		if (tab.getPosition() == 1) { // case 1 in TabsPagerAdapter
-//			PointsFragment.setListItem();
+		// PointsFragment.setListItem();
 			Intent intent = new Intent();
 			intent.setAction("testAction");
 			sendBroadcast(intent);
@@ -73,7 +76,7 @@ public class MainFragmentActivity extends FragmentActivity implements ActionBar.
 	@Override
 	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
 		if (tab.getPosition() == 1) { // case 1 in TabsPagerAdapter
-//			PointsFragment.setListItem();
+		// PointsFragment.setListItem();
 			Intent intent = new Intent();
 			intent.setAction("testAction");
 			sendBroadcast(intent);

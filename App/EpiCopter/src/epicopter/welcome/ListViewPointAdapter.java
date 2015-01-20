@@ -3,6 +3,8 @@ package epicopter.welcome;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Environment;
+import android.support.v4.os.EnvironmentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +34,6 @@ public class ListViewPointAdapter extends ArrayAdapter<ListViewPoint> {
 			viewHolder.tvLatitude = (TextView) convertView.findViewById(R.id.tvLatitude);
 			viewHolder.tvLongitude = (TextView) convertView.findViewById(R.id.tvLongitude);
 			viewHolder.tvHeight = (TextView) convertView.findViewById(R.id.tvHeight);
-			;
 			convertView.setTag(viewHolder);
 		} else {
 			// recycle the already inflated view
@@ -42,8 +43,8 @@ public class ListViewPointAdapter extends ArrayAdapter<ListViewPoint> {
 		ListViewPoint item;
 		item = getItem(position);
 		viewHolder.ivIcon.setImageDrawable(item.icon);
-		viewHolder.tvLatitude.setText(convertView.getResources().getString(R.string.latitude) + item.latitude);
-		viewHolder.tvLongitude.setText(convertView.getResources().getString(R.string.longitude) + item.longitude);
+		viewHolder.tvLatitude.setText(convertView.getResources().getString(R.string.latitude) + "        " + item.latitude);
+		viewHolder.tvLongitude.setText(convertView.getResources().getString(R.string.longitude) + "     " + item.longitude);
 		viewHolder.tvHeight.setText(item.height);
 
 		buttonAction(convertView, item, viewHolder);

@@ -2,9 +2,11 @@
 <resources>
 
     <color name="background">#ddedf9</color>
+    <color name="background_dusky">#9ccbee</color>
     <color name="black">#000000</color>
     <color name="blue_light">#25a9d9</color>
     <color name="blue_medium">#256dd9</color>
     <color name="blue_dark">#255ed9</color>
+    <color name="gray">#292929</color>
 
 </resources>

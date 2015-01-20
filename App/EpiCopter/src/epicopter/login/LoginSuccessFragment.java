@@ -30,7 +30,7 @@ public class LoginSuccessFragment extends Fragment implements LoginInterface, Da
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.login_success, container, false);
+		view = inflater.inflate(R.layout.login_success_fragment, container, false);
 		sessionFb = Session.getActiveSession();
 		return view;
 	}

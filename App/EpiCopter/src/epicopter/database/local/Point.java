@@ -13,7 +13,7 @@ public class Point {
 		this.id_vol = -1;
 		this.latitude = -1;
 		this.longitude = -1;
-		this.hauteur = -1;
+		this.hauteur = 2;
 	}
 
 	public Point(double latitude, double longitude) {
@@ -21,7 +21,7 @@ public class Point {
 		this.id_vol = -1;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.hauteur = -1;
+		this.hauteur = 2;
 	}
 
 	public Point(double latitude, double longitude, double hauteur) {

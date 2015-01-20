@@ -468,10 +468,11 @@ containing a value of this type.
     }
     public static final class color {
         public static final int background=0x7f06001c;
-        public static final int black=0x7f06001d;
-        public static final int blue_dark=0x7f060020;
-        public static final int blue_light=0x7f06001e;
-        public static final int blue_medium=0x7f06001f;
+        public static final int background_dusky=0x7f06001d;
+        public static final int black=0x7f06001e;
+        public static final int blue_dark=0x7f060021;
+        public static final int blue_light=0x7f06001f;
+        public static final int blue_medium=0x7f060020;
         public static final int com_facebook_blue=0x7f060017;
         public static final int com_facebook_loginview_text_color=0x7f06001b;
         public static final int com_facebook_usersettingsfragment_connected_shadow_color=0x7f060019;
@@ -489,8 +490,9 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f060006;
         public static final int common_signin_btn_light_text_focused=0x7f060007;
         public static final int common_signin_btn_light_text_pressed=0x7f060005;
-        public static final int common_signin_btn_text_dark=0x7f060021;
-        public static final int common_signin_btn_text_light=0x7f060022;
+        public static final int common_signin_btn_text_dark=0x7f060023;
+        public static final int common_signin_btn_text_light=0x7f060024;
+        public static final int gray=0x7f060022;
         public static final int wallet_bright_foreground_disabled_holo_light=0x7f06000f;
         /** 
          Wallet colors to support consistent Wallet fragment holo dark UI in client application
@@ -509,8 +511,8 @@ containing a value of this type.
         public static final int wallet_hint_foreground_holo_light=0x7f060011;
         public static final int wallet_holo_blue_light=0x7f060015;
         public static final int wallet_link_text_light=0x7f060016;
-        public static final int wallet_primary_text_holo_light=0x7f060023;
-        public static final int wallet_secondary_text_holo_dark=0x7f060024;
+        public static final int wallet_primary_text_holo_light=0x7f060025;
+        public static final int wallet_secondary_text_holo_dark=0x7f060026;
     }
     public static final class dimen {
         public static final int com_facebook_loginview_height=0x7f080007;
@@ -609,6 +611,9 @@ containing a value of this type.
         public static final int buyButton=0x7f09000a;
         public static final int buy_now=0x7f09000f;
         public static final int buy_with_google=0x7f090010;
+        public static final int checkBoxImmediatly=0x7f090051;
+        public static final int checkBoxPicture=0x7f090058;
+        public static final int checkBoxVideo=0x7f090057;
         public static final int classic=0x7f090011;
         public static final int comFacebookWidgetUserSettingsFragment=0x7f090043;
         public static final int com_facebook_login_activity_progress_bar=0x7f090018;
@@ -635,6 +640,7 @@ containing a value of this type.
         public static final int editTextInscriptionPassword=0x7f090037;
         public static final int editTextLoginEmail=0x7f090039;
         public static final int editTextLoginPassword=0x7f09003a;
+        public static final int editTextNumberOfTrip=0x7f090056;
         public static final int grayscale=0x7f090012;
         public static final int holo_dark=0x7f090005;
         public static final int holo_light=0x7f090006;
@@ -663,9 +669,15 @@ containing a value of this type.
         public static final int selectionDetails=0x7f09000b;
         public static final int small=0x7f090015;
         public static final int strict_sandbox=0x7f090009;
+        public static final int tablerow1=0x7f090050;
+        public static final int tablerow2=0x7f090054;
         public static final int terrain=0x7f090004;
         public static final int textView1=0x7f090033;
+        public static final int textView2=0x7f090052;
+        public static final int textView4=0x7f090055;
+        public static final int textViewClickableDateAndTime=0x7f090053;
         public static final int textViewForgotPassword=0x7f09003e;
+        public static final int textview1=0x7f09004f;
         public static final int tripInformation=0x7f090032;
         public static final int tvHeight=0x7f090030;
         public static final int tvHeightUseless=0x7f09002e;
@@ -675,10 +687,10 @@ containing a value of this type.
         public static final int welcomeChooseTripButtonLogout=0x7f09004a;
         public static final int welcomeChooseTripButtonNewTrip=0x7f090047;
         public static final int welcomeChooseTripButtonResumeTrip=0x7f090049;
-        public static final int welcomeValiderButtonSave=0x7f090051;
-        public static final int welcomeValiderButtonSaveAndSend=0x7f090052;
-        public static final int welcomeValiderButtonSend=0x7f090050;
-        public static final int welcomeValiderEditTextTripName=0x7f09004f;
+        public static final int welcomeValiderButtonSave=0x7f09005b;
+        public static final int welcomeValiderButtonSaveAndSend=0x7f09005c;
+        public static final int welcomeValiderButtonSend=0x7f09005a;
+        public static final int welcomeValiderEditTextTripName=0x7f090059;
         public static final int wrap_content=0x7f09000d;
     }
     public static final class integer {
@@ -705,7 +717,7 @@ containing a value of this type.
         public static final int login_inscription_fragment=0x7f030011;
         public static final int login_login_fragment=0x7f030012;
         public static final int login_management=0x7f030013;
-        public static final int login_success=0x7f030014;
+        public static final int login_success_fragment=0x7f030014;
         public static final int welcome_choose_trip=0x7f030015;
         public static final int welcome_google_maps=0x7f030016;
         public static final int welcome_home_fragment=0x7f030017;
@@ -846,6 +858,8 @@ containing a value of this type.
         public static final int common_signin_button_text_long=0x7f050020;
         public static final int create_calendar_message=0x7f050005;
         public static final int create_calendar_title=0x7f050004;
+        public static final int date_and_time=0x7f050061;
+        public static final int date_and_time_trip=0x7f05005e;
         public static final int decline=0x7f050003;
         public static final int delete=0x7f050054;
         public static final int download_your_data=0x7f050041;
@@ -855,6 +869,7 @@ containing a value of this type.
         public static final int forgot_password_page=0x7f050049;
         public static final int height=0x7f050051;
         public static final int historic=0x7f050053;
+        public static final int immediatly=0x7f05005f;
         public static final int inscription_page=0x7f050048;
         public static final int latitude=0x7f05004f;
         public static final int login=0x7f050045;
@@ -864,6 +879,8 @@ containing a value of this type.
         public static final int my_trips=0x7f05004c;
         public static final int new_=0x7f05004e;
         public static final int no=0x7f050056;
+        public static final int number_of_repetition=0x7f05005d;
+        public static final int or=0x7f050060;
         public static final int password=0x7f050043;
         public static final int resume=0x7f05004d;
         public static final int save=0x7f050057;
@@ -872,6 +889,8 @@ containing a value of this type.
         public static final int settings=0x7f05003d;
         public static final int store_picture_message=0x7f050001;
         public static final int store_picture_title=0x7f050000;
+        public static final int take_picture=0x7f05005b;
+        public static final int take_video=0x7f05005c;
         public static final int trip_name=0x7f050052;
         public static final int validate=0x7f050042;
         public static final int waiting=0x7f05004b;
@@ -883,21 +902,6 @@ containing a value of this type.
     }
     public static final class style {
         /** 
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-
-
-
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-
-
-
-        
-
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
@@ -911,9 +915,12 @@ containing a value of this type.
          */
         public static final int AppBaseTheme=0x7f040007;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
+         <item name="android:actionBarStyle">@style/MyActionBar</item> 
          */
         public static final int AppTheme=0x7f040008;
+        /**          <item name="android:background">@color/gray</item> 
+         */
+        public static final int MyActionBar=0x7f040009;
         public static final int Theme_IAPTheme=0x7f040000;
         public static final int WalletFragmentDefaultButtonTextAppearance=0x7f040003;
         public static final int WalletFragmentDefaultDetailsHeaderTextAppearance=0x7f040002;
@@ -924,7 +931,7 @@ containing a value of this type.
     
          */
         public static final int WalletFragmentDefaultStyle=0x7f040004;
-        public static final int button_text=0x7f040009;
+        public static final int button_text=0x7f04000a;
         public static final int com_facebook_loginview_default_style=0x7f040005;
         public static final int com_facebook_loginview_silver_style=0x7f040006;
     }
