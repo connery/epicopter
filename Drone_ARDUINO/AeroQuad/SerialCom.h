@@ -98,9 +98,9 @@ void readSerialCommand()
 
 #if defined (UseGPS)
       
-	    float lat;
+	    int32_t lat;
 
-	    lat = readDoubleSerial(); 
+	    lat = readIntegerSerial(); 
 	    gpsData.lon = (int32_t)readDoubleSerial();
 	    gpsData.height = (int32_t)readDoubleSerial();
 	    gpsData.fixtime = (int32_t)readDoubleSerial();
