@@ -14,7 +14,7 @@
     <string name="Inscription">Inscription</string>
     <string name="forgot_password">Mot de passe oublié?</string>
     <string name="inscription_page">Page d\'inscription</string>
-    <string name="forgot_password_page">Page mot de passe oublié</string>
+    <string name="forgot_password_page">Mot de passe oublié</string>
     <string name="send">Envoyer</string>
     <string name="waiting" tools:ignore="TypographyEllipsis">Veuillez patienter...</string>
     <string name="my_trips">Mes parcours</string>
@@ -33,6 +33,11 @@
     <string name="logo">Logo</string>
     <string name="logout">Déconnexion</string>
     <string name="take_picture">Prendre des photos</string>
-    <string name="take_video">Prendre un vidéo</string>
+    <string name="take_video">Prendre une vidéo</string>
+    <string name="number_of_repetition">Nombre de répétition :</string>
+    <string name="date_and_time_trip">Date et heure du parcours :</string>
+    <string name="immediatly">Immédiat</string>
+    <string name="or">ou</string>
+    <string name="date_and_time">Date et heure</string>
 
 </resources>

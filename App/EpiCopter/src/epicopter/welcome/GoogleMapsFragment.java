@@ -137,12 +137,12 @@ public class GoogleMapsFragment extends Fragment implements DataBaseInterface {
 	/**
 	 * Function to save all points in local DB
 	 */
-	public static void saveToLocalDB(String name, int takePicture, int takeVideo) {
+	public static void saveToLocalDB(String name, int takePicture, int takeVideo, long millisecond, int numberOfTrip) {
 		// STEP 1 : Open vol DB
 		VolsDBAdapter volsDB = new VolsDBAdapter(view.getContext());
 		volsDB.open();
 		// STEP 2 : Create Vol
-		Vol myNewVol = volsDB.insertVol(name, mySession.getUserDetails().get(SessionManager.KEY_EMAIL), takePicture, takeVideo);
+		Vol myNewVol = volsDB.insertVol(name, mySession.getUserDetails().get(SessionManager.KEY_EMAIL), takePicture, takeVideo, millisecond, numberOfTrip);
 		// STEP 3 : Save id in local DB as the current trip
 		mySession.setIdCurrentTrip(myNewVol.getId());
 		// STEP 4 : Open points DB

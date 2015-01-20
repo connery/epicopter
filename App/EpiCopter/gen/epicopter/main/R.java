@@ -611,8 +611,9 @@ containing a value of this type.
         public static final int buyButton=0x7f09000a;
         public static final int buy_now=0x7f09000f;
         public static final int buy_with_google=0x7f090010;
-        public static final int checkBoxPicture=0x7f090050;
-        public static final int checkBoxVideo=0x7f09004f;
+        public static final int checkBoxImmediatly=0x7f090051;
+        public static final int checkBoxPicture=0x7f090058;
+        public static final int checkBoxVideo=0x7f090057;
         public static final int classic=0x7f090011;
         public static final int comFacebookWidgetUserSettingsFragment=0x7f090043;
         public static final int com_facebook_login_activity_progress_bar=0x7f090018;
@@ -639,6 +640,7 @@ containing a value of this type.
         public static final int editTextInscriptionPassword=0x7f090037;
         public static final int editTextLoginEmail=0x7f090039;
         public static final int editTextLoginPassword=0x7f09003a;
+        public static final int editTextNumberOfTrip=0x7f090056;
         public static final int grayscale=0x7f090012;
         public static final int holo_dark=0x7f090005;
         public static final int holo_light=0x7f090006;
@@ -667,9 +669,15 @@ containing a value of this type.
         public static final int selectionDetails=0x7f09000b;
         public static final int small=0x7f090015;
         public static final int strict_sandbox=0x7f090009;
+        public static final int tablerow1=0x7f090050;
+        public static final int tablerow2=0x7f090054;
         public static final int terrain=0x7f090004;
         public static final int textView1=0x7f090033;
+        public static final int textView2=0x7f090052;
+        public static final int textView4=0x7f090055;
+        public static final int textViewClickableDateAndTime=0x7f090053;
         public static final int textViewForgotPassword=0x7f09003e;
+        public static final int textview1=0x7f09004f;
         public static final int tripInformation=0x7f090032;
         public static final int tvHeight=0x7f090030;
         public static final int tvHeightUseless=0x7f09002e;
@@ -679,10 +687,10 @@ containing a value of this type.
         public static final int welcomeChooseTripButtonLogout=0x7f09004a;
         public static final int welcomeChooseTripButtonNewTrip=0x7f090047;
         public static final int welcomeChooseTripButtonResumeTrip=0x7f090049;
-        public static final int welcomeValiderButtonSave=0x7f090053;
-        public static final int welcomeValiderButtonSaveAndSend=0x7f090054;
-        public static final int welcomeValiderButtonSend=0x7f090052;
-        public static final int welcomeValiderEditTextTripName=0x7f090051;
+        public static final int welcomeValiderButtonSave=0x7f09005b;
+        public static final int welcomeValiderButtonSaveAndSend=0x7f09005c;
+        public static final int welcomeValiderButtonSend=0x7f09005a;
+        public static final int welcomeValiderEditTextTripName=0x7f090059;
         public static final int wrap_content=0x7f09000d;
     }
     public static final class integer {
@@ -709,7 +717,7 @@ containing a value of this type.
         public static final int login_inscription_fragment=0x7f030011;
         public static final int login_login_fragment=0x7f030012;
         public static final int login_management=0x7f030013;
-        public static final int login_success=0x7f030014;
+        public static final int login_success_fragment=0x7f030014;
         public static final int welcome_choose_trip=0x7f030015;
         public static final int welcome_google_maps=0x7f030016;
         public static final int welcome_home_fragment=0x7f030017;
@@ -850,6 +858,8 @@ containing a value of this type.
         public static final int common_signin_button_text_long=0x7f050020;
         public static final int create_calendar_message=0x7f050005;
         public static final int create_calendar_title=0x7f050004;
+        public static final int date_and_time=0x7f050061;
+        public static final int date_and_time_trip=0x7f05005e;
         public static final int decline=0x7f050003;
         public static final int delete=0x7f050054;
         public static final int download_your_data=0x7f050041;
@@ -859,6 +869,7 @@ containing a value of this type.
         public static final int forgot_password_page=0x7f050049;
         public static final int height=0x7f050051;
         public static final int historic=0x7f050053;
+        public static final int immediatly=0x7f05005f;
         public static final int inscription_page=0x7f050048;
         public static final int latitude=0x7f05004f;
         public static final int login=0x7f050045;
@@ -868,6 +879,8 @@ containing a value of this type.
         public static final int my_trips=0x7f05004c;
         public static final int new_=0x7f05004e;
         public static final int no=0x7f050056;
+        public static final int number_of_repetition=0x7f05005d;
+        public static final int or=0x7f050060;
         public static final int password=0x7f050043;
         public static final int resume=0x7f05004d;
         public static final int save=0x7f050057;

@@ -179,8 +179,9 @@ int id buttonInscripton 0x7f09003d
 int id buyButton 0x7f09000a
 int id buy_now 0x7f09000f
 int id buy_with_google 0x7f090010
-int id checkBoxPicture 0x7f090050
-int id checkBoxVideo 0x7f09004f
+int id checkBoxImmediatly 0x7f090051
+int id checkBoxPicture 0x7f090058
+int id checkBoxVideo 0x7f090057
 int id classic 0x7f090011
 int id comFacebookWidgetUserSettingsFragment 0x7f090043
 int id com_facebook_login_activity_progress_bar 0x7f090018
@@ -207,6 +208,7 @@ int id editTextInscriptionEmail 0x7f090036
 int id editTextInscriptionPassword 0x7f090037
 int id editTextLoginEmail 0x7f090039
 int id editTextLoginPassword 0x7f09003a
+int id editTextNumberOfTrip 0x7f090056
 int id grayscale 0x7f090012
 int id holo_dark 0x7f090005
 int id holo_light 0x7f090006
@@ -235,9 +237,15 @@ int id search_box 0x7f090026
 int id selectionDetails 0x7f09000b
 int id small 0x7f090015
 int id strict_sandbox 0x7f090009
+int id tablerow1 0x7f090050
+int id tablerow2 0x7f090054
 int id terrain 0x7f090004
 int id textView1 0x7f090033
+int id textView2 0x7f090052
+int id textView4 0x7f090055
+int id textViewClickableDateAndTime 0x7f090053
 int id textViewForgotPassword 0x7f09003e
+int id textview1 0x7f09004f
 int id tripInformation 0x7f090032
 int id tvHeight 0x7f090030
 int id tvHeightUseless 0x7f09002e
@@ -247,10 +255,10 @@ int id welcomeChooseTripButtonHistoricTrip 0x7f090048
 int id welcomeChooseTripButtonLogout 0x7f09004a
 int id welcomeChooseTripButtonNewTrip 0x7f090047
 int id welcomeChooseTripButtonResumeTrip 0x7f090049
-int id welcomeValiderButtonSave 0x7f090053
-int id welcomeValiderButtonSaveAndSend 0x7f090054
-int id welcomeValiderButtonSend 0x7f090052
-int id welcomeValiderEditTextTripName 0x7f090051
+int id welcomeValiderButtonSave 0x7f09005b
+int id welcomeValiderButtonSaveAndSend 0x7f09005c
+int id welcomeValiderButtonSend 0x7f09005a
+int id welcomeValiderEditTextTripName 0x7f090059
 int id wrap_content 0x7f09000d
 int integer google_play_services_version 0x7f070000
 int layout com_facebook_friendpickerfragment 0x7f030000
@@ -273,7 +281,7 @@ int layout login_forgot_password_fragment 0x7f030010
 int layout login_inscription_fragment 0x7f030011
 int layout login_login_fragment 0x7f030012
 int layout login_management 0x7f030013
-int layout login_success 0x7f030014
+int layout login_success_fragment 0x7f030014
 int layout welcome_choose_trip 0x7f030015
 int layout welcome_google_maps 0x7f030016
 int layout welcome_home_fragment 0x7f030017
@@ -341,6 +349,8 @@ int string common_signin_button_text 0x7f05001f
 int string common_signin_button_text_long 0x7f050020
 int string create_calendar_message 0x7f050005
 int string create_calendar_title 0x7f050004
+int string date_and_time 0x7f050061
+int string date_and_time_trip 0x7f05005e
 int string decline 0x7f050003
 int string delete 0x7f050054
 int string download_your_data 0x7f050041
@@ -350,6 +360,7 @@ int string forgot_password 0x7f050047
 int string forgot_password_page 0x7f050049
 int string height 0x7f050051
 int string historic 0x7f050053
+int string immediatly 0x7f05005f
 int string inscription_page 0x7f050048
 int string latitude 0x7f05004f
 int string login 0x7f050045
@@ -359,6 +370,8 @@ int string longitude 0x7f050050
 int string my_trips 0x7f05004c
 int string new_ 0x7f05004e
 int string no 0x7f050056
+int string number_of_repetition 0x7f05005d
+int string or 0x7f050060
 int string password 0x7f050043
 int string resume 0x7f05004d
 int string save 0x7f050057

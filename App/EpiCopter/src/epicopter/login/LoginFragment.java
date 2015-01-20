@@ -38,7 +38,7 @@ import epicopter.utils.EncryptUtils;
 import epicopter.utils.SessionManager;
 
 public class LoginFragment extends Fragment implements LoginInterface,
-		DataBaseInterface, OnClickListener, OnFocusChangeListener, TaskCallback {
+ DataBaseInterface, OnClickListener, OnFocusChangeListener, TaskCallback {
 
 	// Email, password edittext
 	EditText etEmail, etPassword;

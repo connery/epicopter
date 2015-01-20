@@ -8,7 +8,7 @@ import android.util.Log;
 public class SQLiteManager extends SQLiteOpenHelper {
 
 	private static final String	DATABASE_NAME		= "epicopter.db";
-	private static final int	DATABASE_VERSION	= 4;
+	private static final int	DATABASE_VERSION	= 6;
 
 	private static final String	CREATE_TABLE_POINTS	= 
 			"CREATE TABLE " + PointsDBAdapter.TABLE_POINTS	+ "(" 
@@ -24,7 +24,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
 					+ VolsDBAdapter.COLUMN_NAME				+ " TEXT NOT NULL, "
 					+ VolsDBAdapter.COLUMN_USER_NAME		+ " TEXT NOT NULL, "
 					+ VolsDBAdapter.COLUMN_PICTURE			+ " INTEGER NOT NULL, " 
-					+ VolsDBAdapter.COLUMN_VIDEO			+ " INTEGER NOT NULL);";
+					+ VolsDBAdapter.COLUMN_VIDEO			+ " INTEGER NOT NULL, "
+					+ VolsDBAdapter.COLUMN_MILLI_SECOND		+ " INTEGER NOT NULL, " 
+					+ VolsDBAdapter.COLUMN_NUMBER_OF_TRIP	+ " INTEGER DEFAULT 1);";
 
 	public SQLiteManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
