@@ -170,6 +170,20 @@ void	processGpsNavigationStateFromReceiverCommand() // COMMANDES D'EXECUTION DE 
       homePosition.latitude = currentPosition.latitude;
       homePosition.longitude = currentPosition.longitude;
       homePosition.altitude = DEFAULT_HOME_ALTITUDE;
+
+      // TEST
+
+      SERIAL_PRINT("currentPosition.latitude : ");
+      SERIAL_PRINT(currentPosition.latitude);
+      SERIAL_PRINT("\n");
+
+      SERIAL_PRINT("currentPosition.longitude : ");
+      SERIAL_PRINT(currentPosition.longitude);
+      SERIAL_PRINT("\n");
+
+      SERIAL_PRINT("DEFAULT_HOME_ALTITUDE : ");
+      SERIAL_PRINT(DEFAULT_HOME_ALTITUDE);
+      SERIAL_PRINT("\n");
     }
 
 
