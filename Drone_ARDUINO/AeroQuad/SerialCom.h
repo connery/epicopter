@@ -876,10 +876,7 @@ void readDoubleValueSerial(char *data, byte size)
       {
 	data[index] = SERIAL_READ();
 	timeout = 0;
-	if (data[index] != '.')
-	  {
-	    index++;
-	  }
+	index++;  
       }
   } while ((index == 0 || data[index-1] != ';') && (timeout < 10) && (index < size-1));
 
