@@ -37,6 +37,61 @@ void initCommunication() {} // do nothing here for now
 
 //********************************** Serial Commands ************************************************
 
+
+void PrintValueComma(float val) {
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintValueComma(double val) {
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintValueComma(char val) {
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintValueComma(int val) {
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintValueComma(unsigned long val)
+{
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintValueComma(byte val)
+{
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintValueComma(long int val)
+{
+  SERIAL_PRINT(val);
+  comma();
+}
+
+void PrintPID(unsigned char IDPid)
+{
+  PrintValueComma(PID[IDPid].P);
+  PrintValueComma(PID[IDPid].I);
+  PrintValueComma(PID[IDPid].D);
+}
+
+void PrintDummyValues(byte number)
+{
+  for (byte i = 0; i < number; i++)
+    {
+      PrintValueComma(0);
+    }
+}
+
+
 bool validateCalibrateCommand(byte command)
 {
   if (readFloatSerial() == 123.45) // use a specific float value to validate full throttle call is being sent
@@ -374,60 +429,6 @@ void readSerialCommand()
 }
 
 //********************************* Serial Telemetry ************************************************
-
-void PrintValueComma(float val) {
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintValueComma(double val) {
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintValueComma(char val) {
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintValueComma(int val) {
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintValueComma(unsigned long val)
-{
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintValueComma(byte val)
-{
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintValueComma(long int val)
-{
-  SERIAL_PRINT(val);
-  comma();
-}
-
-void PrintPID(unsigned char IDPid)
-{
-  PrintValueComma(PID[IDPid].P);
-  PrintValueComma(PID[IDPid].I);
-  PrintValueComma(PID[IDPid].D);
-}
-
-void PrintDummyValues(byte number)
-{
-  for (byte i = 0; i < number; i++)
-    {
-      PrintValueComma(0);
-    }
-}
-
 
 float getHeading()
 {
