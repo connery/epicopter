@@ -165,7 +165,7 @@ void	processGpsNavigationStateFromReceiverCommand() // COMMANDES D'EXECUTION DE 
 {
   // COMMANDE D'INNITIALISATION DE LA BASE D'OPERATION : A MODIFIER
   
-  if (motorArmed == OFF && receiverCommand[THROTTLE] < MINCHECK && receiverCommand[ZAXIS] < MINCHECK && receiverCommand[YAXIS] > MAXCHECK && receiverCommand[XAXIS] > MAXCHECK && haveAGpsLock())
+  if (motorArmed == OFF && receiverCommand[THROTTLE] < MINCHECK && receiverCommand[ZAXIS] < MINCHECK && receiverCommand[YAXIS] > MAXCHECK && receiverCommand[XAXIS] > MAXCHECK /* && haveAGpsLock() */)
     {
       homePosition.latitude = currentPosition.latitude;
       homePosition.longitude = currentPosition.longitude;
