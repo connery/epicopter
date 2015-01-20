@@ -98,30 +98,11 @@ void readSerialCommand()
 
 #if defined (UseGPS)
       
-	    gpsData.lat = (int32_t)readDoubleSerial(); 
+	    gpsData.lat = (float32_t)readDoubleSerial(); 
 	    gpsData.lon = (int32_t)readDoubleSerial();
 	    gpsData.height = (int32_t)readDoubleSerial();
 	    gpsData.fixtime = (int32_t)readDoubleSerial();
 	    gpsData.sats = (int32_t)readIntegerSerial();
-
-
-	    // TEST 1
-
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINT(SERIAL_READ());
-	    SERIAL_PRINTLN(SERIAL_READ());
-
 
 
 	    // TEST                                                                                                                                          
@@ -134,8 +115,12 @@ void readSerialCommand()
 	    SERIAL_PRINT(gpsData.lon);
 	    SERIAL_PRINT("\n");
 
-	    SERIAL_PRINT("hauteur");
+	    SERIAL_PRINT("hauteur : ");
 	    SERIAL_PRINT(gpsData.height);
+	    SERIAL_PRINT("\n");
+
+	    SERIAL_PRINT("satellites : ");
+	    SERIAL_PRINT(gpsData.sats);
 	    SERIAL_PRINT("\n");
 
 
