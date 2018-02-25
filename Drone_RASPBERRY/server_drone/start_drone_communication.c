@@ -95,6 +95,25 @@ int	client_drone_process(int * file_descriptor_tab)
   // execl("/bin/sh", "client_drone", "127.0.0.1", "client_drone#01", file_descriptor_tab[5]); 
 
   // SERVER DE COMMANDES EXTERNES : VERS DRONE (ARDUINO)
+
+  char	* communication_command_line = malloc(30 * sizeof(char));
+  char	* string_nb = malloc(10 * sizeof(char));
+  
+  strcat(communication_command_line, "serveur");
+
+  strcat(communication_command_line, " ");
+
+  sprintf(string_nb, "%d", 1111);
+  strcat(communication_command_line, string_nb);
+
+  strcat(communication_command_line, " ");
+
+  sprintf(string_nb, "%d", file_descriptor_tab[5]);
+  strcat(communication_command_line, string_nb);
+
+ 
+  execl("/bin/sh", "sh", "-c", communication_command_line);
+
   
 
   printf("END EXEC CLIENT_DRONE_PROCESS\n");
