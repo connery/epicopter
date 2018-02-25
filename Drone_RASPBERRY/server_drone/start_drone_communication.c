@@ -95,7 +95,9 @@ int	client_drone_process(int * file_descriptor_tab)
   // execl("/bin/sh", "client_drone", "127.0.0.1", "client_drone#01", file_descriptor_tab[5]); 
 
   // SERVER DE COMMANDES EXTERNES : VERS DRONE (ARDUINO)
-  execl("/bin/sh", "../client_server_for_skydrop/server", "1111", file_descriptor_tab[5]); 
+  
+
+  printf("END EXEC CLIENT_DRONE_PROCESS\n");
 
   return (EXIT_SUCCESS);
 }

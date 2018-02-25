@@ -35,6 +35,7 @@
 #define		ERROR_03 "ERROR: socket listen failure.\n"
 #define		ERROR_04 "ERROR: socket accept failure.\n"
 
+int		dest;
 
 //		structures
 struct		s_list

@@ -11,7 +11,6 @@
 #include "serveur.h"
 
 int		socket_fd;
-int		dest;
 
 void            function_signal_segv()
 {
