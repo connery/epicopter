@@ -92,7 +92,10 @@ int	close_file_descriptor(int * file_descriptor_tab, int file_descriptor)
 
 int	client_drone_process(int * file_descriptor_tab)
 {
-  // execl("/bin/sh", "client_drone", "127.0.0.1", "client_drone#01", file_descriptor_tab[4]); // parametre : file_descriptor_tab[4] 
+  // execl("/bin/sh", "client_drone", "127.0.0.1", "client_drone#01", file_descriptor_tab[5]); 
+
+  // SERVER DE COMMANDES EXTERNES : VERS DRONE (ARDUINO)
+  execl("/bin/sh", "../client_server_for_skydrop/server", "1111", file_descriptor_tab[5]); 
 
   return (EXIT_SUCCESS);
 }
@@ -282,13 +285,13 @@ int     loop_process(void * shared_memory, struct data_navigation_container * da
 
   FD_SET(file_descriptor_tab[2], &readfds); // Add exit pipe arduino file_descriptor_tab[2]
 
-  FD_SET(file_descriptor_tab[5], &readfds); // Add exit pipe client file_descriptor_tab[5]
+  FD_SET(file_descriptor_tab[4], &readfds); // Add exit pipe client file_descriptor_tab[4]
 
   time_out.tv_usec = 2000000; // Passage select toutes les 1 seconde si pas d'activite sur les fd
 
 
 
-  if (file_descriptor_tab[2] < file_descriptor_tab[5]) { max_fd = file_descriptor_tab[5] + 1; } else { max_fd = file_descriptor_tab[2] + 1; } // Preparation a l'utilisation de select()
+  if (file_descriptor_tab[2] < file_descriptor_tab[4]) { max_fd = file_descriptor_tab[4] + 1; } else { max_fd = file_descriptor_tab[2] + 1; } // Preparation a l'utilisation de select()
 
   if (select(max_fd, &readfds, NULL, NULL, &time_out) == -1) { if (errno != 0) { (void)fprintf(stderr, "Select error, %s\n", strerror(errno)); } exit(1); }
 
@@ -300,7 +303,7 @@ int     loop_process(void * shared_memory, struct data_navigation_container * da
     {
       arduino_output(file_descriptor_tab, &arduino_instruction_list, data_navigation, shared_memory, k, p); // Execution des instructions d'interpretation dedies au flux de communication arduino
     }
-  else if (FD_ISSET(file_descriptor_tab[5], &readfds))
+  else if (FD_ISSET(file_descriptor_tab[4], &readfds))
     {
       client_output(file_descriptor_tab, &client_instruction_list);
     }
@@ -308,47 +311,42 @@ int     loop_process(void * shared_memory, struct data_navigation_container * da
 
   
 
-  //fd_set writefds;
+  /* //fd_set writefds; */
 
-  FD_ZERO(&writefds);
-  FD_SET(file_descriptor_tab[1], &writefds); // Add input pipe arduino file_descriptor_tab[1] : flux de communication arduino ouvert en ecriture
+  /* FD_ZERO(&writefds); */
+  /* FD_SET(file_descriptor_tab[1], &writefds); // Add input pipe arduino file_descriptor_tab[1] : flux de communication arduino ouvert en ecriture */
 
 
-  if (select(file_descriptor_tab[4] + 1, NULL, &writefds, NULL, NULL) == -1) { if (errno != 0) { (void)fprintf(stderr, "Select error, %s\n", strerror(errno)); } exit(1); }
+  /* if (select(file_descriptor_tab[5] + 1, NULL, &writefds, NULL, NULL) == -1) { if (errno != 0) { (void)fprintf(stderr, "Select error, %s\n", strerror(errno)); } exit(1); } */
 
-  if (FD_ISSET(file_descriptor_tab[4], &writefds))
-    {
+  /* if (FD_ISSET(file_descriptor_tab[5], &writefds)) */
+  /*   { */
 
-      //char	cmd[1024] = "#XaXbXcXdXeXfXgXhXiXjXkXlXmXnXoXpXqXrXsXtXuX";
-      //char	cmd[1024] = "mxjx";
+  /*     //char	cmd[1024] = "#XaXbXcXdXeXfXgXhXiXjXkXlXmXnXoXpXqXrXsXtXuX"; */
+  /*     //char	cmd[1024] = "mxjx"; */
       
-      char	cmd[1024] = "";
+  /*     char	cmd[1024] = ""; */
 
 
-      strcat(cmd, "/02"); // Balise d'emission de coordonnees GPS
+  /*     strcat(cmd, "/02"); // Balise d'emission de coordonnees GPS */
 
-      sprintf(cmd, "%.10f", data_navigation->drone_latitude);
-      strcat(cmd, ";");
+  /*     sprintf(cmd, "%.10f", data_navigation->drone_latitude); */
+  /*     strcat(cmd, ";"); */
 
-      sprintf(cmd, "%.10f", data_navigation->drone_longitude);
-      strcat(cmd, ";");
+  /*     sprintf(cmd, "%.10f", data_navigation->drone_longitude); */
+  /*     strcat(cmd, ";"); */
 
-      sprintf(cmd, "%.10f", data_navigation->drone_height);
-      strcat(cmd, ";");
+  /*     sprintf(cmd, "%.10f", data_navigation->drone_height); */
+  /*     strcat(cmd, ";"); */
 
-      sprintf(cmd, "%.10f", data_navigation->drone_time);
-      strcat(cmd, ";");
+  /*     sprintf(cmd, "%.10f", data_navigation->drone_time); */
+  /*     strcat(cmd, ";"); */
 
-      sprintf(cmd, "%d", data_navigation->drone_n_sats);
-      strcat(cmd, ";");
+  /*     sprintf(cmd, "%d", data_navigation->drone_n_sats); */
+  /*     strcat(cmd, ";"); */
 
-      write(file_descriptor_tab[5], cmd, strlen(cmd));
-
-      // EXEC le code à gaetan avec parametre file_descriptor_tab[5]
-      system("../client_drone/magellanExec");
-
-      //sleep(1); // FOR TEST STAGE
-    }
+  /*     write(file_descriptor_tab[5], cmd, strlen(cmd)); */
+  /*   } */
 
 
 

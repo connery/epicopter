@@ -72,6 +72,9 @@ list	* serveur_do_client(list ** p, channel_list ** c, fd_set * readfds, fd_set 
 	      write(1, "SUCCESS: RECEPTION DE LA COMMANDE: ", 35);
 	      write(1, (*p)->message, (*p)->message_len);
 	      write(1, "\n", 1);
+
+	      // Ecriture sur pipe d'entree arduino
+	      write(dest, (*p)->message, (*p)->message_len);
 	    }
 
       	  serveur_interpreter(begin, p, c, writefds);

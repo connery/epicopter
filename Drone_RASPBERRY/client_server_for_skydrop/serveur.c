@@ -11,6 +11,7 @@
 #include "serveur.h"
 
 int		socket_fd;
+int		dest;
 
 void            function_signal_segv()
 {
@@ -37,10 +38,13 @@ int		main(int ac, char ** av)
   struct sockaddr_in	sin;
   int		fd;
 
-  if (ac != 2)
+  if (ac != 3)
     {
       write(1, ERROR_00, strlen(ERROR_00));			return EXIT_FAILURE;
     }
+
+  dest = atoi(av[2]);
+
 
   signal(SIGINT, function_signal_ctrlc);
   signal(SIGFPE, function_signal_segv);
