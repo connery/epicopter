@@ -99,11 +99,11 @@ int	client_drone_process(int * file_descriptor_tab)
   char	* communication_command_line = malloc(30 * sizeof(char));
   char	* string_nb = malloc(10 * sizeof(char));
   
-  strcat(communication_command_line, "serveur");
+  strcat(communication_command_line, "./serveur");
 
   strcat(communication_command_line, " ");
 
-  sprintf(string_nb, "%d", 1111);
+  sprintf(string_nb, "%d", 1616);
   strcat(communication_command_line, string_nb);
 
   strcat(communication_command_line, " ");
@@ -215,11 +215,11 @@ int     arduino_output(int * file_descriptor_tab, t_mylist ** pointer, struct da
 
   char          buf;
 
-  //printf("LECTURE SUR LE FLUX DE COMMUNICATION ARDUINO\n");
+  printf("LECTURE SUR LE FLUX DE COMMUNICATION ARDUINO\n");
 
   // RECEPTION
 
-  //sleep(1); // Attente de fin d'ecriture sur le flux de toutes les donnees pour les paquet de taille importante : 1 seconde
+  sleep(1); // Attente de fin d'ecriture sur le flux de toutes les donnees pour les paquet de taille importante : 1 seconde
 
   while (read(file_descriptor_tab[2], &buf, 1) > 0)
     {
@@ -263,16 +263,22 @@ int     arduino_output(int * file_descriptor_tab, t_mylist ** pointer, struct da
 
 int     client_output(int * file_descriptor_tab, t_mylist ** pointer)
 {
-  char          buf;
+  char          buf[512];
 
   printf("Read on exit pipe client\n");
 
-  while (read(file_descriptor_tab[4], &buf, 1) > 0)
-    {
-      write(file_descriptor_tab[1], &buf, 1); // transmission des donnees recues depuis le client vers la carte arduino
+  int ret = 0;
 
-      /* write(STDOUT_FILENO, &buf, 1); */
-    }
+  sleep(1);
+
+  ret = read(file_descriptor_tab[4], &buf, 512);
+  buf[ret] = '\0';
+    
+      write(file_descriptor_tab[1], &buf, ret); // transmission des donnees recues depuis le client vers la carte arduino
+
+      write(STDOUT_FILENO, &buf, ret);
+      printf("ret read : %d\n", ret);
+    
 
   return (0);
 }
